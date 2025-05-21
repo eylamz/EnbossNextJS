@@ -16,17 +16,17 @@ export default function LanguageSwitcher({ lng }: { lng: string }) {
     router.push(segments.join('/'))
   }
   
+  // Get the opposite language
+  const oppositeLanguage = lng === 'he' ? 'en' : 'he'
+  
   return (
     <div className="flex gap-2">
-      {languages.map((language) => (
-        <button
-          key={language}
-          className={`px-3 py-1 rounded ${lng === language ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => handleLanguageChange(language)}
-        >
-          {language === 'he' ? 'עברית' : 'English'}
-        </button>
-      ))}
+      <button
+        className="font-semibold"
+        onClick={() => handleLanguageChange(oppositeLanguage)}
+      >
+        {oppositeLanguage === 'he' ? 'עב' : 'EN'}
+      </button>
     </div>
   )
 }

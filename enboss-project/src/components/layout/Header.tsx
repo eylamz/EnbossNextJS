@@ -5,11 +5,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/client'
 import { 
-  HomeIcon, 
-  SkateparkIcon, 
-  GuideIcon, 
-  ShopIcon, 
-  UserIcon,
+  Icon
 } from '@/assets/icons'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
@@ -92,9 +88,9 @@ export default function Header({ lng }: { lng: string }) {
                 aria-label="Enboss Home"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {/* You can replace this with an SVG logo if you have one */}
+                {/* ENBOSS Logo */}
                 <span className="light:navShadow transition-opacity duration-200 group-hover:opacity-80">
-                  Enboss
+                  <Icon name="logoHostage3" category="ui" className="-mb-1 w-[124px] h-[39px] sm:w-[128px] sm:h-[24px]" />
                 </span>
               </Link>
 
@@ -102,28 +98,24 @@ export default function Header({ lng }: { lng: string }) {
               <div className="hidden md:flex gap-3 lg:gap-5 items-center font-medium" role="menubar">
                 <Link href={`/${lng}`} className={navLinkClasses(`/${lng}`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
-                    <HomeIcon size={18} />
                     {t('home')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}`)} aria-hidden="true"></span>
                 </Link>
                 <Link href={`/${lng}/skateparks`} className={navLinkClasses(`/${lng}/skateparks`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
-                    <SkateparkIcon size={18} />
                     {t('skateparks')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/skateparks`)} aria-hidden="true"></span>
                 </Link>
                 <Link href={`/${lng}/guides`} className={navLinkClasses(`/${lng}/guides`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
-                    <GuideIcon size={18} />
                     {t('guides')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/guides`)} aria-hidden="true"></span>
                 </Link>
                 <Link href={`/${lng}/shop`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
-                    <ShopIcon size={18} />
                     {t('shop')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
@@ -135,7 +127,7 @@ export default function Header({ lng }: { lng: string }) {
                 <ThemeToggle lng={lng} />
                 <LanguageSwitcher lng={lng} />
                 <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
-                   <UserIcon size={22} className="light:navShadow" />
+                   <Icon name="heart" category="ui" size={22} className="light:navShadow" />
                    <span className="sr-only">{t('login')}</span>
                    <span className={activeLinkIndicatorClasses(`/${lng}/login`)} aria-hidden="true"></span>
                 </Link>
@@ -155,9 +147,9 @@ export default function Header({ lng }: { lng: string }) {
                   aria-controls="mobile-menu"
                 >
                   {isMenuOpen ? (
-                    <ShopIcon size={28} className={`light:navShadow ${shouldAnimate ? 'animate-pop' : ''}`} />
+                    <Icon name="close" category="navigation" size={28} className={`light:navShadow ${shouldAnimate ? 'animate-pop' : ''}`} />
                   ) : (
-                    <ShopIcon size={28} className={`light:navShadow ${shouldAnimate ? 'animate-pop' : ''}`} />
+                    <Icon name="menu" category="navigation" size={28} className={`light:navShadow ${shouldAnimate ? 'animate-pop' : ''}`} />
                   )}
                 </button>
               </div>
@@ -177,22 +169,21 @@ export default function Header({ lng }: { lng: string }) {
               role={isMenuOpen ? "menu" : undefined}
               aria-hidden={!isMenuOpen}
             >
-              <nav className="py-4 space-y-1" aria-label="Mobile Navigation">
-                <Link href={`/${lng}`} className={mobileNavLinkClasses(`/${lng}`)} style={{ animationDelay: '50ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span className="flex items-center gap-2 px-2 py-1"> <HomeIcon size={20} /> {t('home')}</span>
-                </Link>
+              <nav className="pb-4 px-2" aria-label="Mobile Navigation">
+                <div className="flex flex-col">
                 <Link href={`/${lng}/skateparks`} className={mobileNavLinkClasses(`/${lng}/skateparks`)} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span className="flex items-center gap-2 px-2 py-1"> <SkateparkIcon size={20} /> {t('skateparks')}</span>
+                  <span >  {t('skateparks')}</span>
                 </Link>
                 <Link href={`/${lng}/guides`} className={mobileNavLinkClasses(`/${lng}/guides`)} style={{ animationDelay: '150ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span className="flex items-center gap-2 px-2 py-1"> <GuideIcon size={20} /> {t('guides')}</span>
+                  <span>{t('guides')}</span>
                 </Link>
                 <Link href={`/${lng}/shop`} className={mobileNavLinkClasses(`/${lng}/shop`)} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span className="flex items-center gap-2 px-2 py-1"> <ShopIcon size={20} /> {t('shop')}</span>
+                  <span>{t('shop')}</span>
                 </Link>
                 <Link href={`/${lng}/login`} className={mobileNavLinkClasses(`/${lng}/login`)} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span className="flex items-center gap-2 px-2 py-1"> <UserIcon size={20} /> {t('login')}</span>
+                  <span>{t('login')}</span>
                 </Link>
+                </div>
                 <div className="pt-4 px-2">
                   <div 
                     className={`flex items-center justify-start gap-4 ${isMenuOpen ? 'animate-fadeIn' : ''}`}
