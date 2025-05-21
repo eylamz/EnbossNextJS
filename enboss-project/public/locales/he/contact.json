@@ -1,0 +1,23 @@
+{
+    "contact_us": "צור קשר",
+    "get_in_touch": "דברו איתנו",
+    "contact_description": "יש לכם שאלה או משוב? אנחנו כאן כדי לעזור. מלאו את הטופס או התקשרו אלינו ישירות.",
+    "email": "אימייל",
+    "phone": "טלפון",
+    "address": "כתובת",
+    "address_line": "נתניה, ישראל",
+    "follow_us": "עקבו אחרינו",
+    "send_message": "שלח הודעה",
+    "name": "שם",
+    "subject": "נושא",
+    "message": "הודעה",
+    "select_subject": "בחר נושא",
+    "general_inquiry": "שאלה כללית",
+    "skatepark_info": "מידע על סקייטפארקים",
+    "product_inquiry": "שאלה על מוצר",
+    "order_support": "תמיכה בהזמנה",
+    "other": "אחר",
+    "sending": "שולח...",
+    "message_sent": "ההודעה נשלחה בהצלחה!",
+    "thank_you_message": "תודה שיצרת קשר. נחזור אליך בהקדם האפשרי."
+  }
