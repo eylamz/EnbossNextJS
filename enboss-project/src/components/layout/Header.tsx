@@ -64,8 +64,9 @@ export default function Header({ lng }: { lng: string }) {
                 className="text-xl sm:text-2xl font-bold group" 
                 aria-label="Enboss Home"
               >
+                {/* ENBOSS Logo */}
                 <span className="light:navShadow transition-opacity duration-200 group-hover:opacity-80">
-                  Enboss
+                  <Icon name="logoHostage3" category="ui" className="-mb-1 w-[124px] h-[39px] sm:w-[128px] sm:h-[24px]" />
                 </span>
               </Link>
             </div>
@@ -124,13 +125,13 @@ export default function Header({ lng }: { lng: string }) {
 
               {/* Desktop Action Icons */}
               <div className="hidden md:flex items-center gap-2 lg:gap-3">
-                <ThemeToggle lng={lng} />
-                <LanguageSwitcher lng={lng} />
                 <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
-                   <Icon name="heart" category="ui" size={22} className="light:navShadow" />
+                   <Icon name="user" category="ui" size={20} className="light:navShadow" />
                    <span className="sr-only">{t('login')}</span>
                    <span className={activeLinkIndicatorClasses(`/${lng}/login`)} aria-hidden="true"></span>
                 </Link>
+                <ThemeToggle lng={lng} />
+                <LanguageSwitcher lng={lng} />
               </div>
 
               {/* Mobile menu button */}

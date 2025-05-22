@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={params.locale} dir={dir(params.locale)}>
-      <body className={`${inter.className} flex flex-col min-h-screen dark:bg-gray-900 dark:text-white`}>
+      <body className={`${inter.className} flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white`}>
         {children}
       </body>
     </html>

@@ -73,6 +73,7 @@ import TrashBold from './trashBold.svg';
 import Link from './link.svg';
 import Share from './share.svg';
 import ShareBold from './shareBold.svg';
+import User from './account.svg';
 
 
 // Type for SVG components
@@ -161,6 +162,7 @@ export const uiIcons = {
   clock: { icon: ClockBold, label: 'Clock' },
   amenitiesBold: { icon: AmenitiesBold, label: 'Notes' },
   infoBold: { icon: InfoBold, label: 'Notes' },
+  user: { icon: User, label: 'User' },
   sun: { icon: Sun, label: 'Sun' },
   sunBold: { icon: SunBold, label: 'Sun' },
   moon: { icon: Moon, label: 'Moon' },
