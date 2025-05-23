@@ -1,4 +1,5 @@
-// /client/src/config/icons.ts
+// src/assets/icons/index.ts
+
 import React from 'react';
 import Helmet from './helmet.svg';
 import Toilet from './toilet.svg';

@@ -5,45 +5,59 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: '**', // This wildcard allows any hostname for HTTP
+        hostname: '**',
       },
       {
         protocol: 'https',
-        hostname: '**', // This wildcard allows any hostname for HTTPS
+        hostname: '**',
       },
     ],
   },
   webpack(config) {
-    // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
-      rule.test?.test?.('.svg'),
-    )
+    // Remove any existing SVG rules
+    config.module.rules = config.module.rules.map((rule) => {
+      if (rule.test?.test?.('.svg')) {
+        return { ...rule, exclude: /\.svg$/i };
+      }
+      return rule;
+    });
 
-    config.module.rules.push(
-      // Reapply the existing rule, but only for svg imports ending in ?url
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
-      },
-      // Convert all other *.svg imports to React components
-      {
-        test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/,
-        resourceQuery: { not: /url/ }, // exclude if *.svg?url
-        loader: '@svgr/webpack',
-        options: {
-          typescript: true,
-          dimensions: false,
+    // Add SVGR loader
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            typescript: true,
+            dimensions: false,
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      removeViewBox: false,
+                      removeComments: true,
+                    },
+                  },
+                },
+                { name: 'prefixIds' },
+                {
+                  name: 'convertColors',
+                  params: {
+                    currentColor: true,
+                  },
+                },
+              ],
+            },
+          },
         },
-      },
-    )
+      ],
+    });
 
-    // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i
-
-    return config
+    return config;
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

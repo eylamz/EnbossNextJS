@@ -1,20 +1,22 @@
+'use client';
+
 // client/src/pages/skateparks/components/FormattedHours.tsx
 
-import React from 'react';
+import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '@/config/icons';
-import { OperatingHours, LightingHours } from '@/api/types/skatepark';
+import { Icon } from '@/assets/icons/index';
+import { IOperatingHours, ILightingHours } from '@/models/Skatepark';
 import { 
   is24HourSchedule, 
   groupDaysWithSameHours, 
   formatDayRanges,
   formatLightingHours
 } from '@/utils/hoursFormatter';
-import { TextBadge } from '@/components/ui/textVariants';
+import { TextBadge } from '@/components/ui/TextBadge';
 
 interface FormattedHoursProps {
-  operatingHours: OperatingHours;
-  lightingHours?: LightingHours;
+  operatingHours: IOperatingHours;
+  lightingHours?: ILightingHours;
   className?: string;
   closingYear?: number | null; // Add closing year prop
 }
@@ -142,7 +144,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
             {schedule.isOpen 
               ? scheduleKey === 'openAllDay'
                 ? t('skateparks.openAllDay')
-                : `${schedule.openTime} - ${schedule.closeTime}`
+                : `${schedule.openingTime} - ${schedule.closingTime}`
               : t('common:common.closed')}
           </span>
         </div>
@@ -174,7 +176,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
             
             <span className={weekSchedule.isOpen ? 'text-text dark:text-text-dark/80' : 'text-error dark:text-error-dark'}>
               {weekSchedule.isOpen 
-                ? `${weekSchedule.openTime} - ${weekSchedule.closeTime}`
+                ? `${weekSchedule.openingTime} - ${weekSchedule.closingTime}`
                 : t('common:common.closed')}
             </span>
           </div>
@@ -187,7 +189,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
             
             <span className={holidaySchedule.isOpen ? 'text-text dark:text-text-dark/80' : 'font-semibold text-error dark:text-error-dark'}>
               {holidaySchedule.isOpen 
-                ? `${holidaySchedule.openTime} - ${holidaySchedule.closeTime}`
+                ? `${holidaySchedule.openingTime} - ${holidaySchedule.closingTime}`
                 : t('common:common.closed')}
             </span>
           </div>
@@ -226,9 +228,9 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
               
               <span className={schedule.isOpen ? 'text-text dark:text-text-dark/80' : 'font-semibold text-error dark:text-error-dark'}>
                 {schedule.isOpen 
-                  ? scheduleKey === 'openAllDay' || (schedule.openTime === '00:00' && schedule.closeTime === '00:00')
+                  ? scheduleKey === 'openAllDay' || (schedule.openingTime === '00:00' && schedule.closingTime === '00:00')
                     ? t('skateparks.openAllDay')
-                    : `${schedule.openTime} - ${schedule.closeTime}`
+                    : `${schedule.openingTime} - ${schedule.closingTime}`
                   : t('common:common.closed')}
               </span>
             </div>

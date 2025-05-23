@@ -1,24 +1,24 @@
 // client/src/utils/hoursFormatter.ts
 
-import { OperatingHours, DaySchedule, LightingHours } from '@/models/Skatepark';
+import { IOperatingHours, IDaySchedule, ILightingHours } from '@/models/Skatepark';
 
 export type DayOfWeek = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'holidays';
 
 const dayOrder: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'holidays'];
 
 // Check if a day's schedule represents a "closed" day
-export const isDayClosed = (schedule: DaySchedule): boolean => {
+export const isDayClosed = (schedule: IDaySchedule): boolean => {
   if (!schedule.isOpen) return true;
-  // Check for special case where openTime=00:02 and closeTime=23:58 - this indicates closed
-  if (schedule.openTime === '00:02' && schedule.closeTime === '23:58') return true;
+  // Check for special case where openingTime=00:02 and closingTime=23:58 - this indicates closed
+  if (schedule.openingTime === '00:02' && schedule.closingTime === '23:58') return true;
   return false;
 };
 
 // Check if hours represent 24/7 operation
-export const is24HourSchedule = (hours: OperatingHours): boolean => {
+export const is24HourSchedule = (hours: IOperatingHours): boolean => {
   // Check if all days are using the special pattern of 00:02-23:58 which indicates 24/7
   const allDaysHaveSpecialClosedPattern = Object.values(hours).every(day => 
-    day.isOpen && day.openTime === '00:02' && day.closeTime === '23:58'
+    day.isOpen && day.openingTime === '00:02' && day.closingTime === '23:58'
   );
 
   if (allDaysHaveSpecialClosedPattern) return true;
@@ -26,46 +26,46 @@ export const is24HourSchedule = (hours: OperatingHours): boolean => {
   // Also consider 24/7 if all days are open with hours 00:00-00:00 or similar pattern indicating all day
   const allDaysOpen = Object.values(hours).every(day => 
     day.isOpen && 
-    ((day.openTime === '00:00' && day.closeTime === '00:00') || 
-     (day.openTime === '00:00' && day.closeTime === '23:59') || 
-     (day.openTime === '00:00' && day.closeTime === '24:00'))
+    ((day.openingTime === '00:00' && day.closingTime === '00:00') || 
+     (day.openingTime === '00:00' && day.closingTime === '23:59') || 
+     (day.openingTime === '00:00' && day.closingTime === '24:00'))
   );
 
   return allDaysOpen || allDaysHaveSpecialClosedPattern;
 };
 
 // Function to check if all days have identical schedules
-export const areAllDaysIdentical = (hours: OperatingHours): boolean => {
+export const areAllDaysIdentical = (hours: IOperatingHours): boolean => {
   const scheduleKey = getScheduleKey(hours['sunday']);
   return dayOrder.every(day => getScheduleKey(hours[day]) === scheduleKey);
 };
 
 // Function to check if all days except holidays have identical schedules
-export const areAllNonHolidayDaysIdentical = (hours: OperatingHours): boolean => {
+export const areAllNonHolidayDaysIdentical = (hours: IOperatingHours): boolean => {
   const nonHolidayDays: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
   const scheduleKey = getScheduleKey(hours[nonHolidayDays[0]]);
   return nonHolidayDays.every(day => getScheduleKey(hours[day]) === scheduleKey);
 };
 
 // Helper function to create a unique key for each schedule type
-export const getScheduleKey = (schedule: DaySchedule): string => {
+export const getScheduleKey = (schedule: IDaySchedule): string => {
   if (!schedule.isOpen) return 'closed';
   // If it's the special "closed" pattern (00:02-23:58)
-  if (schedule.openTime === '00:02' && schedule.closeTime === '23:58') return 'closed';
+  if (schedule.openingTime === '00:02' && schedule.closingTime === '23:58') return 'closed';
   // If it's the special "open all day" pattern (00:00-00:00)
-  if (schedule.openTime === '00:00' && schedule.closeTime === '00:00') return 'openAllDay';
-  return `${schedule.openTime || '00:00'}-${schedule.closeTime || '00:00'}`;
+  if (schedule.openingTime === '00:00' && schedule.closingTime === '00:00') return 'openAllDay';
+  return `${schedule.openingTime || '00:00'}-${schedule.closingTime || '00:00'}`;
 };
 
 // Group days with identical schedules
-export const groupDaysWithSameHours = (hours: OperatingHours): { 
+export const groupDaysWithSameHours = (hours: IOperatingHours): { 
   groupedDays: Record<string, DayOfWeek[]>,
-  hoursByGroup: Record<string, { openTime: string, closeTime: string, isOpen: boolean }>,
+  hoursByGroup: Record<string, { openingTime: string, closingTime: string, isOpen: boolean }>,
   allDaysIdentical: boolean,
   allNonHolidayDaysIdentical: boolean
 } => {
   const scheduleGroups: Record<string, DayOfWeek[]> = {};
-  const hoursByGroup: Record<string, { openTime: string, closeTime: string, isOpen: boolean }> = {};
+  const hoursByGroup: Record<string, { openingTime: string, closingTime: string, isOpen: boolean }> = {};
   
   // Check if all days (including weekends and holidays) have identical schedules
   const allDaysIdentical = areAllDaysIdentical(hours);
@@ -80,9 +80,9 @@ export const groupDaysWithSameHours = (hours: OperatingHours): {
     
     scheduleGroups[scheduleKey] = [...dayOrder];
     hoursByGroup[scheduleKey] = {
-      openTime: schedule.openTime || '00:00',
-      closeTime: schedule.closeTime || '00:00',
-      isOpen: schedule.isOpen && !(schedule.openTime === '00:02' && schedule.closeTime === '23:58')
+      openingTime: schedule.openingTime || '00:00',
+      closingTime: schedule.closingTime || '00:00',
+      isOpen: schedule.isOpen && !(schedule.openingTime === '00:02' && schedule.closingTime === '23:58')
     };
     
     return { groupedDays: scheduleGroups, hoursByGroup, allDaysIdentical, allNonHolidayDaysIdentical };
@@ -99,18 +99,18 @@ export const groupDaysWithSameHours = (hours: OperatingHours): {
     
     scheduleGroups[scheduleKey] = [...nonHolidayDays];
     hoursByGroup[scheduleKey] = {
-      openTime: schedule.openTime || '00:00',
-      closeTime: schedule.closeTime || '00:00',
-      isOpen: schedule.isOpen && !(schedule.openTime === '00:02' && schedule.closeTime === '23:58')
+      openingTime: schedule.openingTime || '00:00',
+      closingTime: schedule.closingTime || '00:00',
+      isOpen: schedule.isOpen && !(schedule.openingTime === '00:02' && schedule.closingTime === '23:58')
     };
     
     // Add holidays separately
     const holidayKey = 'holiday-only';
     scheduleGroups[holidayKey] = ['holidays'];
     hoursByGroup[holidayKey] = {
-      openTime: holidaySchedule.openTime || '00:00',
-      closeTime: holidaySchedule.closeTime || '00:00',
-      isOpen: holidaySchedule.isOpen && !(holidaySchedule.openTime === '00:02' && holidaySchedule.closeTime === '23:58')
+      openingTime: holidaySchedule.openingTime || '00:00',
+      closingTime: holidaySchedule.closingTime || '00:00',
+      isOpen: holidaySchedule.isOpen && !(holidaySchedule.openingTime === '00:02' && holidaySchedule.closingTime === '23:58')
     };
     
     return { groupedDays: scheduleGroups, hoursByGroup, allDaysIdentical, allNonHolidayDaysIdentical };
@@ -132,9 +132,9 @@ export const groupDaysWithSameHours = (hours: OperatingHours): {
     
     scheduleGroups[scheduleKey] = [...weekdays];
     hoursByGroup[scheduleKey] = {
-      openTime: schedule.openTime || '00:00',
-      closeTime: schedule.closeTime || '00:00',
-      isOpen: schedule.isOpen && !(schedule.openTime === '00:02' && schedule.closeTime === '23:58')
+      openingTime: schedule.openingTime || '00:00',
+      closingTime: schedule.closingTime || '00:00',
+      isOpen: schedule.isOpen && !(schedule.openingTime === '00:02' && schedule.closingTime === '23:58')
     };
   } else {
     // Otherwise, group days individually
@@ -145,9 +145,9 @@ export const groupDaysWithSameHours = (hours: OperatingHours): {
       if (!scheduleGroups[scheduleKey]) {
         scheduleGroups[scheduleKey] = [];
         hoursByGroup[scheduleKey] = {
-          openTime: daySchedule.openTime || '00:00',
-          closeTime: daySchedule.closeTime || '00:00',
-          isOpen: daySchedule.isOpen && !(daySchedule.openTime === '00:02' && daySchedule.closeTime === '23:58')
+          openingTime: daySchedule.openingTime || '00:00',
+          closingTime: daySchedule.closingTime || '00:00',
+          isOpen: daySchedule.isOpen && !(daySchedule.openingTime === '00:02' && daySchedule.closingTime === '23:58')
         };
       }
       
@@ -161,9 +161,9 @@ export const groupDaysWithSameHours = (hours: OperatingHours): {
   
   scheduleGroups[`friday-${fridayKey}`] = ['friday'];
   hoursByGroup[`friday-${fridayKey}`] = {
-    openTime: fridaySchedule.openTime || '00:00',
-    closeTime: fridaySchedule.closeTime || '00:00',
-    isOpen: fridaySchedule.isOpen && !(fridaySchedule.openTime === '00:02' && fridaySchedule.closeTime === '23:58')
+    openingTime: fridaySchedule.openingTime || '00:00',
+    closingTime: fridaySchedule.closingTime || '00:00',
+    isOpen: fridaySchedule.isOpen && !(fridaySchedule.openingTime === '00:02' && fridaySchedule.closingTime === '23:58')
   };
 
   // Handle Saturday and holidays together
@@ -176,24 +176,24 @@ export const groupDaysWithSameHours = (hours: OperatingHours): {
   if (satKey === holidayKey) {
     scheduleGroups[`weekend-${satKey}`] = ['saturday', 'holidays'];
     hoursByGroup[`weekend-${satKey}`] = {
-      openTime: satSchedule.openTime || '00:00',
-      closeTime: satSchedule.closeTime || '00:00',
-      isOpen: satSchedule.isOpen && !(satSchedule.openTime === '00:02' && satSchedule.closeTime === '23:58')
+      openingTime: satSchedule.openingTime || '00:00',
+      closingTime: satSchedule.closingTime || '00:00',
+      isOpen: satSchedule.isOpen && !(satSchedule.openingTime === '00:02' && satSchedule.closingTime === '23:58')
     };
   } else {
     // Handle them separately
     scheduleGroups[`saturday-${satKey}`] = ['saturday'];
     hoursByGroup[`saturday-${satKey}`] = {
-      openTime: satSchedule.openTime || '00:00',
-      closeTime: satSchedule.closeTime || '00:00',
-      isOpen: satSchedule.isOpen && !(satSchedule.openTime === '00:02' && satSchedule.closeTime === '23:58')
+      openingTime: satSchedule.openingTime || '00:00',
+      closingTime: satSchedule.closingTime || '00:00',
+      isOpen: satSchedule.isOpen && !(satSchedule.openingTime === '00:02' && satSchedule.closingTime === '23:58')
     };
     
     scheduleGroups[`holiday-${holidayKey}`] = ['holidays'];
     hoursByGroup[`holiday-${holidayKey}`] = {
-      openTime: holidaySchedule.openTime || '00:00',
-      closeTime: holidaySchedule.closeTime || '00:00',
-      isOpen: holidaySchedule.isOpen && !(holidaySchedule.openTime === '00:02' && holidaySchedule.closeTime === '23:58')
+      openingTime: holidaySchedule.openingTime || '00:00',
+      closingTime: holidaySchedule.closingTime || '00:00',
+      isOpen: holidaySchedule.isOpen && !(holidaySchedule.openingTime === '00:02' && holidaySchedule.closingTime === '23:58')
     };
   }
 
@@ -259,7 +259,7 @@ export const formatDayRanges = (days: DayOfWeek[], t: Function): string => {
   };
 
 // Format lighting hours with special handling for sunset
-export const formatLightingHours = (lightingHours: LightingHours | undefined, t: Function): string => {
+export const formatLightingHours = (lightingHours: ILightingHours | undefined, t: Function): string => {
     if (!lightingHours) return t('skateparks.noLighting');
     
     // Special case for "almost 24 hours" (00:02-23:58) - treat as no lighting
