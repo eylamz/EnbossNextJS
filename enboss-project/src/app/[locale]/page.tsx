@@ -98,7 +98,7 @@ export default async function Home({
   const { skateparks, guides, products } = await getFeaturedContent()
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-screen mx-auto">
       {/* Hero Section */}
       <section className="py-12 md:py-20 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">

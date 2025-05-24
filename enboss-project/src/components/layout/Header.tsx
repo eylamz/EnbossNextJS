@@ -7,8 +7,9 @@ import { useTranslation } from '@/lib/i18n/client'
 import { 
   Icon
 } from '@/assets/icons'
-import LanguageSwitcher from './LanguageSwitcher'
-import ThemeToggle from './ThemeToggle'
+import LanguageToggle from './header/LanguageToggle'
+import ThemeToggle from './header/ThemeToggle'
+import { useError } from '@/context/ErrorContext'
 
 // Define the IconProps type if your icons need it
 interface IconProps {
@@ -22,6 +23,7 @@ export default function Header({ lng }: { lng: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const { isError } = useError()
 
   // Set isClient to true after mount
   useEffect(() => {
@@ -36,11 +38,19 @@ export default function Header({ lng }: { lng: string }) {
     return pathname.startsWith(path)
   }
 
+  // Check if we're on a skatepark page
+  const isSkatepark = () => {
+    return pathname?.startsWith(`/${lng}/skateparks/`)
+  }
+
+  // Only show error variant if we're on a skatepark page and isError is true
+  const shouldShowError = isSkatepark() && isError
+
   const navLinkClasses = (path: string) => 
-    `group relative py-1 px-2 transition-all duration-200 text-header-text dark:text-header-text-dark hover:text-opacity-80 dark:hover:text-opacity-80`
+    `group relative py-1 px-2 transition-all duration-200 ${shouldShowError ? 'text-[#3c0101] dark:text-[#3c0101] hover:text-opacity-80' : 'text-header-text dark:text-header-text-dark hover:text-opacity-80 dark:hover:text-opacity-80'}`
   
   const activeLinkIndicatorClasses = (path: string) =>
-    `rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 bg-header-text/70 dark:bg-header-text-dark/70 transition-all duration-200 ease-out ${isActive(path) ? 'w-3/5 md:w-2/5' : 'w-0 group-hover:w-3/5 md:group-hover:w-2/5'}`
+    `rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 ${shouldShowError ? 'bg-[#3c0101]/70' : 'bg-header-text/70 dark:bg-header-text-dark/70'} transition-all duration-200 ease-out ${isActive(path) ? 'w-3/5 md:w-2/5' : 'w-0 group-hover:w-3/5 md:group-hover:w-2/5'}`
 
   const mobileNavLinkClasses = (path: string) =>
     `block py-3 text-lg hover:opacity-70 transition-opacity duration-200 ${isActive(path) ? 'font-semibold' : 'font-medium'} ${isMenuOpen ? 'animate-fadeIn' : ''}`
@@ -57,7 +67,7 @@ export default function Header({ lng }: { lng: string }) {
     return (
       <header className="fixed top-0 w-full z-[50] px-3 select-none">
         <nav className="flex justify-center pt-3" aria-label="Main Navigation">
-          <div className="w-full max-w-7xl bg-header-dark text-header-text dark:text-header-text-dark shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible">
+          <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible`}>
             <div className="flex justify-between items-center h-14">
               <Link 
                 href={`/${lng}`} 
@@ -80,7 +90,7 @@ export default function Header({ lng }: { lng: string }) {
     <>
       <header className="fixed top-0 w-full z-[50] px-3 select-none">
         <nav className="flex justify-center pt-3" aria-label="Main Navigation">
-          <div className="w-full max-w-7xl bg-header-dark text-header-text dark:text-header-text-dark shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible">
+          <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible`}>
             <div className="flex justify-between items-center h-14">
               {/* Logo */}
               <Link 
@@ -97,12 +107,6 @@ export default function Header({ lng }: { lng: string }) {
 
               {/* Desktop Navigation */}
               <div className="hidden md:flex gap-3 lg:gap-5 items-center font-medium" role="menubar">
-                <Link href={`/${lng}`} className={navLinkClasses(`/${lng}`)} role="menuitem">
-                  <span className="flex items-center gap-1 light:navShadow">
-                    {t('home')}
-                  </span>
-                  <span className={activeLinkIndicatorClasses(`/${lng}`)} aria-hidden="true"></span>
-                </Link>
                 <Link href={`/${lng}/skateparks`} className={navLinkClasses(`/${lng}/skateparks`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('skateparks')}
@@ -121,6 +125,18 @@ export default function Header({ lng }: { lng: string }) {
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
                 </Link>
+                <Link href={`/${lng}/contact`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
+                  <span className="flex items-center gap-1 light:navShadow">
+                    {t('contact')}
+                  </span>
+                  <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
+                </Link>
+                <Link href={`/${lng}/about`} className={navLinkClasses(`/${lng}/about`)} role="menuitem">
+                  <span className="flex items-center gap-1 light:navShadow">
+                    {t('about')}
+                  </span>
+                  <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
+                </Link>
               </div>
 
               {/* Desktop Action Icons */}
@@ -130,8 +146,8 @@ export default function Header({ lng }: { lng: string }) {
                    <span className="sr-only">{t('login')}</span>
                    <span className={activeLinkIndicatorClasses(`/${lng}/login`)} aria-hidden="true"></span>
                 </Link>
-                <ThemeToggle lng={lng} />
-                <LanguageSwitcher lng={lng} />
+                <ThemeToggle lng={lng} className="!px-1" />
+                <LanguageToggle lng={lng} className="!px-1" />
               </div>
 
               {/* Mobile menu button */}
@@ -191,7 +207,7 @@ export default function Header({ lng }: { lng: string }) {
                     style={{ animationDelay: '300ms' }}
                   >
                     <ThemeToggle lng={lng} />
-                    <LanguageSwitcher lng={lng} />
+                    <LanguageToggle lng={lng} />
                   </div>
                 </div>
               </nav>

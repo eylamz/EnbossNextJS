@@ -28,5 +28,53 @@
   "roller": "Roller",
   "skate": "Skate",
   "scoot": "Scoot",
-  "bike": "Bike"
+  "bike": "Bike",
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "time": {
+    "to": "-",
+    "satAndHolidays": "Sat and Holidays",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "days": {
+      "short": {
+        "sunday": "Sun",
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri"
+      },
+      "day": "Day",
+      "days": "",
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "holidays": "Holidays"
+    }
+  },
+  "footer": {
+    "followUs": "Follow Us",
+    "copyright": "© {{year}} ENBOSS, All Rights Reserved.",
+    "terms": "Terms of Use",
+    "accessibility": "Accessibility Statement"
+  }
 }

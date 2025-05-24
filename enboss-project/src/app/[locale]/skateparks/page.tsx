@@ -43,7 +43,7 @@ export default async function SkateparksPage({ params: { locale }, searchParams 
   const skateparks = await getSkateparks(area, status)
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-8">{t('all_skateparks')}</h1>
       
       {/* Filters */}

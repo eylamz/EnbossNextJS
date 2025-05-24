@@ -19,8 +19,9 @@ export default {
         'xl': '1150px',
       },
       fontFamily: {
-        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        'noto-hebrew': ['"Noto Sans Hebrew"', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        'poppins': ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        'noto-hebrew': ['var(--font-noto-hebrew)', 'system-ui', 'sans-serif'],
         rtl: ['Arimo', 'system-ui', 'sans-serif'],
         ltr: ['Poppins', 'system-ui', 'sans-serif'],
       },

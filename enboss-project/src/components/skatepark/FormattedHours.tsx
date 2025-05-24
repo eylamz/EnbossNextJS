@@ -40,12 +40,12 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         {/* Header with closed badge */}
         <div className="flex items-center gap-2">
           <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
-          <span className="font-semibold">{t('skateparks.openingHours')}: </span>
+          <span className="font-semibold">{t('openingHours', { ns: 'skateparks' })} :</span>
           <TextBadge 
             variant='error'
             className="font-semibold text-sm border border-b-[3px] bg-error-bg dark:bg-error-bg-dark/50 border-error dark:border-error-dark/60 text-error"
           >
-            {t('skateparks.isPermanentlyClosed')}
+            {t('isPermanentlyClosed', { ns: 'skateparks' })}
           </TextBadge>
         </div>
         
@@ -53,12 +53,12 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         <div className="flex items-star gap-2">
           <div className="flex items-center gap-2">
             <Icon name="sunset" category="ui" className="w-5 h-5 text-gray-500" />
-            <span className="font-semibold">{t('skateparks.lightingHours')}: </span>
+            <span className="font-semibold">{t('lightingHours', { ns: 'skateparks' })}: </span>
           </div>
          
           <div className="">
             <span className="text-gray-500 min-w-[180px] sm:min-w-auto">
-              {t('skateparks.notApplicable')}
+              {t('notApplicable', { ns: 'skateparks' })}
             </span>
           </div>
         </div>
@@ -77,12 +77,12 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         {/* 24/7 Header */}
         <div className="flex items-center gap-2">
           <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
-          <span className="font-semibold">{t('skateparks.openingHours')}: </span>
+          <span className="font-semibold">{t('openingHours', { ns: 'skateparks' })}: </span>
           <TextBadge 
             variant='brand'
             className="font-semibold text-sm border border-b-[3px] border-brand-700 text-brand-700"
           >
-            {t('skateparks.is24Hours')}
+            {t('is24Hours', { ns: 'skateparks' })}
           </TextBadge>
         </div>
         
@@ -90,14 +90,14 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         <div className="flex items-star gap-2">
           <div className="flex items-center gap-2">
             <Icon name="sunset" category="ui" className={`w-5 h-5 ${lightingHours ? 'text-yellow-600/90' : 'text-gray-500'}`} />
-            <span className="font-semibold">{t('skateparks.lightingHours')}: </span>
+            <span className="font-semibold">{t('lightingHours', { ns: 'skateparks' })}: </span>
           </div>
        
           <div className="">
             <span className={!lightingHours ? 'text-gray-500' : 'min-w-[180px] sm:min-w-auto'}>
               {lightingHours 
                 ? formatLightingHours(lightingHours, t)
-                : t('skateparks.noLighting')}
+                : t('noLighting', { ns: 'skateparks' })}
             </span>
           </div>
         </div>
@@ -131,19 +131,19 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         {/* Header */}
         <div className="flex items-center gap-2">
           <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
-          <span className="font-semibold">{t('skateparks.openingHours')}</span>
+          <span className="font-semibold">{t('openingHours', { ns: 'skateparks' })}</span>
         </div>
         
         {/* All week hours */}
         <div className="ml-6 flex items-start gap-1">
           <span className="font-semibold dark:text-[#7991a0] mr-2">
-            {t('skateparks.allWeek')} :
+            {t('allWeek', { ns: 'skateparks' })} :
           </span>
           
           <span className={schedule.isOpen ? 'text-text dark:text-text-dark/80' : 'text-error dark:text-error-dark'}>
             {schedule.isOpen 
               ? scheduleKey === 'openAllDay'
-                ? t('skateparks.openAllDay')
+                ? t('openAllDay', { ns: 'skateparks' })
                 : `${schedule.openingTime} - ${schedule.closingTime}`
               : t('common:common.closed')}
           </span>
@@ -164,14 +164,14 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         {/* Header */}
         <div className="flex items-center gap-2">
           <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
-          <span className="font-semibold">{t('skateparks.openingHours')}</span>
+          <span className="font-semibold">{t('openingHours', { ns: 'skateparks' })}</span>
         </div>
         
         {/* All week hours */}
         <div className="ml-6 space-y-2">
           <div className="flex items-start gap-1">
             <span className="font-semibold dark:text-[#7991a0] mr-2">
-              {t('skateparks.allWeek')} :
+              {t('allWeek', { ns: 'skateparks' })} :
             </span>
             
             <span className={weekSchedule.isOpen ? 'text-text dark:text-text-dark/80' : 'text-error dark:text-error-dark'}>
@@ -184,7 +184,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
           {/* Holidays hours */}
           <div className="flex items-start gap-1">
             <span className="font-semibold dark:text-[#7991a0] mr-2">
-              {t('common:time.days.holidays')} :
+              {t('time.days.holidays', { ns: 'common' })} :
             </span>
             
             <span className={holidaySchedule.isOpen ? 'text-text dark:text-text-dark/80' : 'font-semibold text-error dark:text-error-dark'}>
@@ -203,7 +203,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
       {/* Header */}
       <div className="flex items-center gap-2">
         <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
-        <span className="font-semibold">{t('skateparks.openingHours')}</span>
+        <span className="font-semibold">{t('openingHours', { ns: 'skateparks' })}</span>
       </div>
       
       {/* Hours by group */}
@@ -217,7 +217,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
           
           // Special cases for formatting display
           if (days.includes('saturday') && days.includes('holidays')) {
-            daysDisplay = t('common:time.satAndHolidays')+' ';
+            daysDisplay = t('time.satAndHolidays', { ns: 'common' })+' ';
           }
           
           return (
@@ -229,7 +229,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
               <span className={schedule.isOpen ? 'text-text dark:text-text-dark/80' : 'font-semibold text-error dark:text-error-dark'}>
                 {schedule.isOpen 
                   ? scheduleKey === 'openAllDay' || (schedule.openingTime === '00:00' && schedule.closingTime === '00:00')
-                    ? t('skateparks.openAllDay')
+                    ? t('openAllDay', { ns: 'skateparks' })
                     : `${schedule.openingTime} - ${schedule.closingTime}`
                   : t('common:common.closed')}
               </span>

@@ -11,8 +11,12 @@ import { Icon } from '@/assets/icons'
 import FormattedHours from '@/components/skatepark/FormattedHours'
 import { AmenitiesGrid } from '@/components/skatepark/AmenitiesGrid'
 import { ShareButton } from '@/components/skatepark/ShareButton'
+import { BreadCrumbs } from '@/components/skatepark/BreadCrumbs'
+import { MapLinks } from '@/components/skatepark/MapLinks'
+import { YouTubeVideo } from '@/components/skatepark/YouTubeVideo'
 import React from 'react'
 import Script from 'next/script'
+import ErrorStateHandler from '@/components/skatepark/ErrorStateHandler'
 
 interface SkateparkImage {
   url: string;
@@ -40,6 +44,17 @@ async function getSkatepark(slug: string) {
   }
   
   return JSON.parse(JSON.stringify(skatepark))
+}
+
+// Add this before the SkateparkPage component
+export async function generateMetadata({ params: { locale, slug } }: Props) {
+  const skatepark = await getSkatepark(slug)
+  
+  return {
+    other: {
+      isClosed: !!skatepark?.closingYear
+    }
+  }
 }
 
 export default async function SkateparkPage({ params: { locale, slug } }: Props) {
@@ -87,11 +102,24 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
   return (
     <div className="container mx-auto px-4 py-8 relative">
+      <ErrorStateHandler isClosed={!!skatepark.closingYear} />
       {/* Add structured data */}
       <Script
         id="skatepark-structured-data"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      
+      {/* Breadcrumbs */}
+      <BreadCrumbs
+        previousPage={{
+          path: '/skateparks',
+          label: 'skateparks'
+        }}
+        currentPage={{
+          label: parkName
+        }}
+        locale={locale}
       />
       
       {/* Blurred Background Image */}
@@ -105,11 +133,11 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
           }}
         >
           {/* Overlay to further reduce contrast and improve readability */}
-          <div className="absolute inset-0 bg-white/30 dark:bg-gray-900/50"></div>
+          <div className="absolute inset-0 bg-background-dark/30 dark:bg-background-dark/50"></div>
         </div>
       )}
 
-      <div className="container mx-auto py-8 px-4 py-[110px] md:py-24 overflow-visible">
+      <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24 overflow-visible">
         <div>
           <div className="flex flex-col">
             {/* Header Section */}
@@ -133,33 +161,9 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               </h1>
             </div>
 
-            {/* Back button */}
-            <div className="mb-6">
-              <a
-                href={`/${locale}/skateparks`}
-                className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                {t('back_to_skateparks')}
-              </a>
-            </div>
-
             {/* Skatepark images */}
             {skatepark.images && skatepark.images.length > 0 && (
-              <div className="mb-10">
+              <div className="mt-2 mb-8">
                 <ImageSlider images={skatepark.images} />
               </div>
             )}
@@ -190,8 +194,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
                   <div className="flex items-center mb-3">
                     <h2 className="text-lg font-semibold flex items-center">
-                      <Icon name="map" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                      {t('address')}
+                      <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                      {t('address')} 
                     </h2>
                   </div>
 
@@ -216,7 +220,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
                   <h2 className="text-lg font-semibold flex items-center">
                     <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                    {t('amenities')}
+                    {t('amenities.title')}
                   </h2>
                 </div>
                 
@@ -236,16 +240,52 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </div>
                     
                     <div className="space-y-2">
-                      <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
-                        <div className="text-sm">
-                          • {parkNotes}
+                      {Array.isArray(parkNotes) ? (
+                        parkNotes.map((note, index) => (
+                          <div key={index} className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
+                            <div className="text-sm">
+                              • {note}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
+                          <div className="text-sm">
+                            • {parkNotes}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 )}
               </Card>
             </div>
+
+            {/* Map Links Card */}
+            {(skatepark.mediaLinks?.googleMapsUrl || 
+              skatepark.mediaLinks?.appleMapsUrl || 
+              skatepark.mediaLinks?.wazeUrl) && (
+              <div className="max-w-6xl mx-auto mb-8">
+                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+                  <MapLinks 
+                    mediaLinks={skatepark.mediaLinks}
+                    parkName={parkName}
+                  />
+                </Card>
+              </div>
+            )}
+
+            {/* YouTube Video Card */}
+            {skatepark.mediaLinks?.youtubeUrl && (
+              <div className="max-w-6xl mx-auto mb-8">
+                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+                  <YouTubeVideo 
+                    youtubeUrl={skatepark.mediaLinks.youtubeUrl}
+                    parkName={parkName}
+                  />
+                </Card>
+              </div>
+            )}
           </div>
         </div>
       </div>

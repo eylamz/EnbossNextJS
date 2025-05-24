@@ -59,7 +59,7 @@ const OptimizedImage = React.memo(({
       <img
         src={getOptimizedImageUrl(image.url, 600, 90)}
         alt={`Image ${index + 1}`}
-        className={`w-full h-full object-cover select-none transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-full h-full saturate-[125%] object-cover select-none transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         draggable={false}
         loading="lazy"
         onLoad={() => setIsLoaded(true)}

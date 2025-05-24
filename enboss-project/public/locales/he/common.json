@@ -4,7 +4,7 @@
     "guides": "מדריכים",
     "shop": "חנות",
     "contact": "צור קשר",
-    "about": "אודות",
+    "about": "עלינו",
     "search": "חיפוש",
     "login": "התחברות",
     "register": "הרשמה",
@@ -28,5 +28,53 @@
     "roller": "רולר",
     "skate": "סקייט",
     "scoot": "קורקינט",
-    "bike": "אופניים"
+    "bike": "אופניים",
+    "theme": {
+      "light": "בהיר",
+      "dark": "חשוך"
+    },
+    "time": {
+      "to": "-",
+      "satAndHolidays": "שבתות וחגים",
+      "months": {
+        "jan": "ינו׳",
+        "feb": "פבר׳",
+        "mar": "מרץ",
+        "apr": "אפר׳",
+        "may": "מאי",
+        "jun": "יוני",
+        "jul": "יולי",
+        "aug": "אוג׳",
+        "sep": "ספט׳",
+        "oct": "אוק׳",
+        "nov": "נוב׳",
+        "dec": "דצמ׳"
+      },
+      "days": {
+        "short": {
+          "sunday": "א'",
+          "monday": "ב'",
+          "tuesday": "ג'",
+          "wednesday": "ד'",
+          "thursday": "ה'",
+          "friday": "ו'"
+        },
+        "day": "יום",
+        "days": "ימי",
+        "sunday": "ראשון",
+        "monday": "שני",
+        "tuesday": "שלישי", 
+        "wednesday": "רביעי",
+        "thursday": "חמישי",
+        "friday": "שישי",
+        "saturday": "שבת",
+        "holidays": "חגים"
+      }
+    },
+    "footer": {
+      "followUs": "עקבו אחרינו",
+      "copyright": "© {{year}} ENBOSS, כל הזכויות שמורות.",
+      "terms": "תנאי שימוש",
+      "accessibility": "הצהרת נגישות"
+    }
   }

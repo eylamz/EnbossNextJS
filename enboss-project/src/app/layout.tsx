@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins, Noto_Sans_Hebrew } from "next/font/google";
 import "./globals.css";
 import { dir } from 'i18next';
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins',
+});
+
+const notoSansHebrew = Noto_Sans_Hebrew({
+  subsets: ["hebrew"],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-noto-hebrew',
 });
 
 export const metadata: Metadata = {
@@ -19,9 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
   params?: { locale: string };
 }) {
+  const direction = params.locale === 'he' ? 'rtl' : 'ltr';
+  
   return (
-    <html lang={params.locale} dir={dir(params.locale)}>
-      <body className={`${inter.className} flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white`}>
+    <html lang={params.locale} dir={direction} className={`${poppins.variable} ${notoSansHebrew.variable}`}>
+      <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-noto-hebrew' : 'font-poppins'}`}>
         {children}
       </body>
     </html>

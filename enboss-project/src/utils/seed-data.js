@@ -41,6 +41,7 @@ const amenitiesSchema = new mongoose.Schema({
   entryFee: { type: Boolean, default: false },
   parking: { type: Boolean, default: false },
   bathroom: { type: Boolean, default: false },
+  shade: { type: Boolean, default: false },
   helmetRequired: { type: Boolean, default: false },
   guard: { type: Boolean, default: false },
   seating: { type: Boolean, default: false },
@@ -85,8 +86,8 @@ const skateparkSchema = new mongoose.Schema(
       appleMapsUrl: { type: String },
       youtubeUrl: { type: String }
     },
-    notesEn: { type: String },
-    notesHe: { type: String },
+    notesEn: { type: Array },
+    notesHe: { type: Array },
     rating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 }
   },
@@ -175,6 +176,7 @@ const defaultAmenities = {
   entryFee: false,
   parking: true,
   bathroom: true,
+  shade: false,
   helmetRequired: false,
   guard: false,
   seating: true,
@@ -187,22 +189,50 @@ const defaultAmenities = {
 
 const skateparks = [
   {
-    nameEn: 'Herzliya Skatepark',
-    nameHe: 'סקייטפארק הרצליה',
-    slug: 'herzliya-skatepark',
+    nameEn: 'Kfar Saba',
+    nameHe: 'כפר סבא',
+    slug: 'kfar-saba',
     area: 'center',
     status: 'active',
-    addressEn: 'Herzliya Park, Abba Eban Blvd, Herzliya',
-    addressHe: 'פארק הרצליה, שד׳ אבא אבן, הרצליה',
-    openingYear: 2021,
+    addressEn: 'Kfar Saba Park, Har Tavor St 123, Kfar Saba',
+    addressHe: 'פארק כפר סבא, הר תבור 123, כפר סבא',
+    openingYear: 2011,
     location: { latitude: 32.1661, longitude: 34.8033 },
-    operatingHours: { ...defaultOperatingHours },
+    operatingHours: {
+      sunday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
+      monday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
+      tuesday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
+      wednesday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
+      thursday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
+      friday: { openingTime: "13:00", closingTime: "22:00", isOpen: true },
+      saturday: { openingTime: "10:00", closingTime: "22:00", isOpen: true },
+      holidays: { openingTime: "10:00", closingTime: "22:00", isOpen: true }
+    },
     lightingHours: { ...defaultLightingHours },
-    amenities: { ...defaultAmenities, helmetRequired: true, guard: true },
+    amenities: {
+      entryFee: false,
+      parking: true,
+      bathroom: true,
+      shade: false,
+      helmetRequired: true,
+      guard: true,
+      seating: true,
+      bombShelter: false,
+      scootersAllowed: false,
+      bikesAllowed: false,
+      noWax: false
+    },
     isFeatured: true,
     images: [
-      { url: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=', isFeatured: true, orderNumber: 1 },
-      { url: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=', isFeatured: false, orderNumber: 2 }
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737795/j5omdsdm9o4dp94jwvqj.webp', isFeatured: true, orderNumber: 1 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737797/va1lyxyjmi9mhpf4lpvi.webp', isFeatured: false, orderNumber: 2 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737798/vsennfzjaklkwhdzkimo.webp', isFeatured: false, orderNumber: 3 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737799/fbltstaitnpsrtriun7l.webp', isFeatured: false, orderNumber: 4 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737800/dfrrkarzvspje374lue4.webp', isFeatured: false, orderNumber: 5 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737801/dhoyxtfab72lkwxm2as1.webp', isFeatured: false, orderNumber: 6 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737802/nekp7bv8jdlmrwlgblp4.webp', isFeatured: false, orderNumber: 7 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737803/pagiiynme4huxrrmfjy0.webp', isFeatured: false, orderNumber: 8 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737804/ez3dayp0ghrtlog2izhj.webp', isFeatured: false, orderNumber: 9 }
     ],
     mediaLinks: {
       googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3380.910012345678!2d34.80079831570995!3d32.16610098119000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d48f7b1a2c3d1%3A0x1234567890abcdef!2sHerzliya%20Skatepark!5e0!3m2!1sen!2sil!4v1620000000000!5m2!1sen!2sil',
@@ -211,8 +241,8 @@ const skateparks = [
       appleMapsUrl: 'https://maps.apple.com/?ll=32.1661,34.8033',
       youtubeUrl: 'https://www.youtube.com/watch?v=examplevideo1'
     },
-    notesEn: 'Modern park with a variety of obstacles. Great for all levels.',
-    notesHe: 'פארק מודרני עם מגוון מתקנים. מעולה לכל הרמות.',
+    notesEn: ['Entry for scooter and bicycle riders is prohibited.', 'Helmet is mandatory for entry.'],
+    notesHe: ['הכניסה לרוכבי קורקינט ואופניים אסורה.', 'כניסה עם קסדה חובה.'],
     rating: 4.8,
     ratingCount: 45
   },
@@ -225,6 +255,7 @@ const skateparks = [
     addressEn: 'Sportek Tel Aviv, Rokach Blvd, Tel Aviv',
     addressHe: 'ספורטק תל אביב, שדרות רוקח, תל אביב',
     openingYear: 2018,
+    closingYear: 2024,
     location: { latitude: 32.1045, longitude: 34.8095 }, // Adjusted coordinates for Sportek area
     operatingHours: {
         ...defaultOperatingHours,
@@ -246,8 +277,8 @@ const skateparks = [
       googleMapsUrl: 'https://goo.gl/maps/Mur7c8aqARf6XmQv5', // Example URL
       wazeUrl: 'https://waze.com/ul?ll=32.1045,34.8095&navigate=yes'
     },
-    notesEn: 'Large skatepark located within Sportek Tel Aviv. Usually crowded.',
-    notesHe: 'סקייטפארק גדול הממוקם בספורטק תל אביב. בדרך כלל עמוס.',
+    notesEn: ['Large skatepark located within Sportek Tel Aviv. Usually crowded.'],
+    notesHe: ['סקייטפארק גדול הממוקם בספורטק תל אביב. בדרך כלל עמוס.'],
     rating: 4.5,
     ratingCount: 120
   },
@@ -277,8 +308,8 @@ const skateparks = [
       googleMapsUrl: 'https://goo.gl/maps/8EyFu9sDNrQubLXs6',
       wazeUrl: 'https://waze.com/ul?ll=31.2302,34.7915&navigate=yes'
     },
-    notesEn: 'Features a bowl, rails, pyramid, and spine.',
-    notesHe: 'כולל באול, ריילים, פירמידה וספיין.',
+    notesEn: ['Features a bowl, rails, pyramid, and spine.'],
+    notesHe: ['כולל באול, ריילים, פירמידה וספיין.'],
     rating: 4.2,
     ratingCount: 38
   },

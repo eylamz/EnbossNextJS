@@ -123,7 +123,6 @@ export const navigationIcons = {
 // Action Icons
 export const actionIcons = {
   favorite: { icon: Heart, label: 'Favorite' },
-  map: { icon: Map, label: 'Map' },
   googleMaps: { icon: GoogleMaps, label: 'Google Maps' },
   newGoogleMaps: { icon: newGoogleMaps, label: 'Google Maps' },
   newAppleMaps: { icon: newAppleMaps, label: 'Apple Maps' },

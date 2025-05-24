@@ -1,5 +1,4 @@
-'use client'
-
+import { useEffect } from 'react'
 import i18next from 'i18next'
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
@@ -19,14 +18,17 @@ export function useTranslation(lng: string, ns: string, options = {}) {
   const ret = useTranslationOrg(ns, options)
   const { i18n } = ret
   
-  // Ensure language is set correctly and update document direction
+  // Ensure language is set correctly
   if (i18n.language !== lng) {
     i18n.changeLanguage(lng)
-    // Set document direction based on language
-    if (typeof window !== 'undefined') {
+  }
+
+  // Use useEffect to handle document direction changes
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
       document.documentElement.dir = lng === 'en' ? 'ltr' : 'rtl'
     }
-  }
+  }, [lng])
   
   return ret
-}
+} 

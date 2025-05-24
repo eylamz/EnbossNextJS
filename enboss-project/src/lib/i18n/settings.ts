@@ -8,6 +8,10 @@ export const getOptions = (lng = defaultLanguage, ns = 'common') => {
     defaultNS: 'common',
     fallbackLng: defaultLanguage,
     lng,
-    ns
+    ns,
+    interpolation: {
+      escapeValue: false
+    },
+    dir: lng === 'en' ? 'ltr' : 'rtl'
   }
 }

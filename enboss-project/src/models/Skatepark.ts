@@ -31,6 +31,7 @@ export interface ILightingHours {
 export interface IAmenities {
   entryFee: boolean
   parking: boolean
+  shade: boolean
   bathroom: boolean
   helmetRequired: boolean
   guard: boolean
@@ -70,8 +71,8 @@ export interface ISkatepark {
     appleMapsUrl?: string
     youtubeUrl?: string
   }
-  notesEn?: string
-  notesHe?: string
+  notesEn?: string[]
+  notesHe?: string[]
   rating?: number
   ratingCount?: number
 }
@@ -103,6 +104,7 @@ const AmenitiesSchema = new Schema<IAmenities>({
   entryFee: { type: Boolean, default: false },
   parking: { type: Boolean, default: false },
   bathroom: { type: Boolean, default: false },
+  shade: { type: Boolean, default: false },
   helmetRequired: { type: Boolean, default: false },
   guard: { type: Boolean, default: false },
   seating: { type: Boolean, default: false },
@@ -145,8 +147,8 @@ const SkateparkSchema = new Schema<ISkatepark>(
       appleMapsUrl: { type: String },
       youtubeUrl: { type: String }
     },
-    notesEn: { type: String },
-    notesHe: { type: String },
+    notesEn: { type: [String] },
+    notesHe: { type: [String] },
     rating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 }
   },
