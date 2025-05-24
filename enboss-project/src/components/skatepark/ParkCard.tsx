@@ -164,7 +164,7 @@ const ParkCard = memo(({
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCarouselActive, setIsCarouselActive] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
+  const isNavigatingRef = useRef(false);
   const [parkName, setParkName] = useState(park.nameEn);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const transitionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -340,11 +340,10 @@ const ParkCard = memo(({
 
   const handleCardClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    if (isNavigating) return;
+    if (isNavigatingRef.current) return;
 
-    setIsNavigating(true);
-    deactivateCarousel();
-
+    isNavigatingRef.current = true;
+    
     // Clean up any existing timeouts
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -355,13 +354,22 @@ const ParkCard = memo(({
       transitionTimeoutRef.current = null;
     }
 
+    // Deactivate carousel without state updates
+    if (activeCarouselId === carouselIdRef.current) {
+      activeCarouselId = null;
+    }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
     // Use a timeout to ensure state updates are processed before navigation
     navigationTimeoutRef.current = setTimeout(() => {
       if (park.slug) {
         router.push(`/skateparks/${park.slug}`);
       }
     }, 100);
-  }, [park.slug, router, deactivateCarousel, isNavigating]);
+  }, [park.slug, router]);
 
   // Clean up on unmount
   useEffect(() => {
@@ -381,6 +389,7 @@ const ParkCard = memo(({
       if (activeCarouselId === carouselIdRef.current) {
         activeCarouselId = null;
       }
+      isNavigatingRef.current = false;
     };
   }, []);
 
@@ -390,7 +399,7 @@ const ParkCard = memo(({
       as={Link}
       href={park.slug ? `/skateparks/${park.slug}` : '#'}
       onClick={handleCardClick}
-      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:z-[1] before:pointer-events-none ${isNavigating ? 'before:animate-shimmerInfinite' : ''}`}
+      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:z-[1] before:pointer-events-none ${isNavigatingRef.current ? 'before:animate-shimmerInfinite' : ''}`}
       style={{ animationDelay: `${animationDelay}ms` }}
       aria-label={park.nameEn}
     >

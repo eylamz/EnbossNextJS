@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/client'
+import { useEffect, useState } from 'react'
 
 interface LanguageToggleProps {
   className?: string
@@ -11,7 +12,12 @@ interface LanguageToggleProps {
 export default function LanguageToggle({ className = '', lng }: LanguageToggleProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const [isMounted, setIsMounted] = useState(false)
   const { t } = useTranslation(lng, 'common')
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const toggleLanguage = () => {
     const newLang = lng === 'en' ? 'he' : 'en'
@@ -19,6 +25,20 @@ export default function LanguageToggle({ className = '', lng }: LanguageTogglePr
     const segments = currentPathname.split('/')
     segments[1] = newLang
     router.push(segments.join('/'))
+  }
+
+  // Return a placeholder during SSR
+  if (!isMounted) {
+    return (
+      <button
+        className={`group relative py-2 px-1 transition-all duration-200 ${className}`}
+        aria-label="Toggle language"
+      >
+        <span className="text-lg font-medium light:navShadow ltr:font-rtl rtl:font-ltr">
+          {lng === 'en' ? 'עב' : 'EN'}
+        </span>
+      </button>
+    )
   }
 
   return (

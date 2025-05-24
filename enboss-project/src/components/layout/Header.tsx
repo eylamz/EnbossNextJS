@@ -91,7 +91,7 @@ export default function Header({ lng }: { lng: string }) {
       <header className="fixed top-0 w-full z-[50] px-3 select-none">
         <nav className="flex justify-center pt-3" aria-label="Main Navigation">
           <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible`}>
-            <div className="flex justify-between items-center h-14">
+            <div className="flex flex-row ltr:flex-row-reverse justify-between items-center h-14">
               {/* Logo */}
               <Link 
                 href={`/${lng}`} 
@@ -140,7 +140,7 @@ export default function Header({ lng }: { lng: string }) {
               </div>
 
               {/* Desktop Action Icons */}
-              <div className="hidden md:flex items-center gap-2 lg:gap-3">
+              <div className="hidden md:flex ltr:flex-row-reverse items-center gap-2 lg:gap-3">
                 <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
                    <Icon name="user" category="ui" size={20} className="light:navShadow" />
                    <span className="sr-only">{t('login')}</span>

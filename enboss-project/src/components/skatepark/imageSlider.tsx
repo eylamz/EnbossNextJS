@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import FullscreenImageViewer from './fullScreenImageViewer';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 interface ISkateparkImage {
   url: string;
@@ -47,22 +48,46 @@ const OptimizedImage = React.memo(({
   onClick: (index: number, e: React.MouseEvent) => void;
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  
+  // Preload the image
+  useEffect(() => {
+    const img = new Image();
+    img.src = getOptimizedImageUrl(image.url, 600, 90);
+    img.onload = () => {
+      setIsLoaded(true);
+      setHasError(false);
+    };
+    img.onerror = () => {
+      setHasError(true);
+      setIsLoaded(true);
+    };
+  }, [image.url]);
   
   return (
     <div className="relative w-full h-full">
-      {/* Loading spinner shown until image is loaded */}
-      {!isLoaded && (
+      {/* Loading spinner shown only while loading */}
+      {!isLoaded && !hasError && (
         <div className="absolute inset-0 flex items-center justify-center bakdrop-blur-lg bg-background/75 dark:bg-background-dark/75">
           <LoadingSpinner />
         </div>
       )}
+      {/* Error state */}
+      {hasError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-background/75 dark:bg-background-dark/75">
+          <div className="text-sm text-text-dark dark:text-text-secondary-dark">
+            Failed to load image
+          </div>
+        </div>
+      )}
       <img
+        ref={imgRef}
         src={getOptimizedImageUrl(image.url, 600, 90)}
         alt={`Image ${index + 1}`}
-        className={`w-full h-full saturate-[125%] object-cover select-none transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-full h-full saturate-[125%] object-cover select-none ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         draggable={false}
         loading="lazy"
-        onLoad={() => setIsLoaded(true)}
         onClick={(e) => onClick(index, e)}
       />
     </div>

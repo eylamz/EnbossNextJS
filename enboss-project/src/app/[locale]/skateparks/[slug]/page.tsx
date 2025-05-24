@@ -131,7 +131,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
   const relatedParks = await getRelatedParks(skatepark._id, skatepark.area)
 
   return (
-    <div className="container mx-auto px-4 py-8 relative">
+    <div className="min-h-screen relative">
       <ErrorStateHandler isClosed={!!skatepark.closingYear} />
       {/* Add structured data */}
       <Script
@@ -140,26 +140,15 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      {/* Breadcrumbs */}
-      <BreadCrumbs
-        previousPage={{
-          path: '/skateparks',
-          label: 'skateparks'
-        }}
-        currentPage={{
-          label: parkName
-        }}
-        locale={locale}
-      />
-      
       {/* Blurred Background Image */}
       {skatepark.images && skatepark.images.length > 0 && (
         <div 
-          className="fixed inset-0 z-[-1] bg-no-repeat w-[102%] h-[102%] -mt-2 bg-cover bg-center"
+          className="fixed inset-0 z-[-1] bg-no-repeat bg-cover bg-center pointer-events-none"
           style={{
             backgroundImage: `url(${getFeaturedImage(skatepark.images)})`,
             filter: 'blur(5px) saturate(2)',
             WebkitFilter: 'blur(5px) saturate(2)',
+            transform: 'scale(1.02)', // Prevent blur edges
           }}
         >
           {/* Overlay to further reduce contrast and improve readability */}
@@ -167,8 +156,20 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
         </div>
       )}
 
-      <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24 overflow-visible">
-        <div>
+      <div className="container mx-auto px-4 py-8 relative">
+        {/* Breadcrumbs */}
+        <BreadCrumbs
+          previousPage={{
+            path: '/skateparks',
+            label: 'skateparks'
+          }}
+          currentPage={{
+            label: parkName
+          }}
+          locale={locale}
+        />
+        
+        <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
           <div className="flex flex-col">
             {/* Header Section */}
             <div className="mb-2 md:mb-6">
@@ -201,7 +202,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             {/* Info Cards */}
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Hours Card */}
-              <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80">
+              <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
                 <div className="flex gap-4 mb-4 justify-between">
                   <div className="rtl:-ml-10">
                     <FormattedHours 
@@ -246,7 +247,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               </Card>
 
               {/* Amenities Card */}
-              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                 <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
                   <h2 className="text-lg font-semibold flex items-center">
                     <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
@@ -296,7 +297,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               skatepark.mediaLinks?.appleMapsUrl || 
               skatepark.mediaLinks?.wazeUrl) && (
               <div className="max-w-6xl mx-auto mb-8">
-                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                   <MapLinks 
                     mediaLinks={skatepark.mediaLinks}
                     parkName={parkName}
@@ -307,7 +308,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
             {/* Rating Card */}
             <div className="max-w-6xl mx-auto mb-8">
-              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                 <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
                   <h2 className="text-lg font-semibold flex items-center">
                     <Icon name="heartBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
@@ -333,7 +334,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             {/* YouTube Video Card */}
             {skatepark.mediaLinks?.youtubeUrl && (
               <div className="max-w-6xl mx-auto mb-8">
-                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                   <YouTubeVideo 
                     youtubeUrl={skatepark.mediaLinks.youtubeUrl}
                     parkName={parkName}
