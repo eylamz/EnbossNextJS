@@ -31,7 +31,7 @@ export default function LanguageSwitcher({ lng, className = '', variant = 'defau
   
   const getVariantClasses = () => {
     if (variant === 'error' || isError) {
-      return 'text-[#3c0101] bg-[#ad2626]/30 hover:bg-[#ad2626]/20'
+      return 'text-[#3c0101] bg-[#ad2626]/35 hover:bg-[#ad2626]/45'
     }
     return 'text-header-text bg-header-dark/40 hover:bg-header-dark/25'
   }

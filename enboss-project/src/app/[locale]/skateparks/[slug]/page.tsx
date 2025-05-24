@@ -14,6 +14,8 @@ import { ShareButton } from '@/components/skatepark/ShareButton'
 import { BreadCrumbs } from '@/components/skatepark/BreadCrumbs'
 import { MapLinks } from '@/components/skatepark/MapLinks'
 import { YouTubeVideo } from '@/components/skatepark/YouTubeVideo'
+import RelatedParks from '@/components/skatepark/RelatedParks'
+import HeartRating from '@/components/skatepark/HeartRating'
 import React from 'react'
 import Script from 'next/script'
 import ErrorStateHandler from '@/components/skatepark/ErrorStateHandler'
@@ -44,6 +46,31 @@ async function getSkatepark(slug: string) {
   }
   
   return JSON.parse(JSON.stringify(skatepark))
+}
+
+async function getRelatedParks(currentParkId: string, area: string) {
+  await dbConnect()
+  
+  // First try to get parks from the same area
+  const sameAreaParks = await Skatepark.find({ 
+    _id: { $ne: currentParkId },
+    area: area 
+  }).limit(4)
+  
+  // If we have 4 parks from the same area, return them
+  if (sameAreaParks.length >= 4) {
+    return JSON.parse(JSON.stringify(sameAreaParks))
+  }
+  
+  // If we need more parks, get them from other areas
+  const otherAreaParks = await Skatepark.find({ 
+    _id: { $ne: currentParkId },
+    area: { $ne: area }
+  }).limit(4 - sameAreaParks.length)
+  
+  // Combine and return the parks
+  const allParks = [...sameAreaParks, ...otherAreaParks]
+  return JSON.parse(JSON.stringify(allParks))
 }
 
 // Add this before the SkateparkPage component
@@ -99,6 +126,9 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
     "dateOpened": skatepark.openingYear,
     ...(skatepark.closingYear && { "dateClosed": skatepark.closingYear })
   };
+
+  // Get related parks
+  const relatedParks = await getRelatedParks(skatepark._id, skatepark.area)
 
   return (
     <div className="container mx-auto px-4 py-8 relative">
@@ -275,6 +305,31 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               </div>
             )}
 
+            {/* Rating Card */}
+            <div className="max-w-6xl mx-auto mb-8">
+              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
+                <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
+                  <h2 className="text-lg font-semibold flex items-center">
+                    <Icon name="heartBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                    {t('rating.title')}
+                  </h2>
+                </div>
+                <HeartRating
+                  rating={skatepark.rating || 0}
+                  totalVotes={skatepark.totalVotes || 0}
+                  onRate={async (rating) => {
+                    'use server'
+                    await dbConnect()
+                    await Skatepark.findByIdAndUpdate(skatepark._id, {
+                      $inc: { totalVotes: 1 },
+                      $set: { rating: ((skatepark.rating * skatepark.totalVotes) + rating) / (skatepark.totalVotes + 1) }
+                    })
+                  }}
+                  readonly={!!skatepark.closingYear}
+                />
+              </Card>
+            </div>
+
             {/* YouTube Video Card */}
             {skatepark.mediaLinks?.youtubeUrl && (
               <div className="max-w-6xl mx-auto mb-8">
@@ -288,6 +343,16 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             )}
           </div>
         </div>
+
+        {/* Related Skateparks Section */}
+        <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
+          <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
+          <RelatedParks 
+            currentParkId={skatepark._id} 
+            area={skatepark.area}
+            relatedParks={relatedParks}
+          />
+        </section>
       </div>
     </div>
   )

@@ -280,6 +280,16 @@ export default {
             transform: 'translateY(0)'
           }
         },
+        'fadeInDown': {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(-1rem)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
         'shimmerMove': {
           'from': { right: '-100%' },
           'to': { right: '100%' }
@@ -412,6 +422,7 @@ export default {
         'shimmer': 'shimmerMove 0.6s forwards',
         'shimmerInfinite': 'shimmerInfinite 1.5s ease-in-out infinite',
         'fadeUpIn': 'fadeUpIn 0.5s ease-out forwards',
+        'fadeInDown': 'fadeInDown 0.2s ease-out forwards',
       },
     },
   },

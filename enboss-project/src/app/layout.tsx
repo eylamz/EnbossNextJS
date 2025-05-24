@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, Noto_Sans_Hebrew } from "next/font/google";
 import "./globals.css";
 import { dir } from 'i18next';
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang={params.locale} dir={direction} className={`${poppins.variable} ${notoSansHebrew.variable}`}>
       <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-noto-hebrew' : 'font-poppins'}`}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

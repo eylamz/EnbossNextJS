@@ -3,7 +3,7 @@
 import { useTheme } from '@/context/ThemeProvider'
 import { useTranslation } from '@/lib/i18n/client'
 import { Icon } from '@/assets/icons'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface ThemeToggleProps {
   className?: string;
@@ -15,6 +15,11 @@ export default function ThemeToggle({ lng, className = '', variant = 'default', 
   const { theme, toggleTheme } = useTheme()
   const { t } = useTranslation(lng, 'common')
   const [isAnimating, setIsAnimating] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleToggle = () => {
     setIsAnimating(true)
@@ -24,9 +29,28 @@ export default function ThemeToggle({ lng, className = '', variant = 'default', 
 
   const getVariantClasses = () => {
     if (variant === 'error' || isError) {
-      return 'text-[#3c0101] bg-[#ad2626]/30 hover:bg-[#ad2626]/20'
+      return 'text-[#3c0101] bg-[#ad2626]/35 hover:bg-[#ad2626]/45'
     }
     return 'text-header-text bg-header-dark/40 hover:bg-header-dark/25'
+  }
+
+  // Don't render anything until after hydration
+  if (!mounted) {
+    return (
+      <button
+        className={`flex px-2 w-full items-center font-semibold rtl:font-ltr ltr:font-rtl flex-row rtl:flex-row-reverse justify-center p-2 rounded-xl transition-colors duration-200 ease-in-out ${getVariantClasses()} ${className}`}
+        aria-label="Toggle theme"
+      >
+        <div className="flex items-center gap-2">
+          <Icon 
+            name={theme === 'light' ? 'sunBold' : 'moonBold'} 
+            category="ui" 
+            className="w-5 h-5" 
+          />
+          <p className="w-12"></p>
+        </div>
+      </button>
+    )
   }
 
   return (
@@ -35,25 +59,14 @@ export default function ThemeToggle({ lng, className = '', variant = 'default', 
       className={`flex px-2 w-full items-center font-semibold rtl:font-ltr ltr:font-rtl flex-row rtl:flex-row-reverse justify-center p-2 rounded-xl transition-colors duration-200 ease-in-out ${isAnimating ? 'animate-pop' : ''} ${getVariantClasses()} ${className}`}
       aria-label="Toggle theme"
     >
-      {theme === 'light' ? (
-        <div className="flex items-center gap-2">
-          <Icon 
-            name="sunBold" 
-            category="ui" 
-            className="w-5 h-5" 
-          />
-          <p>{t('theme.light')}</p>
-        </div>
-      ) : (
-        <div className="flex items-center gap-2">
-          <Icon 
-            name="moonBold" 
-            category="ui" 
-            className="w-5 h-5" 
-          />
-          <p>{t('theme.dark')}</p>
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        <Icon 
+          name={theme === 'light' ? 'sunBold' : 'moonBold'} 
+          category="ui" 
+          className="w-5 h-5" 
+        />
+        <p>{theme === 'light' ? t('theme.light') : t('theme.dark')}</p>
+      </div>
     </button>
   )
 }

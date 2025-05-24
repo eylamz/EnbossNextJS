@@ -53,7 +53,7 @@ export default function Header({ lng }: { lng: string }) {
     `rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 ${shouldShowError ? 'bg-[#3c0101]/70' : 'bg-header-text/70 dark:bg-header-text-dark/70'} transition-all duration-200 ease-out ${isActive(path) ? 'w-3/5 md:w-2/5' : 'w-0 group-hover:w-3/5 md:group-hover:w-2/5'}`
 
   const mobileNavLinkClasses = (path: string) =>
-    `block py-3 text-lg hover:opacity-70 transition-opacity duration-200 ${isActive(path) ? 'font-semibold' : 'font-medium'} ${isMenuOpen ? 'animate-fadeIn' : ''}`
+    `block py-3 text-lg opacity-0 ${isActive(path) ? 'font-semibold' : 'font-medium'} ${isMenuOpen ? 'animate-fadeIn' : ' '}`
 
   // Close menu on route change
   useEffect(() => {
@@ -188,16 +188,16 @@ export default function Header({ lng }: { lng: string }) {
             >
               <nav className="pb-4 px-2" aria-label="Mobile Navigation">
                 <div className="flex flex-col">
-                <Link href={`/${lng}/skateparks`} className={mobileNavLinkClasses(`/${lng}/skateparks`)} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span >  {t('skateparks')}</span>
+                <Link href={`/${lng}/skateparks`} className={`${mobileNavLinkClasses(`/${lng}/skateparks`)} animate-fadeIn`} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                  <span>{t('skateparks')}</span>
                 </Link>
-                <Link href={`/${lng}/guides`} className={mobileNavLinkClasses(`/${lng}/guides`)} style={{ animationDelay: '150ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                <Link href={`/${lng}/guides`} className={`${mobileNavLinkClasses(`/${lng}/guides`)} animate-fadeIn`} style={{ animationDelay: '150ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
                   <span>{t('guides')}</span>
                 </Link>
-                <Link href={`/${lng}/shop`} className={mobileNavLinkClasses(`/${lng}/shop`)} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                <Link href={`/${lng}/shop`} className={`${mobileNavLinkClasses(`/${lng}/shop`)} animate-fadeIn`} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
                   <span>{t('shop')}</span>
                 </Link>
-                <Link href={`/${lng}/login`} className={mobileNavLinkClasses(`/${lng}/login`)} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                <Link href={`/${lng}/login`} className={`${mobileNavLinkClasses(`/${lng}/login`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
                   <span>{t('login')}</span>
                 </Link>
                 </div>
