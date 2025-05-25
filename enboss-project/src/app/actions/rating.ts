@@ -41,7 +41,6 @@ export async function updateRating(formData: FormData) {
 
     console.log('Found skatepark:', skatepark.nameEn)
     console.log('Current rating from DB:', skatepark.rating)
-    console.log('Current ratingCount from DB:', skatepark.ratingCount)
 
     // Validate and sanitize current rating
     let currentRating = parseFloat(skatepark.rating) || 0
@@ -144,15 +143,19 @@ export async function updateRating(formData: FormData) {
       throw new Error('Failed to update skatepark')
     }
 
-    console.log('Successfully updated!')
-    console.log('New rating in DB:', updateResult.rating)
-    console.log('New ratingCount in DB:', updateResult.ratingCount)
-    console.log('Full updated document:', JSON.stringify({
-      _id: updateResult._id,
+    console.log('=== RATING UPDATE DEBUG ===')
+    console.log('Update query:', {
+      skateparkId,
+      rating: parseFloat(newRating.toFixed(2)),
+      ratingCount: newVotes
+    })
+    console.log('Update result:', {
+      id: updateResult._id,
       rating: updateResult.rating,
-      ratingCount: updateResult.ratingCount
-    }))
-    console.log('=== END RATING ACTION DEBUG ===')
+      ratingCount: updateResult.ratingCount,
+      raw: updateResult
+    })
+    console.log('=== END RATING UPDATE DEBUG ===')
 
     return { 
       success: true,

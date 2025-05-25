@@ -317,8 +317,14 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               skateparkId={skatepark._id}
               rating={skatepark.rating || 0}
               totalVotes={skatepark.ratingCount || 0}
-              isClosed={!!skatepark.closingYear}
               title={t('rating.title')}
+              onHeartRatePark={async (parkId, rating) => {
+                'use server'
+                const formData = new FormData()
+                formData.append('skateparkId', parkId)
+                formData.append('rating', rating.toString())
+                await updateRating(formData)
+              }}
             />
 
             {/* YouTube Video Card */}
@@ -339,6 +345,13 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             area={skatepark.area}
             relatedParks={relatedParks}
             locale={locale}
+            onHeartRatePark={async (parkId, rating) => {
+              'use server'
+              const formData = new FormData()
+              formData.append('skateparkId', parkId)
+              formData.append('rating', rating.toString())
+              await updateRating(formData)
+            }}
           />
         </section>
       </div>

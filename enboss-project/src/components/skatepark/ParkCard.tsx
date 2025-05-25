@@ -302,16 +302,33 @@ const ParkCard = memo(({
   const handleRatePark = useCallback(async (rating: number) => {
     try {
       if (!park._id) return;
+      console.log('=== PARK CARD RATING DEBUG ===');
+      console.log('Current park data:', {
+        id: park._id,
+        currentRating: park.rating,
+        currentVotes: park.ratingCount
+      });
+      console.log('Attempting to rate with:', rating);
+
       if (onHeartRatePark) {
         await onHeartRatePark(park._id, rating);
+        console.log('Rating update completed');
+        
+        // Force a hard refresh to ensure we get the latest data
+        if (typeof window !== 'undefined') {
+          window.location.reload();
+        }
+        
         toast({
           title: t('common:common.success'),
           description: t('common:common.ratingSuccess'),
           variant: "success",
         });
       }
+      
       if (refetchData) {
-        refetchData();
+        console.log('Calling refetchData');
+        await refetchData();
       }
     } catch (error) {
       console.error('Error rating park:', error);
@@ -392,6 +409,16 @@ const ParkCard = memo(({
       isNavigatingRef.current = false;
     };
   }, []);
+
+  // Add debug logging for park data
+  useEffect(() => {
+    console.log('ParkCard Debug - Park Data:', {
+      id: park._id,
+      heartRating: park.heartRating,
+      rating: park.heartRating?.average || 0,
+      totalVotes: park.heartRating?.count || 0
+    });
+  }, [park]);
 
   return (
     <Card 
@@ -550,8 +577,8 @@ const ParkCard = memo(({
           
           <div onClick={handleHeartRatingClick} className="rating-component">
             <HeartRating
-              rating={park.heartRating?.average || 0}
-              totalVotes={park.heartRating?.count || 0}
+              rating={park.rating || 0}
+              totalVotes={park.ratingCount || 0}
               hideVotesCount={true}
               onRate={handleRatePark}
               userRating={park._id ? park.userRating : null}

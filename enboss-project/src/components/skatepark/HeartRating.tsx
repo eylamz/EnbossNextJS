@@ -386,6 +386,8 @@ const HeartRating = ({
                 </motion.div>
               )}
               
+
+              
               <motion.div 
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1, transition: { duration: 0.15 } }}
@@ -395,6 +397,15 @@ const HeartRating = ({
                 <div className="flex gap-2 items-center justify-center">
                   {renderHearts()}
                 </div>
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 0.15 } }}
+                className="flex items-center justify-center gap-1 mb-2 text-center"
+              >
+                <span className="text-sm text-text-secondary dark:text-text-secondary-dark/90">
+                  {totalVotes} {t('rating.totalVotes')}
+                </span>
               </motion.div>
             </div>
           </motion.div>
@@ -460,6 +471,16 @@ const HeartRating = ({
                 </span>
               </motion.div>
             )}
+            
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.1 } }}
+              className="flex items-center justify-center gap-1 mb-2 -ml-5 rtl:ml-0 rtl:-mr-6"
+            >
+              <span className="text-xs text-text-secondary dark:text-text-secondary-dark/90">
+                {totalVotes} {t('rating.votes')}
+              </span>
+            </motion.div>
             
             <div className="flex items-center justify-center">
               <div className="flex gap-2 items-center justify-center">

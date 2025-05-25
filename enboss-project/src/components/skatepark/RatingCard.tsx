@@ -10,11 +10,12 @@ interface RatingCardProps {
   skateparkId: string
   rating: number
   totalVotes: number
-  isClosed: boolean
+  isClosed?: boolean
   title: string
+  onHeartRatePark?: (parkId: string, rating: number) => Promise<void>
 }
 
-export function RatingCard({ skateparkId, rating, totalVotes, isClosed, title }: RatingCardProps) {
+export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, title, onHeartRatePark }: RatingCardProps) {
   const router = useRouter()
 
   const handleRate = async (rating: number) => {
@@ -36,26 +37,21 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed, title }:
       }
     }
 
-    const formData = new FormData()
-    formData.append('skateparkId', skateparkId)
-    formData.append('rating', rating.toString())
-    if (previousRating !== null) {
-      formData.append('previousRating', previousRating.toString())
-    }
-    
-    try {
-      const result = await updateRating(formData)
-      console.log('Server action result:', result)
-      
-      // Force a hard refresh to bypass any caching
-      if (typeof window !== 'undefined') {
-        window.location.reload()
-      } else {
-        router.refresh()
+    if (onHeartRatePark) {
+      try {
+        await onHeartRatePark(skateparkId, rating)
+        console.log('=== RATING CARD UPDATE DEBUG ===')
+        console.log('Update completed')
+        console.log('Current rating state:', { rating, totalVotes })
+        console.log('=== END RATING CARD UPDATE DEBUG ===')
+        
+        // Force a hard refresh to ensure we get the latest data
+        if (typeof window !== 'undefined') {
+          window.location.reload()
+        }
+      } catch (error) {
+        console.error('Error in handleRate:', error)
       }
-      console.log('Page refreshed')
-    } catch (error) {
-      console.error('Error in handleRate:', error)
     }
     console.log('=== END RATING CARD DEBUG ===')
   }
