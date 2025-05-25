@@ -16,11 +16,12 @@ import { MapLinks } from '@/components/skatepark/MapLinks'
 import { YouTubeVideo } from '@/components/skatepark/YouTubeVideo'
 import RelatedParks from '@/components/skatepark/RelatedParks'
 import HeartRating from '@/components/skatepark/HeartRating'
-import React from 'react'
+import React, { Suspense } from 'react'
 import Script from 'next/script'
 import ErrorStateHandler from '@/components/skatepark/ErrorStateHandler'
 import { updateRating } from '@/app/actions/rating'
 import { RatingCard } from '@/components/skatepark/RatingCard'
+import LoadingSpinner from '@/components/common/LoadingSpinner'
 
 interface SkateparkImage {
   url: string;
@@ -86,8 +87,25 @@ export async function generateMetadata({ params: { locale, slug } }: Props) {
   }
 }
 
+// Loading component for the page
+function PageLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <LoadingSpinner size={48} />
+    </div>
+  );
+}
+
+// Loading component for sections
+function SectionLoading() {
+  return (
+    <div className="w-full h-32 flex items-center justify-center">
+      <LoadingSpinner size={32} />
+    </div>
+  );
+}
+
 export default async function SkateparkPage({ params: { locale, slug } }: Props) {
-  
   // Check if the locale is supported
   if (!languages.includes(locale)) {
     notFound()
@@ -161,16 +179,18 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
       <div className="container mx-auto px-4 py-8 relative">
         {/* Breadcrumbs */}
-        <BreadCrumbs
-          previousPage={{
-            path: '/skateparks',
-            label: 'skateparks'
-          }}
-          currentPage={{
-            label: parkName
-          }}
-          locale={locale}
-        />
+        <Suspense fallback={<SectionLoading />}>
+          <BreadCrumbs
+            previousPage={{
+              path: '/skateparks',
+              label: 'skateparks'
+            }}
+            currentPage={{
+              label: parkName
+            }}
+            locale={locale}
+          />
+        </Suspense>
         
         <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
           <div className="flex flex-col">
@@ -197,127 +217,167 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
             {/* Skatepark images */}
             {skatepark.images && skatepark.images.length > 0 && (
-              <div className="mt-2 mb-8">
-                <ImageSlider images={skatepark.images} />
-              </div>
+              <Suspense fallback={<SectionLoading />}>
+                <div className="mt-2 mb-8">
+                  <ImageSlider images={skatepark.images} />
+                </div>
+              </Suspense>
             )}
 
             {/* Info Cards */}
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Hours Card */}
-              <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
-                <div className="flex gap-4 mb-4 justify-between">
-                  <div className="">
-                    <FormattedHours 
-                      key={locale}
-                      operatingHours={skatepark.operatingHours}
-                      lightingHours={skatepark.lightingHours}
-                      closingYear={skatepark.closingYear}
-                      locale={locale}
-                    />
-                  </div>
-                  <div>
-                    <ShareButton
-                      parkName={parkName}
-                      area={skatepark.area}
-                      closingYear={skatepark.closingYear}
-                      locale={locale}
-                    />
-                  </div>
-                </div>
-
-                {/* Address Section */}
-                <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
-                  <div className="flex items-center mb-3">
-                    <h2 className="text-lg font-semibold flex items-center">
-                      <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                      {t('address')} 
-                    </h2>
-                  </div>
-
-                  <div className="flex flex-col px-2 gap-2 mb-2">
-                    <span itemProp="address">{parkAddress}</span>
-                  </div>
-                </div>
-
-                {/* Opening/Closing Year Section */}
-                <div className="mt-6 pt-4 px-7 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
-                  <div className="flex flex-col flex-wrap gap-2 mb-2">
-                    <span>{t('opened_at')} {skatepark.openingYear}.</span>
-                    {skatepark.closingYear && (
-                      <span className='text-error dark:text-error/80'>{t('closed_at')} {skatepark.closingYear}.</span>
-                    )}
-                  </div>
-                </div>
-              </Card>
-
-              {/* Amenities Card */}
-              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
-                  <h2 className="text-lg font-semibold flex items-center">
-                    <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                    {t('amenities.title')}
-                  </h2>
-                </div>
-                
-                {/* Amenities grid */}
-                <AmenitiesGrid 
-                  amenities={skatepark.amenities}
-                  closingYear={skatepark.closingYear}
-                  amenityOrder={Object.keys(skatepark.amenities)}
-                  locale={locale}
-                />
-
-                {/* Notes Section */}
-                {parkNotes && (
-                  <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#7991a0]">
-                    <div className="flex items-center mb-2">
-                      <Icon name="infoBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                      <h3 className="text-lg font-semibold">{t('notes')}</h3>
+              <Suspense fallback={<SectionLoading />}>
+                <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
+                  <div className="flex gap-4 mb-4 justify-between">
+                    <div className="">
+                      <FormattedHours 
+                        key={locale}
+                        operatingHours={skatepark.operatingHours}
+                        lightingHours={skatepark.lightingHours}
+                        closingYear={skatepark.closingYear}
+                        locale={locale}
+                      />
                     </div>
-                    
-                    <div className="space-y-2">
-                      {Array.isArray(parkNotes) ? (
-                        parkNotes.map((note, index) => (
-                          <div key={index} className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
-                            <div className="text-sm">
-                              • {note}
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
-                          <div className="text-sm">
-                            • {parkNotes}
-                          </div>
-                        </div>
+                    <div>
+                      <ShareButton
+                        parkName={parkName}
+                        area={skatepark.area}
+                        closingYear={skatepark.closingYear}
+                        locale={locale}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Address Section */}
+                  <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
+                    <div className="flex items-center mb-3">
+                      <h2 className="text-lg font-semibold flex items-center">
+                        <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                        {t('address')} 
+                      </h2>
+                    </div>
+
+                    <div className="flex flex-col px-2 gap-2 mb-2">
+                      <span itemProp="address">{parkAddress}</span>
+                    </div>
+                  </div>
+
+                  {/* Opening/Closing Year Section */}
+                  <div className="mt-6 pt-4 px-7 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
+                    <div className="flex flex-col flex-wrap gap-2 mb-2">
+                      <span>{t('opened_at')} {skatepark.openingYear}.</span>
+                      {skatepark.closingYear && (
+                        <span className='text-error dark:text-error/80'>{t('closed_at')} {skatepark.closingYear}.</span>
                       )}
                     </div>
                   </div>
-                )}
-              </Card>
+                </Card>
+              </Suspense>
+
+              {/* Amenities Card */}
+              <Suspense fallback={<SectionLoading />}>
+                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                  <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
+                    <h2 className="text-lg font-semibold flex items-center">
+                      <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                      {t('amenities.title')}
+                    </h2>
+                  </div>
+                  
+                  {/* Amenities grid */}
+                  <AmenitiesGrid 
+                    amenities={skatepark.amenities}
+                    closingYear={skatepark.closingYear}
+                    amenityOrder={Object.keys(skatepark.amenities)}
+                    locale={locale}
+                  />
+
+                  {/* Notes Section */}
+                  {parkNotes && (
+                    <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#7991a0]">
+                      <div className="flex items-center mb-2">
+                        <Icon name="infoBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                        <h3 className="text-lg font-semibold">{t('notes')}</h3>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        {Array.isArray(parkNotes) ? (
+                          parkNotes.map((note, index) => (
+                            <div key={index} className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
+                              <div className="text-sm">
+                                • {note}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
+                            <div className="text-sm">
+                              • {parkNotes}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Card>
+              </Suspense>
             </div>
 
             {/* Map Links Card */}
             {(skatepark.mediaLinks?.googleMapsUrl || 
               skatepark.mediaLinks?.appleMapsUrl || 
               skatepark.mediaLinks?.wazeUrl) && (
-              <div className="w-full mx-auto mb-8">
-                <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                  <MapLinks 
-                    mediaLinks={skatepark.mediaLinks}
-                    parkName={parkName}
-                  />
-                </Card>
-              </div>
+              <Suspense fallback={<SectionLoading />}>
+                <div className="w-full mx-auto mb-8">
+                  <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                    <MapLinks 
+                      mediaLinks={skatepark.mediaLinks}
+                      parkName={parkName}
+                    />
+                  </Card>
+                </div>
+              </Suspense>
             )}
 
             {/* Rating Card */}
-            <RatingCard
-              skateparkId={skatepark._id}
-              rating={skatepark.rating || 0}
-              totalVotes={skatepark.ratingCount || 0}
-              title={t('rating.title')}
+            <Suspense fallback={<SectionLoading />}>
+              <RatingCard
+                skateparkId={skatepark._id}
+                rating={skatepark.rating || 0}
+                totalVotes={skatepark.ratingCount || 0}
+                title={t('rating.title')}
+                onHeartRatePark={async (parkId, rating) => {
+                  'use server'
+                  const formData = new FormData()
+                  formData.append('skateparkId', parkId)
+                  formData.append('rating', rating.toString())
+                  await updateRating(formData)
+                }}
+              />
+            </Suspense>
+
+            {/* YouTube Video Card */}
+            {skatepark.mediaLinks?.youtubeUrl && (
+              <Suspense fallback={<SectionLoading />}>
+                <YouTubeVideo 
+                  youtubeUrl={skatepark.mediaLinks.youtubeUrl}
+                  parkName={parkName}
+                />
+              </Suspense>
+            )}
+          </div>
+        </div>
+
+        {/* Related Skateparks Section */}
+        <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
+          <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
+          <Suspense fallback={<SectionLoading />}>
+            <RelatedParks 
+              currentParkId={skatepark._id} 
+              area={skatepark.area}
+              relatedParks={relatedParks}
+              locale={locale}
               onHeartRatePark={async (parkId, rating) => {
                 'use server'
                 const formData = new FormData()
@@ -326,33 +386,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 await updateRating(formData)
               }}
             />
-
-            {/* YouTube Video Card */}
-            {skatepark.mediaLinks?.youtubeUrl && (
-              <YouTubeVideo 
-                youtubeUrl={skatepark.mediaLinks.youtubeUrl}
-                parkName={parkName}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Related Skateparks Section */}
-        <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
-          <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
-          <RelatedParks 
-            currentParkId={skatepark._id} 
-            area={skatepark.area}
-            relatedParks={relatedParks}
-            locale={locale}
-            onHeartRatePark={async (parkId, rating) => {
-              'use server'
-              const formData = new FormData()
-              formData.append('skateparkId', parkId)
-              formData.append('rating', rating.toString())
-              await updateRating(formData)
-            }}
-          />
+          </Suspense>
         </section>
       </div>
     </div>

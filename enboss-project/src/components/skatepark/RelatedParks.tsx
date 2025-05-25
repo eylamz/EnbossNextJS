@@ -35,7 +35,7 @@ const RelatedParks = ({
       </h2>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {relatedParks.map((park, index) => (
+        {relatedParks.slice(0, 2).map((park, index) => (
           <ParkCard
             key={park._id}
             park={park}
@@ -47,6 +47,38 @@ const RelatedParks = ({
             locale={locale}
           />
         ))}
+        {relatedParks.length > 2 && (
+          <div className="hidden md:block">
+            {relatedParks.slice(2, 3).map((park, index) => (
+              <ParkCard
+                key={park._id}
+                park={park}
+                userLocation={userLocation}
+                t={t}
+                refetchData={refetchData}
+                animationDelay={(index + 2) * 100}
+                onHeartRatePark={onHeartRatePark}
+                locale={locale}
+              />
+            ))}
+          </div>
+        )}
+        {relatedParks.length > 3 && (
+          <div className="hidden lg:block">
+            {relatedParks.slice(3, 4).map((park, index) => (
+              <ParkCard
+                key={park._id}
+                park={park}
+                userLocation={userLocation}
+                t={t}
+                refetchData={refetchData}
+                animationDelay={(index + 3) * 100}
+                onHeartRatePark={onHeartRatePark}
+                locale={locale}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

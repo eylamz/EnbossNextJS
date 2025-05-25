@@ -166,6 +166,7 @@ const ParkCard = memo(({
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCarouselActive, setIsCarouselActive] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const isNavigatingRef = useRef(false);
   const [parkName, setParkName] = useState(park.nameEn);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -357,8 +358,9 @@ const ParkCard = memo(({
 
   const handleCardClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    if (isNavigatingRef.current) return;
+    if (isNavigating) return;
 
+    setIsNavigating(true);
     isNavigatingRef.current = true;
     
     // Clean up any existing timeouts
@@ -384,9 +386,14 @@ const ParkCard = memo(({
     navigationTimeoutRef.current = setTimeout(() => {
       if (park.slug) {
         router.push(`/${locale}/skateparks/${park.slug}`);
+        // Reset navigation state after a delay to ensure the shimmer effect is visible during page load
+        setTimeout(() => {
+          setIsNavigating(false);
+          isNavigatingRef.current = false;
+        }, 10000);
       }
     }, 100);
-  }, [park.slug, router, locale]);
+  }, [park.slug, router, locale, isNavigating]);
 
   // Clean up on unmount
   useEffect(() => {
@@ -426,7 +433,7 @@ const ParkCard = memo(({
       as={Link}
       href={park.slug ? `/${locale}/skateparks/${park.slug}` : '#'}
       onClick={handleCardClick}
-      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[1] before:pointer-events-none before:opacity-0 group-hover:before:opacity-100 group-hover:before:animate-shimmerInfinite before:transition-opacity before:duration-300 ${isNavigatingRef.current ? 'before:animate-shimmerInfinite' : ''}`}
+      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[1] before:pointer-events-none before:opacity-0 before:transition-opacity before:duration-300 ${isNavigating ? 'before:opacity-100 before:animate-shimmerInfinite' : ''}`}
       style={{ animationDelay: `${animationDelay}ms` }}
       aria-label={park.nameEn}
     >

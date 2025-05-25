@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/Tooltip';
 import { MouseEvent } from 'react';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 interface AmenitiesGridProps {
   amenities: Record<string, boolean>;
@@ -23,10 +24,12 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
   const { t, i18n } = useTranslation(locale, 'skateparks');
   const [openTooltip, setOpenTooltip] = useState<string | null>(null);
   const [translations, setTranslations] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   // Update translations when locale changes
   useEffect(() => {
     const updateTranslations = async () => {
+      setIsLoading(true);
       const newTranslations: Record<string, string> = {};
       const validAmenityKeys = [
         'entryFee',
@@ -50,6 +53,7 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
       }
 
       setTranslations(newTranslations);
+      setIsLoading(false);
     };
 
     updateTranslations();
@@ -72,6 +76,25 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
 
   // Filter and sort amenities based on validAmenityKeys
   const orderedAmenities = validAmenityKeys.filter(key => key in amenities);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-wrap -mx-1">
+        {Array.from({ length: 8 }).map((_, index) => (
+          <div key={index} className="w-1/4 px-1 mb-2">
+            <div className="rounded-lg p-2 h-full bg-black/[3%] dark:bg-black/[5%] dark:shadow-inner">
+              <div className="text-center">
+                <div className="mb-1.5 flex justify-center">
+                  <LoadingSpinner size={20} />
+                </div>
+                <div className="h-4 bg-black/[3%] dark:bg-black/[5%] rounded animate-pulse" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap -mx-1">
