@@ -105,6 +105,15 @@ function SectionLoading() {
   );
 }
 
+// Loading component for translations
+function TranslationLoading() {
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <LoadingSpinner size={24} />
+    </div>
+  );
+}
+
 export default async function SkateparkPage({ params: { locale, slug } }: Props) {
   // Check if the locale is supported
   if (!languages.includes(locale)) {
@@ -152,201 +161,240 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
   const relatedParks = await getRelatedParks(skatepark._id, skatepark.area)
 
   return (
-    <div className="min-h-screen relative">
-      <ErrorStateHandler isClosed={!!skatepark.closingYear} />
-      {/* Add structured data */}
-      <Script
-        id="skatepark-structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      
-      {/* Blurred Background Image */}
-      {skatepark.images && skatepark.images.length > 0 && (
-        <div 
-          className="fixed inset-0 z-[-1] bg-no-repeat bg-cover bg-center pointer-events-none"
-          style={{
-            backgroundImage: `url(${getFeaturedImage(skatepark.images)})`,
-            filter: 'blur(5px) saturate(2)',
-            WebkitFilter: 'blur(5px) saturate(2)',
-            transform: 'scale(1.02)', // Prevent blur edges
-          }}
-        >
-          {/* Overlay to further reduce contrast and improve readability */}
-          <div className="absolute inset-0 bg-background-dark/30 dark:bg-background-dark/50"></div>
-        </div>
-      )}
-
-      <div className="container mx-auto px-4 py-8 relative">
-        {/* Breadcrumbs */}
-        <Suspense fallback={<SectionLoading />}>
-          <BreadCrumbs
-            previousPage={{
-              path: '/skateparks',
-              label: 'skateparks'
-            }}
-            currentPage={{
-              label: parkName
-            }}
-            locale={locale}
-          />
-        </Suspense>
+    <Suspense fallback={<PageLoading />}>
+      <div className="min-h-screen relative">
+        <ErrorStateHandler isClosed={!!skatepark.closingYear} />
+        {/* Add structured data */}
+        <Script
+          id="skatepark-structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         
-        <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
-          <div className="flex flex-col">
-            {/* Header Section */}
-            <div className="mb-2 md:mb-6">
-              {/* Mobile version with line breaks (hidden on sm and above) */}
-              <h1 className="text-4xl font-bold text-center text-text-dark sm:hidden">
-                {parkName.includes('-') ? 
-                  parkName.split('-').map((part: string, index: number, array: string[]) => (
-                    <React.Fragment key={index}>
-                      {part.trim()}
-                      {index < array.length - 1 && <br />}
-                    </React.Fragment>
-                  ))
-                  : parkName
-                }
-              </h1>
-              
-              {/* Desktop version without line breaks (hidden on xs, visible on sm and above) */}
-              <h1 className="hidden sm:block text-4xl font-bold text-center text-text-dark">
-                {parkName}
-              </h1>
-            </div>
+        {/* Blurred Background Image */}
+        {skatepark.images && skatepark.images.length > 0 && (
+          <div 
+            className="fixed inset-0 z-[-1] bg-no-repeat bg-cover bg-center pointer-events-none"
+            style={{
+              backgroundImage: `url(${getFeaturedImage(skatepark.images)})`,
+              filter: 'blur(5px) saturate(2)',
+              WebkitFilter: 'blur(5px) saturate(2)',
+              transform: 'scale(1.02)', // Prevent blur edges
+            }}
+          >
+            {/* Overlay to further reduce contrast and improve readability */}
+            <div className="absolute inset-0 bg-background-dark/30 dark:bg-background-dark/50"></div>
+          </div>
+        )}
 
-            {/* Skatepark images */}
-            {skatepark.images && skatepark.images.length > 0 && (
-              <Suspense fallback={<SectionLoading />}>
-                <div className="mt-2 mb-8">
-                  <ImageSlider images={skatepark.images} />
-                </div>
-              </Suspense>
-            )}
+        <div className="container mx-auto px-4 py-8 relative">
+          {/* Breadcrumbs */}
+          <Suspense fallback={<SectionLoading />}>
+            <BreadCrumbs
+              previousPage={{
+                path: '/skateparks',
+                label: 'skateparks'
+              }}
+              currentPage={{
+                label: parkName
+              }}
+              locale={locale}
+            />
+          </Suspense>
+          
+          <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
+            <div className="flex flex-col">
+              {/* Header Section */}
+              <div className="mb-2 md:mb-6">
+                {/* Mobile version with line breaks (hidden on sm and above) */}
+                <h1 className="text-4xl font-bold text-center text-text-dark sm:hidden">
+                  {parkName.includes('-') ? 
+                    parkName.split('-').map((part: string, index: number, array: string[]) => (
+                      <React.Fragment key={index}>
+                        {part.trim()}
+                        {index < array.length - 1 && <br />}
+                      </React.Fragment>
+                    ))
+                    : parkName
+                  }
+                </h1>
+                
+                {/* Desktop version without line breaks (hidden on xs, visible on sm and above) */}
+                <h1 className="hidden sm:block text-4xl font-bold text-center text-text-dark">
+                  {parkName}
+                </h1>
+              </div>
 
-            {/* Info Cards */}
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Hours Card */}
-              <Suspense fallback={<SectionLoading />}>
-                <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
-                  <div className="flex gap-4 mb-4 justify-between">
-                    <div className="">
-                      <FormattedHours 
-                        key={locale}
-                        operatingHours={skatepark.operatingHours}
-                        lightingHours={skatepark.lightingHours}
-                        closingYear={skatepark.closingYear}
-                        locale={locale}
-                      />
-                    </div>
-                    <div>
-                      <ShareButton
-                        parkName={parkName}
-                        area={skatepark.area}
-                        closingYear={skatepark.closingYear}
-                        locale={locale}
-                      />
-                    </div>
+              {/* Skatepark images */}
+              {skatepark.images && skatepark.images.length > 0 && (
+                <Suspense fallback={<SectionLoading />}>
+                  <div className="mt-2 mb-8">
+                    <ImageSlider images={skatepark.images} />
                   </div>
+                </Suspense>
+              )}
 
-                  {/* Address Section */}
-                  <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
-                    <div className="flex items-center mb-3">
-                      <h2 className="text-lg font-semibold flex items-center">
-                        <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                        {t('address')} 
-                      </h2>
-                    </div>
-
-                    <div className="flex flex-col px-2 gap-2 mb-2">
-                      <span itemProp="address">{parkAddress}</span>
-                    </div>
-                  </div>
-
-                  {/* Opening/Closing Year Section */}
-                  <div className="mt-6 pt-4 px-7 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
-                    <div className="flex flex-col flex-wrap gap-2 mb-2">
-                      <span>{t('opened_at')} {skatepark.openingYear}.</span>
-                      {skatepark.closingYear && (
-                        <span className='text-error dark:text-error/80'>{t('closed_at')} {skatepark.closingYear}.</span>
-                      )}
-                    </div>
-                  </div>
-                </Card>
-              </Suspense>
-
-              {/* Amenities Card */}
-              <Suspense fallback={<SectionLoading />}>
-                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                  <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
-                    <h2 className="text-lg font-semibold flex items-center">
-                      <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                      {t('amenities.title')}
-                    </h2>
-                  </div>
-                  
-                  {/* Amenities grid */}
-                  <AmenitiesGrid 
-                    amenities={skatepark.amenities}
-                    closingYear={skatepark.closingYear}
-                    amenityOrder={Object.keys(skatepark.amenities)}
-                    locale={locale}
-                  />
-
-                  {/* Notes Section */}
-                  {parkNotes && (
-                    <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#7991a0]">
-                      <div className="flex items-center mb-2">
-                        <Icon name="infoBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                        <h3 className="text-lg font-semibold">{t('notes')}</h3>
+              {/* Info Cards */}
+              <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {/* Hours Card */}
+                <Suspense fallback={<SectionLoading />}>
+                  <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
+                    <div className="flex gap-4 mb-4 justify-between">
+                      <div className="">
+                        <Suspense fallback={<TranslationLoading />}>
+                          <FormattedHours 
+                            key={locale}
+                            operatingHours={skatepark.operatingHours}
+                            lightingHours={skatepark.lightingHours}
+                            closingYear={skatepark.closingYear}
+                            locale={locale}
+                          />
+                        </Suspense>
                       </div>
-                      
-                      <div className="space-y-2">
-                        {Array.isArray(parkNotes) ? (
-                          parkNotes.map((note, index) => (
-                            <div key={index} className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
-                              <div className="text-sm">
-                                • {note}
-                              </div>
-                            </div>
-                          ))
-                        ) : (
-                          <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
-                            <div className="text-sm">
-                              • {parkNotes}
-                            </div>
-                          </div>
+                      <div>
+                        <ShareButton
+                          parkName={parkName}
+                          area={skatepark.area}
+                          closingYear={skatepark.closingYear}
+                          locale={locale}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Address Section */}
+                    <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
+                      <div className="flex items-center mb-3">
+                        <h2 className="text-lg font-semibold flex items-center">
+                          <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                          {t('address')} 
+                        </h2>
+                      </div>
+
+                      <div className="flex flex-col px-2 gap-2 mb-2">
+                        <span itemProp="address">{parkAddress}</span>
+                      </div>
+                    </div>
+
+                    {/* Opening/Closing Year Section */}
+                    <div className="mt-6 pt-4 px-7 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
+                      <div className="flex flex-col flex-wrap gap-2 mb-2">
+                        <span>{t('opened_at')} {skatepark.openingYear}.</span>
+                        {skatepark.closingYear && (
+                          <span className='text-error dark:text-error/80'>{t('closed_at')} {skatepark.closingYear}.</span>
                         )}
                       </div>
                     </div>
-                  )}
-                </Card>
-              </Suspense>
-            </div>
-
-            {/* Map Links Card */}
-            {(skatepark.mediaLinks?.googleMapsUrl || 
-              skatepark.mediaLinks?.appleMapsUrl || 
-              skatepark.mediaLinks?.wazeUrl) && (
-              <Suspense fallback={<SectionLoading />}>
-                <div className="w-full mx-auto mb-8">
-                  <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                    <MapLinks 
-                      mediaLinks={skatepark.mediaLinks}
-                      parkName={parkName}
-                    />
                   </Card>
-                </div>
-              </Suspense>
-            )}
+                </Suspense>
 
-            {/* Rating Card */}
+                {/* Amenities Card */}
+                <Suspense fallback={<SectionLoading />}>
+                  <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                    <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
+                      <h2 className="text-lg font-semibold flex items-center">
+                        <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                        {t('amenities.title')}
+                      </h2>
+                    </div>
+                    
+                    {/* Amenities grid */}
+                    <Suspense fallback={<TranslationLoading />}>
+                      <AmenitiesGrid 
+                        amenities={skatepark.amenities}
+                        closingYear={skatepark.closingYear}
+                        amenityOrder={Object.keys(skatepark.amenities)}
+                        locale={locale}
+                      />
+                    </Suspense>
+
+                    {/* Notes Section */}
+                    {parkNotes && (
+                      (Array.isArray(parkNotes) && parkNotes.length > 0) || 
+                      (typeof parkNotes === 'string' && parkNotes.trim() !== '')
+                    ) && (
+                      <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#7991a0]">
+                        <div className="flex items-center mb-2">
+                          <Icon name="infoBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                          <h3 className="text-lg font-semibold">{t('notes')}</h3>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          {Array.isArray(parkNotes) ? (
+                            parkNotes.map((note, index) => (
+                              <div key={index} className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
+                                <div className="text-sm">
+                                  • {note}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
+                              <div className="text-sm">
+                                • {parkNotes}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                </Suspense>
+              </div>
+
+              {/* Map Links Card */}
+              {(skatepark.mediaLinks?.googleMapsUrl || 
+                skatepark.mediaLinks?.appleMapsUrl || 
+                skatepark.mediaLinks?.wazeUrl) && (
+                <Suspense fallback={<SectionLoading />}>
+                  <div className="w-full mx-auto mb-8">
+                    <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                      <MapLinks 
+                        mediaLinks={skatepark.mediaLinks}
+                        parkName={parkName}
+                      />
+                    </Card>
+                  </div>
+                </Suspense>
+              )}
+
+              {/* Rating Card */}
+              <Suspense fallback={<SectionLoading />}>
+                <RatingCard
+                  skateparkId={skatepark._id}
+                  rating={skatepark.rating || 0}
+                  totalVotes={skatepark.ratingCount || 0}
+                  title={t('rating.title')}
+                  onHeartRatePark={async (parkId, rating) => {
+                    'use server'
+                    const formData = new FormData()
+                    formData.append('skateparkId', parkId)
+                    formData.append('rating', rating.toString())
+                    await updateRating(formData)
+                  }}
+                />
+              </Suspense>
+
+              {/* YouTube Video Card */}
+              {skatepark.mediaLinks?.youtubeUrl && (
+                <Suspense fallback={<SectionLoading />}>
+                  <YouTubeVideo 
+                    youtubeUrl={skatepark.mediaLinks.youtubeUrl}
+                    parkName={parkName}
+                  />
+                </Suspense>
+              )}
+            </div>
+          </div>
+
+          {/* Related Skateparks Section */}
+          <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
+            <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
             <Suspense fallback={<SectionLoading />}>
-              <RatingCard
-                skateparkId={skatepark._id}
-                rating={skatepark.rating || 0}
-                totalVotes={skatepark.ratingCount || 0}
-                title={t('rating.title')}
+              <RelatedParks 
+                currentParkId={skatepark._id} 
+                area={skatepark.area}
+                relatedParks={relatedParks}
+                locale={locale}
                 onHeartRatePark={async (parkId, rating) => {
                   'use server'
                   const formData = new FormData()
@@ -356,39 +404,9 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 }}
               />
             </Suspense>
-
-            {/* YouTube Video Card */}
-            {skatepark.mediaLinks?.youtubeUrl && (
-              <Suspense fallback={<SectionLoading />}>
-                <YouTubeVideo 
-                  youtubeUrl={skatepark.mediaLinks.youtubeUrl}
-                  parkName={parkName}
-                />
-              </Suspense>
-            )}
-          </div>
+          </section>
         </div>
-
-        {/* Related Skateparks Section */}
-        <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
-          <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
-          <Suspense fallback={<SectionLoading />}>
-            <RelatedParks 
-              currentParkId={skatepark._id} 
-              area={skatepark.area}
-              relatedParks={relatedParks}
-              locale={locale}
-              onHeartRatePark={async (parkId, rating) => {
-                'use server'
-                const formData = new FormData()
-                formData.append('skateparkId', parkId)
-                formData.append('rating', rating.toString())
-                await updateRating(formData)
-              }}
-            />
-          </Suspense>
-        </section>
       </div>
-    </div>
+    </Suspense>
   )
 }

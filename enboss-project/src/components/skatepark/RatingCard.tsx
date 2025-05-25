@@ -57,7 +57,7 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, 
   }
 
   return (
-    <div className="max-w-6xl mx-auto mb-8">
+    <div className="max-w-6xl w-full mx-auto mb-8">
       <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
         <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
           <h2 className="text-lg font-semibold flex items-center">
