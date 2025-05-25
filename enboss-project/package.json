@@ -12,6 +12,7 @@
   "dependencies": {
     "@emailjs/nodejs": "^5.0.2",
     "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-hover-card": "^1.1.14",
     "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-separator": "^1.1.7",
