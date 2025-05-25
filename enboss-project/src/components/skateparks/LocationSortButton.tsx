@@ -1,8 +1,9 @@
-// client/src/pages/skateparks/components/LocationSortButton.tsx
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/config/icons';
-import { useTranslation } from 'react-i18next';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+'use client';
+
+import { Button } from '@/components/ui/Button';
+import { Icon } from '@/assets/icons/index';
+import { useTranslation } from '@/lib/i18n/client';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip";
 
 interface LocationSortButtonProps {
   isActive: boolean;
@@ -31,11 +32,11 @@ const LocationSortButton = ({ isActive, onClick, className }: LocationSortButton
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" className="text-center">
-          {t('skateparks.sort.byDistance')}
+          {t('sort.byDistance')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 };
 
-export default LocationSortButton;
+export default LocationSortButton; 

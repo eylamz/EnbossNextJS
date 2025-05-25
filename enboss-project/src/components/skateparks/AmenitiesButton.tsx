@@ -1,8 +1,9 @@
-// client/src/pages/skateparks/components/AmenitiesButton.tsx
+'use client';
+
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
-import { Icon } from '@/config/icons';
+import { Button } from '@/components/ui/Button';
+import { useTranslation } from '@/lib/i18n/client';
+import { Icon } from '@/assets/icons';
 import {
   Popover,
   PopoverContent,
@@ -10,23 +11,20 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip";
 
 const amenityOptions = [
   { key: 'parking', label: 'Parking' },
   { key: 'entryFee', label: 'Entry Fee' },
-
   { key: 'bathroom', label: 'Bathroom' },
   { key: 'shade', label: 'Shade' },
   { key: 'seating', label: 'Seating' },
   { key: 'noWax', label: 'No Wax Allowed' },
-
   { key: 'guard', label: 'Guard' },
   { key: 'helmetRequired', label: 'Helmet Required' },
   { key: 'scootersAllowed', label: 'Scooters Allowed' },
   { key: 'bikesAllowed', label: 'Bikes Allowed' },
   { key: 'bombShelter', label: 'Bomb Shelter' },
-
 ];
 
 interface AmenitiesButtonProps {
@@ -54,8 +52,6 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
     setIsOpen(false);
   };
 
-  // For AmenitiesButton, we need to be careful with the Tooltip + Popover combination
-  // We'll only show the tooltip when the popover is closed
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <TooltipProvider delayDuration={50}>
@@ -84,14 +80,14 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
             </PopoverTrigger>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="text-center">
-            {t('skateparks.sort.byAmenities')}
+            {t('sort.byAmenities')}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <PopoverContent className="w-full max-w-sm p-2 ">
-        <div className="space-y-2 ">
+      <PopoverContent className="w-full max-w-sm p-2">
+        <div className="space-y-2">
           <div className="flex items-center justify-between h-[32px]">
-            <h4 className="font-medium">{t('skateparks.sort.byAmenities')}</h4>
+            <h4 className="font-medium">{t('sort.byAmenities')}</h4>
             {selectedAmenities.length > 0 && (
               <Button
                 variant="error"
@@ -123,7 +119,7 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
                   category="amenity"
                   className={`w-4 h-4 mr-1 rtl:ml-1 rtl:mr-0 transition-all duration-300 ${selectedAmenities.includes(amenity.key) ? 'text-info dark:text-info-dark' : 'text-text-secondary dark:text-text-secondary-dark'}`}
                 />
-                {t(`skateparks.amenities.${amenity.key}`)}
+                {t(`amenities.${amenity.key}`)}
               </Button>
             ))}
           </div>
@@ -133,4 +129,4 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
   );
 };
 
-export default AmenitiesButton;
+export default AmenitiesButton; 

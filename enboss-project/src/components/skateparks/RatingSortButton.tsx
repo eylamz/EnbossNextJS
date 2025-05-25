@@ -1,16 +1,17 @@
-// client/src/pages/skateparks/components/DifficultySortButton.tsx
+'use client';
+
 import { Button } from '@/components/ui/button';
-import { Icon } from '@/config/icons';
-import { useTranslation } from 'react-i18next';
+import { Icon } from '@/assets/icons';
+import { useTranslation } from '@/lib/i18n/client';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-interface DifficultySortButtonProps {
+interface RatingSortButtonProps {
   isActive: boolean;
   onClick: () => void;
   className?: string;
 }
 
-const DifficultySortButton = ({ isActive, onClick, className }: DifficultySortButtonProps) => {
+const RatingSortButton = ({ isActive, onClick, className }: RatingSortButtonProps) => {
   const { t } = useTranslation('skateparks');
   
   return (
@@ -18,24 +19,24 @@ const DifficultySortButton = ({ isActive, onClick, className }: DifficultySortBu
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            variant={isActive ? "warning" : "outline"}
+            variant={isActive ? "error" : "outline"}
             size="xl"
             onClick={onClick}
             className={`${isActive ? 'rounded-full' : ''} active:scale-95 transition-transform duration-100 ${className || ''}`}
           >
             <Icon 
-              name="difficulty" 
-              category="rating" 
-              className={`w-5 h-5 ${isActive ? 'text-warning' : ''}`}
+              name="heart" 
+              category="ui" 
+              className={`w-5 h-5 ${isActive ? 'text-[#f41f57]' : ''}`}
             />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" className="text-center">
-          {t('skateparks.sort.byDifficulty')}
+          {t('sort.byRating')}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 };
 
-export default DifficultySortButton;
+export default RatingSortButton; 

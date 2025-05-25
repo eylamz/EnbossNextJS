@@ -12,7 +12,7 @@ import {
   formatDayRanges,
   formatLightingHours
 } from '@/utils/hoursFormatter';
-import { TextBadge } from '@/components/ui/TextBadge';
+import { TextBadge } from '@/components/ui/TextVariants';
 
 interface FormattedHoursProps {
   operatingHours: IOperatingHours;
