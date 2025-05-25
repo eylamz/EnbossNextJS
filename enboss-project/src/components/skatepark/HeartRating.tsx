@@ -157,7 +157,16 @@ const HeartRating = ({
     
     try {
       setIsRating(true);
+      
+      // Ensure value is a valid number
+      if (typeof value !== 'number' || isNaN(value) || value < 1 || value > 5) {
+        throw new Error('Invalid rating value');
+      }
+
+      // Call the server action
       await onRate(value);
+      
+      // Only update UI if server action succeeds
       setSelectedValue(value);
       setAnimateSuccess(true);
       
@@ -178,9 +187,10 @@ const HeartRating = ({
         onVoteComplete();
       }
     } catch (error) {
+      console.error('Rating error:', error);
       toast({
         title: t('common:common.error'),
-        description: (error as Error)?.message || t('rating.error'),
+        description: t('rating.error'),
         variant: "destructive"
       });
     } finally {

@@ -19,6 +19,8 @@ import HeartRating from '@/components/skatepark/HeartRating'
 import React from 'react'
 import Script from 'next/script'
 import ErrorStateHandler from '@/components/skatepark/ErrorStateHandler'
+import { updateRating } from '@/app/actions/rating'
+import { RatingCard } from '@/components/skatepark/RatingCard'
 
 interface SkateparkImage {
   url: string;
@@ -85,6 +87,7 @@ export async function generateMetadata({ params: { locale, slug } }: Props) {
 }
 
 export default async function SkateparkPage({ params: { locale, slug } }: Props) {
+  
   // Check if the locale is supported
   if (!languages.includes(locale)) {
     notFound()
@@ -204,11 +207,13 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               {/* Hours Card */}
               <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
                 <div className="flex gap-4 mb-4 justify-between">
-                  <div className="rtl:-ml-10">
+                  <div className="">
                     <FormattedHours 
+                      key={locale}
                       operatingHours={skatepark.operatingHours}
                       lightingHours={skatepark.lightingHours}
                       closingYear={skatepark.closingYear}
+                      locale={locale}
                     />
                   </div>
                   <div>
@@ -230,13 +235,13 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </h2>
                   </div>
 
-                  <div className="flex flex-col gap-2 mb-2">
+                  <div className="flex flex-col px-7 gap-2 mb-2">
                     <span itemProp="address">{parkAddress}</span>
                   </div>
                 </div>
 
                 {/* Opening/Closing Year Section */}
-                <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
+                <div className="mt-6 pt-4 px-7 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
                   <div className="flex flex-col flex-wrap gap-2 mb-2">
                     <span>{t('opened_at')} {skatepark.openingYear}.</span>
                     {skatepark.closingYear && (
@@ -260,6 +265,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                   amenities={skatepark.amenities}
                   closingYear={skatepark.closingYear}
                   amenityOrder={Object.keys(skatepark.amenities)}
+                  locale={locale}
                 />
 
                 {/* Notes Section */}
@@ -296,8 +302,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             {(skatepark.mediaLinks?.googleMapsUrl || 
               skatepark.mediaLinks?.appleMapsUrl || 
               skatepark.mediaLinks?.wazeUrl) && (
-              <div className="max-w-6xl mx-auto mb-8">
-                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+              <div className="w-full mx-auto mb-8">
+                <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                   <MapLinks 
                     mediaLinks={skatepark.mediaLinks}
                     parkName={parkName}
@@ -307,40 +313,20 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             )}
 
             {/* Rating Card */}
-            <div className="max-w-6xl mx-auto mb-8">
-              <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
-                  <h2 className="text-lg font-semibold flex items-center">
-                    <Icon name="heartBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
-                    {t('rating.title')}
-                  </h2>
-                </div>
-                <HeartRating
-                  rating={skatepark.rating || 0}
-                  totalVotes={skatepark.totalVotes || 0}
-                  onRate={async (rating) => {
-                    'use server'
-                    await dbConnect()
-                    await Skatepark.findByIdAndUpdate(skatepark._id, {
-                      $inc: { totalVotes: 1 },
-                      $set: { rating: ((skatepark.rating * skatepark.totalVotes) + rating) / (skatepark.totalVotes + 1) }
-                    })
-                  }}
-                  readonly={!!skatepark.closingYear}
-                />
-              </Card>
-            </div>
+            <RatingCard
+              skateparkId={skatepark._id}
+              rating={skatepark.rating || 0}
+              totalVotes={skatepark.totalVotes || 0}
+              isClosed={!!skatepark.closingYear}
+              title={t('rating.title')}
+            />
 
             {/* YouTube Video Card */}
             {skatepark.mediaLinks?.youtubeUrl && (
-              <div className="max-w-6xl mx-auto mb-8">
-                <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                  <YouTubeVideo 
-                    youtubeUrl={skatepark.mediaLinks.youtubeUrl}
-                    parkName={parkName}
-                  />
-                </Card>
-              </div>
+              <YouTubeVideo 
+                youtubeUrl={skatepark.mediaLinks.youtubeUrl}
+                parkName={parkName}
+              />
             )}
           </div>
         </div>
@@ -352,6 +338,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             currentParkId={skatepark._id} 
             area={skatepark.area}
             relatedParks={relatedParks}
+            locale={locale}
           />
         </section>
       </div>

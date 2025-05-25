@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/lib/i18n/client';
 import { Icon } from '@/assets/icons/index';
@@ -11,18 +11,49 @@ import {
   TooltipTrigger,
 } from '@/components/ui/Tooltip';
 import { MouseEvent } from 'react';
-import { useParams } from 'next/navigation';
 
 interface AmenitiesGridProps {
   amenities: Record<string, boolean>;
   closingYear?: number;
   amenityOrder: string[];
+  locale: string;
 }
 
-export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder }: AmenitiesGridProps) => {
-  const params = useParams();
-  const { t } = useTranslation(params.locale as string, 'skateparks');
+export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: AmenitiesGridProps) => {
+  const { t, i18n } = useTranslation(locale, 'skateparks');
   const [openTooltip, setOpenTooltip] = useState<string | null>(null);
+  const [translations, setTranslations] = useState<Record<string, string>>({});
+
+  // Update translations when locale changes
+  useEffect(() => {
+    const updateTranslations = async () => {
+      const newTranslations: Record<string, string> = {};
+      const validAmenityKeys = [
+        'entryFee',
+        'parking',
+        'shade',
+        'bathroom',
+        'helmetRequired',
+        'guard',
+        'seating',
+        'bombShelter',
+        'scootersAllowed',
+        'bikesAllowed',
+        'noWax'
+      ];
+
+      for (const key of validAmenityKeys) {
+        if (key in amenities) {
+          newTranslations[key] = t(`amenities.${key}`);
+          newTranslations[`${key}.description`] = t(`amenities.${key}.description`);
+        }
+      }
+
+      setTranslations(newTranslations);
+    };
+
+    updateTranslations();
+  }, [locale, t, amenities]);
 
   // Define valid amenity keys
   const validAmenityKeys = [
@@ -89,7 +120,7 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder }: Amenitie
                             ? 'text-text dark:text-text-dark' 
                             : 'text-text dark:text-text-dark' 
                         }`}>
-                          {t(`amenities.${key}`)}
+                          {translations[key] || t(`amenities.${key}`)}
                         </div>
                       </div>
                     </motion.div>
@@ -113,7 +144,7 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder }: Amenitie
                         className="w-3 h-3 text-gray-500 dark:text-gray-400"
                       />
                     </button>
-                    <p className="text-sm pr-4">{t(`amenities.${key}.description`)}</p>
+                    <p className="text-sm pr-4">{translations[`${key}.description`] || t(`amenities.${key}.description`)}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -128,7 +159,7 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder }: Amenitie
                     />
                   </div>
                   <div className="text-xs text-gray-400 dark:text-text-secondary line-through">
-                    {t(`amenities.${key}`)}
+                    {translations[key] || t(`amenities.${key}`)}
                   </div>
                 </div>
               </div>

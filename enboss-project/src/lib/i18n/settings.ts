@@ -6,12 +6,15 @@ export const getOptions = (lng = defaultLanguage, ns = 'common') => {
     // debug: true,
     supportedLngs: languages,
     defaultNS: 'common',
-    fallbackLng: defaultLanguage,
+    fallbackLng: false,
     lng,
     ns,
     interpolation: {
       escapeValue: false
     },
-    dir: lng === 'en' ? 'ltr' : 'rtl'
+    dir: lng === 'en' ? 'ltr' : 'rtl',
+    react: {
+      useSuspense: false
+    }
   }
 }

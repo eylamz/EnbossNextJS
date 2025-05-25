@@ -31,6 +31,7 @@ interface ParkCardProps {
   refetchData: () => void,
   animationDelay?: number,
   onHeartRatePark?: (parkId: string, rating: number) => Promise<void>,
+  locale: string,
 }
 
 // Utility function to optimize image URLs
@@ -158,6 +159,7 @@ const ParkCard = memo(({
   refetchData,
   animationDelay = 0,
   onHeartRatePark,
+  locale,
 }: ParkCardProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -175,10 +177,8 @@ const ParkCard = memo(({
 
   // Set the appropriate park name based on language
   useEffect(() => {
-    if (typeof document !== 'undefined') {
-      setParkName(document.documentElement.dir === 'rtl' ? park.nameHe : park.nameEn);
-    }
-  }, [park.nameHe, park.nameEn]);
+    setParkName(locale === 'he' ? park.nameHe : park.nameEn);
+  }, [park.nameHe, park.nameEn, locale]);
 
   // Get the featured image index
   const getFeaturedPhotoIndex = useCallback(() => {
@@ -366,10 +366,10 @@ const ParkCard = memo(({
     // Use a timeout to ensure state updates are processed before navigation
     navigationTimeoutRef.current = setTimeout(() => {
       if (park.slug) {
-        router.push(`/skateparks/${park.slug}`);
+        router.push(`/${locale}/skateparks/${park.slug}`);
       }
     }, 100);
-  }, [park.slug, router]);
+  }, [park.slug, router, locale]);
 
   // Clean up on unmount
   useEffect(() => {
@@ -397,9 +397,9 @@ const ParkCard = memo(({
     <Card 
       ref={cardRef}
       as={Link}
-      href={park.slug ? `/skateparks/${park.slug}` : '#'}
+      href={park.slug ? `/${locale}/skateparks/${park.slug}` : '#'}
       onClick={handleCardClick}
-      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent before:z-[1] before:pointer-events-none ${isNavigatingRef.current ? 'before:animate-shimmerInfinite' : ''}`}
+      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[1] before:pointer-events-none before:opacity-0 group-hover:before:opacity-100 group-hover:before:animate-shimmerInfinite before:transition-opacity before:duration-300 ${isNavigatingRef.current ? 'before:animate-shimmerInfinite' : ''}`}
       style={{ animationDelay: `${animationDelay}ms` }}
       aria-label={park.nameEn}
     >

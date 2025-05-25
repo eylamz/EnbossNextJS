@@ -29,8 +29,73 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+  /* Improve text contrast for accessibility */
+  body {
+    @apply overflow-x-hidden bg-background dark:bg-background-dark text-content dark:text-content-dark min-h-screen;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+    /* RTL text alignment */
+    [dir="rtl"] {
+      text-align: right;
+    }
+  
+    [dir="ltr"] {
+      text-align: left;
+    }
+    [dir="ltr"] input,
+    [dir="ltr"] textarea {
+      text-align: left;
+    }
+    /* RTL input adjustments */
+    [dir="rtl"] input,
+    [dir="rtl"] textarea {
+      text-align: right;
+    }
+
+    .outlineTab {
+      @apply focus-visible:outline-none focus-visible:outline-header;
+    }
+  
+    .page {
+      @apply my-24 md:my-28;
+    }
+  
+    .bg-primary {
+      background-color: var(--bg-primary);
+    }
+  
+    .bg-gradient-custom {
+      background: var(--bg-gradient);
+    }
+    
+    .h1 {
+      @apply mb-4 text-4xl font-extrabold leading-none tracking-tight text-text dark:text-text-dark md:text-5xl lg:text-6xl dark:text-white;
+    }
+  
+    .h2 {
+      @apply mb-4 text-2xl font-extrabold leading-none tracking-tight text-text dark:text-text-dark md:text-3xl lg:text-4xl dark:text-white;
+    }
+  
+    .h3 {
+      @apply mb-4 text-xl font-extrabold leading-none tracking-tight text-text dark:text-text-dark md:text-2xl lg:text-3xl dark:text-white;
+    }
+  
+    .card {
+      @apply bg-card dark:bg-card-dark 
+             border border-card-border dark:!border-card-border-dark 
+             rounded-lg;
+    }
+  
+    .mainback {
+      @apply bg-background dark:bg-background-dark transition-colors duration-200 ease-in-out
+    }
+    .secondaryback {
+      @apply bg-background-secondary dark:bg-background-secondary-dark transition-colors duration-200 ease-in-out
+    }
+    .bord { 
+      @apply border border-border dark:border-border-dark
+    }
+  

@@ -13,24 +13,37 @@ import {
   formatLightingHours
 } from '@/utils/hoursFormatter';
 import { TextBadge } from '@/components/ui/TextBadge';
-import { useParams } from 'next/navigation';
 
 interface FormattedHoursProps {
   operatingHours: IOperatingHours;
   lightingHours?: ILightingHours;
   className?: string;
   closingYear?: number | null;
+  locale: string;
 }
 
 const FormattedHours: React.FC<FormattedHoursProps> = ({ 
   operatingHours, 
   lightingHours,
   className = '',
-  closingYear
+  closingYear,
+  locale
 }) => {
-  const params = useParams();
-  const locale = params.locale as string;
-  const { t } = useTranslation(locale, 'skateparks');
+  // Use the client-side translation hook with the locale prop
+  const { t, i18n } = useTranslation(locale, 'skateparks');
+  
+  // Force language change on mount and when locale changes
+  React.useEffect(() => {
+    const changeLanguage = async () => {
+      try {
+        await i18n.changeLanguage(locale);
+      } catch (error) {
+        console.error('Error changing language:', error);
+      }
+    };
+    
+    changeLanguage();
+  }, [locale, i18n]);
   
   // Check if the park is permanently closed based on closingYear
   const isPermanentlyClosed = Boolean(closingYear);
@@ -43,7 +56,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         {/* Header with closed badge */}
         <div className="flex items-center gap-2">
           <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
-          <span className="font-semibold">{t('openingHours')} :</span>
+          <span className="font-semibold">{t('openingHours')}  :</span>
           <TextBadge 
             variant='error'
             className="font-semibold text-sm border border-b-[3px] bg-error-bg dark:bg-error-bg-dark/50 border-error dark:border-error-dark/60 text-error"

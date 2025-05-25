@@ -11,6 +11,7 @@ interface RelatedParksProps {
   userLocation?: { latitude: number; longitude: number } | null;
   refetchData?: () => void;
   onHeartRatePark?: (parkId: string, rating: number) => Promise<void>;
+  locale: string;
 }
 
 const RelatedParks = ({ 
@@ -19,9 +20,10 @@ const RelatedParks = ({
   relatedParks,
   userLocation = null,
   refetchData = () => {},
-  onHeartRatePark
+  onHeartRatePark,
+  locale
 }: RelatedParksProps) => {
-  const { t } = useTranslation('skateparks');
+  const { t } = useTranslation(locale, 'skateparks');
   
   // Don't render anything if there are no related parks
   if (!relatedParks || relatedParks.length === 0) return null;
@@ -43,6 +45,7 @@ const RelatedParks = ({
             refetchData={refetchData}
             animationDelay={index * 100}
             onHeartRatePark={onHeartRatePark}
+            locale={locale}
           />
         ))}
         
@@ -56,6 +59,7 @@ const RelatedParks = ({
               refetchData={refetchData}
               animationDelay={200}
               onHeartRatePark={onHeartRatePark}
+              locale={locale}
             />
           </div>
         )}
@@ -70,6 +74,7 @@ const RelatedParks = ({
               refetchData={refetchData}
               animationDelay={300}
               onHeartRatePark={onHeartRatePark}
+              locale={locale}
             />
           </div>
         )}

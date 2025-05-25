@@ -22,13 +22,17 @@ export function useTranslation(lng: string, ns: string, options = {}) {
   
   // Ensure language is set correctly and update document direction
   useEffect(() => {
-    if (i18n.language !== lng) {
-      i18n.changeLanguage(lng)
-      // Set document direction based on language
-      if (typeof window !== 'undefined' && document.documentElement) {
-        document.documentElement.dir = lng === 'en' ? 'ltr' : 'rtl'
+    const changeLanguage = async () => {
+      if (i18n.language !== lng) {
+        await i18n.changeLanguage(lng)
+        // Set document direction based on language
+        if (typeof window !== 'undefined' && document.documentElement) {
+          document.documentElement.dir = lng === 'en' ? 'ltr' : 'rtl'
+        }
       }
     }
+    
+    changeLanguage()
   }, [i18n, lng])
   
   return ret
