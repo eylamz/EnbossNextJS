@@ -35,8 +35,7 @@ const RelatedParks = ({
       </h2>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {/* Always show first 2 cards on mobile */}
-        {relatedParks.slice(0, 2).map((park, index) => (
+        {relatedParks.map((park, index) => (
           <ParkCard
             key={park._id}
             park={park}
@@ -48,36 +47,6 @@ const RelatedParks = ({
             locale={locale}
           />
         ))}
-        
-        {/* Show 3rd card on tablet and up */}
-        {relatedParks.length > 2 && (
-          <div className="hidden md:block">
-            <ParkCard
-              park={relatedParks[2]}
-              userLocation={userLocation}
-              t={t}
-              refetchData={refetchData}
-              animationDelay={200}
-              onHeartRatePark={onHeartRatePark}
-              locale={locale}
-            />
-          </div>
-        )}
-        
-        {/* Show 4th card on desktop only */}
-        {relatedParks.length > 3 && (
-          <div className="hidden lg:block">
-            <ParkCard
-              park={relatedParks[3]}
-              userLocation={userLocation}
-              t={t}
-              refetchData={refetchData}
-              animationDelay={300}
-              onHeartRatePark={onHeartRatePark}
-              locale={locale}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

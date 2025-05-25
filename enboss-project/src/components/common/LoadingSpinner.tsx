@@ -5,16 +5,33 @@ interface LoadingSpinnerProps {
   size?: number; // Diameter of the spinner in pixels
   strokeWidth?: number; // Thickness of the spinner line
   className?: string; // Additional classes for positioning, etc. (e.g., from Tailwind CSS)
+  variant?: 'default' | 'black' | 'error' | 'info' | 'header'; // Color variant
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 48, // Default size: 48px
   strokeWidth = 4, // Default stroke width: 4px
   className = '',
+  variant = 'default',
 }) => {
   const viewBoxSize = 50; // SVG viewBox is slightly larger to prevent clipping
   const radius = (viewBoxSize - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
+
+  const getGradientId = () => {
+    switch (variant) {
+      case 'black':
+        return 'blackGradient';
+      case 'error':
+        return 'errorGradient';
+      case 'info':
+        return 'infoGradient';
+      case 'header':
+        return 'headerGradient';
+      default:
+        return 'googleGradient';
+    }
+  };
 
   // Using a style tag here for the animation keyframes.
   // In a real app, you might put this in your global CSS or a CSS module
@@ -48,19 +65,48 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
           cy={viewBoxSize / 2}
           r={radius}
           fill="none"
-          stroke="url(#googleGradient)" // Using a gradient for multiple colors
+          stroke={`url(#${getGradientId()})`}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={circumference * 0.75} // Start with a quarter arc
           strokeLinecap="round"
         />
         <defs>
+          {/* Default Google colors gradient */}
           <linearGradient id="googleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style={{ stopColor: '#4285F4' }} /> {/* Blue */}
             <stop offset="25%" style={{ stopColor: '#DB4437' }} /> {/* Red */}
             <stop offset="50%" style={{ stopColor: '#F4B400' }} /> {/* Yellow */}
             <stop offset="75%" style={{ stopColor: '#0F9D58' }} /> {/* Green */}
             <stop offset="100%" style={{ stopColor: '#4285F4' }} /> {/* Blue again for smooth transition */}
+          </linearGradient>
+
+          {/* Black gradient */}
+          <linearGradient id="blackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#000000' }} />
+            <stop offset="50%" style={{ stopColor: '#333333' }} />
+            <stop offset="100%" style={{ stopColor: '#000000' }} />
+          </linearGradient>
+
+          {/* Error gradient */}
+          <linearGradient id="errorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#DC2626' }} /> {/* Red-600 */}
+            <stop offset="50%" style={{ stopColor: '#EF4444' }} /> {/* Red-500 */}
+            <stop offset="100%" style={{ stopColor: '#DC2626' }} /> {/* Red-600 */}
+          </linearGradient>
+
+          {/* Info gradient */}
+          <linearGradient id="infoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#0284C7' }} /> {/* Sky-600 */}
+            <stop offset="50%" style={{ stopColor: '#0EA5E9' }} /> {/* Sky-500 */}
+            <stop offset="100%" style={{ stopColor: '#0284C7' }} /> {/* Sky-600 */}
+          </linearGradient>
+
+          {/* Header gradient */}
+          <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style={{ stopColor: '#1F2937' }} /> {/* Gray-800 */}
+            <stop offset="50%" style={{ stopColor: '#374151' }} /> {/* Gray-700 */}
+            <stop offset="100%" style={{ stopColor: '#1F2937' }} /> {/* Gray-800 */}
           </linearGradient>
         </defs>
       </svg>

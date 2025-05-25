@@ -556,6 +556,7 @@ const ParkCard = memo(({
               onRate={handleRatePark}
               userRating={park._id ? park.userRating : null}
               onVoteComplete={refetchData}
+              skateparkId={park._id || ''}
             />
           </div>
         </div>

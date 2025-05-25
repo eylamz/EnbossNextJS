@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/Card'
 import { Icon } from '@/assets/icons'
 import HeartRating from './HeartRating'
 import { updateRating } from '@/app/actions/rating'
+import { useRouter } from 'next/navigation'
 
 interface RatingCardProps {
   skateparkId: string
@@ -14,6 +15,51 @@ interface RatingCardProps {
 }
 
 export function RatingCard({ skateparkId, rating, totalVotes, isClosed, title }: RatingCardProps) {
+  const router = useRouter()
+
+  const handleRate = async (rating: number) => {
+    console.log('=== RATING CARD DEBUG ===')
+    console.log('Current park rating:', rating)
+    console.log('Current total votes:', totalVotes)
+    console.log('Skatepark ID:', skateparkId)
+    console.log('User voted:', rating)
+
+    // Get previous rating from localStorage
+    let previousRating = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const ratings = JSON.parse(localStorage.getItem('skateparkRatings') || '{}');
+        previousRating = ratings[skateparkId] || null;
+        console.log('Previous rating from localStorage:', previousRating)
+      } catch (error) {
+        console.error('Error reading from localStorage:', error);
+      }
+    }
+
+    const formData = new FormData()
+    formData.append('skateparkId', skateparkId)
+    formData.append('rating', rating.toString())
+    if (previousRating !== null) {
+      formData.append('previousRating', previousRating.toString())
+    }
+    
+    try {
+      const result = await updateRating(formData)
+      console.log('Server action result:', result)
+      
+      // Force a hard refresh to bypass any caching
+      if (typeof window !== 'undefined') {
+        window.location.reload()
+      } else {
+        router.refresh()
+      }
+      console.log('Page refreshed')
+    } catch (error) {
+      console.error('Error in handleRate:', error)
+    }
+    console.log('=== END RATING CARD DEBUG ===')
+  }
+
   return (
     <div className="max-w-6xl mx-auto mb-8">
       <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
@@ -26,13 +72,9 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed, title }:
         <HeartRating
           rating={rating}
           totalVotes={totalVotes}
-          onRate={async (rating: number) => {
-            const formData = new FormData()
-            formData.append('skateparkId', skateparkId)
-            formData.append('rating', rating.toString())
-            await updateRating(formData)
-          }}
+          onRate={handleRate}
           readonly={isClosed}
+          skateparkId={skateparkId}
         />
       </Card>
     </div>

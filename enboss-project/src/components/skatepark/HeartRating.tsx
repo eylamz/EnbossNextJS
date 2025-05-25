@@ -25,6 +25,7 @@ interface HeartRatingProps {
   userRating?: number | null;
   onVoteComplete?: () => void;
   hideVotesCount?: boolean;
+  skateparkId: string;
 }
 
 let activeDialogId: string | null = null;
@@ -112,14 +113,15 @@ const HeartRating = ({
   readonly = false,
   userRating = null,
   onVoteComplete,
-  hideVotesCount = false
+  hideVotesCount = false,
+  skateparkId
 }: HeartRatingProps) => {
   const dialogIdRef = useRef<string>(getUniqueDialogId());
   const [isRating, setIsRating] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [animateSuccess, setAnimateSuccess] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<number | null>(userRating);
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
   const [hoverValue, setHoverValue] = useState(0);
   const { t } = useTranslation('skateparks', 'common');
   const { toast } = useToast();
@@ -146,14 +148,40 @@ const HeartRating = ({
     };
   }, []);
 
-  // Reset selected value when user rating changes
+  // Function to get user's previous rating from localStorage
+  const getPreviousRating = useCallback(() => {
+    if (typeof window === 'undefined' || !skateparkId) return null;
+    try {
+      const ratings = JSON.parse(localStorage.getItem('skateparkRatings') || '{}');
+      return ratings[skateparkId] || null;
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+      return null;
+    }
+  }, [skateparkId]);
+
+  // Function to save user's rating to localStorage
+  const saveRating = useCallback((rating: number) => {
+    if (typeof window === 'undefined' || !skateparkId) return;
+    try {
+      const ratings = JSON.parse(localStorage.getItem('skateparkRatings') || '{}');
+      ratings[skateparkId] = rating;
+      localStorage.setItem('skateparkRatings', JSON.stringify(ratings));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+    }
+  }, [skateparkId]);
+
+  // Initialize selectedValue from localStorage on mount
   useEffect(() => {
-    setSelectedValue(userRating);
-  }, [userRating]);
-  
+    if (!skateparkId) return;
+    const storedRating = getPreviousRating();
+    setSelectedValue(storedRating);
+  }, [getPreviousRating, skateparkId]);
+
   // Function to handle rating selection
   const handleRating = useCallback(async (value: number) => {
-    if (readonly || isRating) return;
+    if (readonly || isRating || !skateparkId) return;
     
     try {
       setIsRating(true);
@@ -163,10 +191,16 @@ const HeartRating = ({
         throw new Error('Invalid rating value');
       }
 
-      // Call the server action
+      // Get previous rating if any
+      const previousRating = getPreviousRating();
+
+      // Call the server action with the rating value
       await onRate(value);
       
-      // Only update UI if server action succeeds
+      // Save the new rating to localStorage
+      saveRating(value);
+      
+      // Update UI
       setSelectedValue(value);
       setAnimateSuccess(true);
       
@@ -177,7 +211,7 @@ const HeartRating = ({
 
       toast({
         title: t('rating.successTitle'),
-        description: userRating 
+        description: previousRating !== null 
           ? t('rating.updated')
           : t('rating.success'),
         variant: "success"
@@ -196,7 +230,7 @@ const HeartRating = ({
     } finally {
       setIsRating(false);
     }
-  }, [readonly, isRating, onRate, userRating, onVoteComplete, t, toast]);
+  }, [readonly, isRating, onRate, onVoteComplete, t, toast, getPreviousRating, saveRating, skateparkId]);
 
   const handleMouseEnter = useCallback((value: number) => {
     if (!readonly) {
@@ -305,7 +339,7 @@ const HeartRating = ({
               category="ui"
               className={cn(
                 "w-5 h-5",
-                userRating ? "text-error fill-error dark:text-error-dark dark:fill-error-dark" : "text-text-secondary/30 dark:text-text-secondary-dark/80"
+                selectedValue ? "text-error fill-error dark:text-error-dark dark:fill-error-dark" : "text-text-secondary/30 dark:text-text-secondary-dark/80"
               )} 
             />
             {!hideVotesCount && (
@@ -332,7 +366,7 @@ const HeartRating = ({
                 {t('rating.overall')}
               </motion.h3>
               
-              {userRating && (
+              {selectedValue && (
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1, transition: { duration: 0.15 } }}
@@ -388,7 +422,7 @@ const HeartRating = ({
               category="ui"
               className={cn(
                 "w-5 h-5",
-                userRating ? "text-error fill-error dark:text-error-dark dark:fill-error-dark" : "text-text-secondary/30 dark:text-text-secondary-dark/80"
+                selectedValue ? "text-error fill-error dark:text-error-dark dark:fill-error-dark" : "text-text-secondary/30 dark:text-text-secondary-dark/80"
               )} 
             />
             {!hideVotesCount && (
@@ -407,7 +441,7 @@ const HeartRating = ({
             animate={{ opacity: 1, y: 0, transition: { duration: 0.15 } }}
             className="space-y-2"
           >
-            {userRating && (
+            {selectedValue && (
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { duration: 0.1 } }}

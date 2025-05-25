@@ -17,12 +17,12 @@ export function YouTubeVideo({ youtubeUrl, parkName }: YouTubeVideoProps) {
   const { t } = useTranslation(params.locale as string, 'common')
 
   return (
-    <section aria-labelledby="video-heading" className="mb-8 w-full max-w-6xl mx-auto">
+    <section aria-labelledby="video-heading" className="mb-8 w-full max-w-6xl mx-auto bord rounded-3xl">
       <h2 id="video-heading" className="sr-only">{parkName} {t('common.video')}</h2>
       <Card className="backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
-        <div className="w-full aspect-video relative">
+        <div className="w-full aspect-video  relative">
           {isVideoLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100/50 dark:bg-gray-800/50 backdrop-blur-sm z-10 rounded-lg">
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100/50 dark:bg-gray-800/50 backdrop-blur-sm z-10">
               <LoadingSpinner />
             </div>
           )}

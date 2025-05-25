@@ -243,8 +243,8 @@ const skateparks = [
     },
     notesEn: ['Entry for scooter and bicycle riders is prohibited.', 'Helmet is mandatory for entry.'],
     notesHe: ['הכניסה לרוכבי קורקינט ואופניים אסורה.', 'כניסה עם קסדה חובה.'],
-    rating: 4.8,
-    ratingCount: 45
+    rating: 0,
+    ratingCount: 0
   },
   {
     nameEn: 'Tel Aviv Skatepark (Sportek)',
@@ -279,8 +279,8 @@ const skateparks = [
     },
     notesEn: ['Large skatepark located within Sportek Tel Aviv. Usually crowded.'],
     notesHe: ['סקייטפארק גדול הממוקם בספורטק תל אביב. בדרך כלל עמוס.'],
-    rating: 4.5,
-    ratingCount: 120
+    rating: 0,
+    ratingCount: 0
   },
   {
     nameEn: 'Hadera',

@@ -235,7 +235,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </h2>
                   </div>
 
-                  <div className="flex flex-col px-7 gap-2 mb-2">
+                  <div className="flex flex-col px-2 gap-2 mb-2">
                     <span itemProp="address">{parkAddress}</span>
                   </div>
                 </div>
@@ -316,7 +316,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             <RatingCard
               skateparkId={skatepark._id}
               rating={skatepark.rating || 0}
-              totalVotes={skatepark.totalVotes || 0}
+              totalVotes={skatepark.ratingCount || 0}
               isClosed={!!skatepark.closingYear}
               title={t('rating.title')}
             />

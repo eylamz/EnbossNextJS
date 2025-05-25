@@ -10,8 +10,9 @@ import {
 import { Icon } from '@/assets/icons'
 import { useTheme } from '@/context/ThemeProvider'
 import { useTranslation } from '@/lib/i18n/client'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/Card'
+import { useEffect, useState } from 'react'
 
 interface MapLinksProps {
   mediaLinks?: {
@@ -25,14 +26,26 @@ interface MapLinksProps {
 export function MapLinks({ mediaLinks, parkName }: MapLinksProps) {
   const { theme } = useTheme()
   const params = useParams()
-  const { t } = useTranslation(params.locale as string, 'skateparks')
+  const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+  const locale = String(params.locale)
+  const { t } = useTranslation(locale, 'skateparks')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
 
   if (!mediaLinks?.googleMapsUrl && !mediaLinks?.appleMapsUrl && !mediaLinks?.wazeUrl) {
     return null
   }
 
   return (
-    <section aria-labelledby="directions-heading">
+    <section 
+      aria-labelledby="directions-heading"
+      key={`map-links-${locale}-${mounted}`}
+    >
       <h2 id="directions-heading" className="sr-only">{t('mapLinks.title')}</h2>
         <div className="flex flex-col space-y-4">
           <h3 className="font-semibold text-text dark:text-[#96b6c9] mb-2">
