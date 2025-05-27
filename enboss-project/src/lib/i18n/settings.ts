@@ -6,7 +6,7 @@ export const getOptions = (lng = defaultLanguage, ns = 'common') => {
     // debug: true,
     supportedLngs: languages,
     defaultNS: 'common',
-    fallbackLng: false,
+    fallbackLng: defaultLanguage,
     lng,
     ns,
     interpolation: {
@@ -14,7 +14,9 @@ export const getOptions = (lng = defaultLanguage, ns = 'common') => {
     },
     dir: lng === 'en' ? 'ltr' : 'rtl',
     react: {
-      useSuspense: false
+      useSuspense: false,
+      bindI18n: 'languageChanged loaded',
+      bindI18nStore: 'added removed',
     }
   }
 }

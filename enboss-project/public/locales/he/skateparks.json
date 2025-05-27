@@ -2,19 +2,26 @@
     "all_skateparks": "כל הסקייטפארקים",
     "filter_by_area": "סנן לפי אזור",
     "all_areas": "כל האזורים",
-    "north": "צפון",
-    "center": "מרכז",
-    "south": "דרום",
+    "relatedParks": "סקייטפארקים נוספים",
+
+    "area": {
+      "north": "צפון",
+      "center": "מרכז",
+      "south": "דרום"
+    },
+
+    
+
     "inactive": "לא פעיל",
     "no_skateparks_found": "לא נמצאו סקייטפארקים התואמים את הסינון שלך",
     "openingHours": "שעות פתיחה",
     "lightingHours": "שעות תאורה",
+    "fromSunsetTill": "משקיעת השמש עד",
     "features": "מאפיינים",
     "location": "מיקום",
     "address": "כתובת",
-    "mapLinks.title":"קישורי ניווט",
     "isPermanentlyClosed": "סגור לצמיתות",
-    "is24Hours": "פתוח 24 שעות",
+    "is24Hours": "פתוח 24/7",
     "openAllDay": "פתוח כל היום",
     "openingYear": "שנת פתיחה",
     "closingYear": "שנת סגירה",
@@ -24,13 +31,26 @@
     "closed_at": "נסגר בשנת",
     "rating": "דירוג",
     "notes": "הערות",
-    "getDirections": "קבל הוראות הגעה",
-    "navigate_waze": "נווט עם Waze",
-    "navigate_google": "נווט עם Google Maps",
-    "navigate_apple": "נווט עם Apple Maps",
+
+    "mapLinks": {
+      "title": "קישורי ניווט",
+      "googleLink": "Google Maps",
+      "wazeLink": "Waze",
+      "appleLink": "Apple Maps"
+    },
+
     "back_to_skateparks": "חזרה לסקייטפארקים",
     "information": "פרטים",
     "no_features_listed": "אין מאפיינים רשומים",
+
+    "ratingTitle": "דירוג",
+    "ratingsDesc": "ביקרתם בפארק? שתפו את חוויתכם",
+    "parkCard": {
+      "featuredParkCard": "פופולרי",
+      "newParkCard": "חדש באתר",
+      "closedPark": "נסגר לצמיתות"
+    },
+
     "no_lighting": "אין תאורה",
     "amenities": {
       "title": "שירותים / חוקים",

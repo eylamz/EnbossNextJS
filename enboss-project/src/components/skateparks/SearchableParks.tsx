@@ -4,6 +4,7 @@ import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SearchInput } from '@/components/common/SearchInput'
 import { ParkCardWrapper } from '@/components/skatepark/ParkCardWrapper'
+import AmenitiesButton from './AmenitiesButton'
 
 interface SkateparkData {
   _id: string;
@@ -28,14 +29,19 @@ interface SearchableParksProps {
 
 export function SearchableParks({ skateparks, locale }: SearchableParksProps) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
   const { t } = useTranslation(['common', 'skateparks'])
 
   const filteredParks = skateparks.filter((park) => {
     const searchLower = searchQuery.toLowerCase()
-    return (
-      park.nameEn.toLowerCase().includes(searchLower) ||
+    const nameMatch = park.nameEn.toLowerCase().includes(searchLower) ||
       park.nameHe.toLowerCase().includes(searchLower)
-    )
+
+    // Filter by amenities if any are selected
+    const amenitiesMatch = selectedAmenities.length === 0 || 
+      selectedAmenities.every(amenity => park.amenities[amenity])
+
+    return nameMatch && amenitiesMatch
   })
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +50,10 @@ export function SearchableParks({ skateparks, locale }: SearchableParksProps) {
 
   const handleClearSearch = useCallback(() => {
     setSearchQuery('')
+  }, [])
+
+  const handleAmenitiesChange = useCallback((amenities: string[]) => {
+    setSelectedAmenities(amenities)
   }, [])
 
   return (
@@ -57,14 +67,21 @@ export function SearchableParks({ skateparks, locale }: SearchableParksProps) {
         </p>
       </div>
 
-      {/* Search Input */}
-      <div className="max-w-md mx-auto mb-8">
-        <SearchInput
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onClear={handleClearSearch}
-          placeholder={t('skateparks:searchPlaceholder', 'Search skateparks...')}
-          maxWidth="md"
+      {/* Search Input and Amenities Button */}
+      <div className="max-w-md mx-auto mb-8 flex items-center gap-2">
+        <div className="flex-1">
+          <SearchInput
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onClear={handleClearSearch}
+            placeholder={t('skateparks:searchPlaceholder', 'Search skateparks...')}
+            maxWidth="md"
+          />
+        </div>
+        <AmenitiesButton
+          selectedAmenities={selectedAmenities}
+          onAmenitiesChange={handleAmenitiesChange}
+          locale={locale}
         />
       </div>
 

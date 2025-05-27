@@ -51,10 +51,10 @@ const OptimizedImage = React.memo(({
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   
-  // Preload the image
+  // Preload the image with lower priority
   useEffect(() => {
     const img = new Image();
-    img.src = getOptimizedImageUrl(image.url, 600, 90);
+    img.src = getOptimizedImageUrl(image.url, 400, 90);
     img.onload = () => {
       setIsLoaded(true);
       setHasError(false);
@@ -83,11 +83,12 @@ const OptimizedImage = React.memo(({
       )}
       <img
         ref={imgRef}
-        src={getOptimizedImageUrl(image.url, 600, 90)}
+        src={getOptimizedImageUrl(image.url, 400, 90)}
         alt={`Image ${index + 1}`}
         className={`w-full h-full saturate-[125%] object-cover select-none ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         draggable={false}
         loading="lazy"
+        fetchPriority="low"
         onClick={(e) => onClick(index, e)}
       />
     </div>

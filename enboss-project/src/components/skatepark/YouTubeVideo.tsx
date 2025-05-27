@@ -17,7 +17,7 @@ export function YouTubeVideo({ youtubeUrl, parkName }: YouTubeVideoProps) {
   const { t } = useTranslation(params.locale as string, 'common')
 
   return (
-    <section aria-labelledby="video-heading" className="mb-8 w-full max-w-6xl mx-auto bord rounded-3xl">
+    <section aria-labelledby="video-heading" className="w-full max-w-6xl mx-auto bord rounded-3xl">
       <h2 id="video-heading" className="sr-only">{parkName} {t('common.video')}</h2>
       <Card className="backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70">
         <div className="w-full aspect-video  relative">

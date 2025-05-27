@@ -14,27 +14,29 @@ import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip";
 
 const amenityOptions = [
-  { key: 'parking', label: 'Parking' },
-  { key: 'entryFee', label: 'Entry Fee' },
-  { key: 'bathroom', label: 'Bathroom' },
-  { key: 'shade', label: 'Shade' },
-  { key: 'seating', label: 'Seating' },
-  { key: 'noWax', label: 'No Wax Allowed' },
-  { key: 'guard', label: 'Guard' },
-  { key: 'helmetRequired', label: 'Helmet Required' },
-  { key: 'scootersAllowed', label: 'Scooters Allowed' },
-  { key: 'bikesAllowed', label: 'Bikes Allowed' },
-  { key: 'bombShelter', label: 'Bomb Shelter' },
+  { key: 'parking', label: 'amenities.parking' },
+  { key: 'entryFee', label: 'amenities.entryFee' },
+  { key: 'bathroom', label: 'amenities.bathroom' },
+  { key: 'shade', label: 'amenities.shade' },
+  { key: 'seating', label: 'amenities.seating' },
+  { key: 'noWax', label: 'amenities.noWax' },
+  { key: 'guard', label: 'amenities.guard' },
+  { key: 'helmetRequired', label: 'amenities.helmetRequired' },
+  { key: 'scootersAllowed', label: 'amenities.scootersAllowed' },
+  { key: 'bikesAllowed', label: 'amenities.bikesAllowed' },
+  { key: 'bombShelter', label: 'amenities.bombShelter' },
 ];
 
 interface AmenitiesButtonProps {
   selectedAmenities: string[];
   onAmenitiesChange: (amenities: string[]) => void;
   className?: string;
+  locale: string;
 }
 
-const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: AmenitiesButtonProps) => {
-  const { t } = useTranslation('skateparks');
+const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className, locale }: AmenitiesButtonProps) => {
+  const { t: tSkateparks } = useTranslation(locale, 'skateparks');
+  const { t: tCommon } = useTranslation(locale, 'common');
   const [isOpen, setIsOpen] = useState(false);
 
   const isActive = selectedAmenities.length > 0;
@@ -80,14 +82,14 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
             </PopoverTrigger>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="text-center">
-            {t('sort.byAmenities')}
+            {tSkateparks('amenities.title')}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <PopoverContent className="w-full max-w-sm p-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between h-[32px]">
-            <h4 className="font-medium">{t('sort.byAmenities')}</h4>
+            <h4 className="font-medium">{tSkateparks('amenities.title')}</h4>
             {selectedAmenities.length > 0 && (
               <Button
                 variant="error"
@@ -95,7 +97,7 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
                 onClick={clearAll}
                 className="h-8 px-2 text-xs flex flex-row-reverse gap-1 items-center"
               >
-                {t('common:common.clear')}
+                {tCommon('clear')}
                 <Icon 
                   name="trash" 
                   category="action" 
@@ -119,7 +121,7 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className }: Am
                   category="amenity"
                   className={`w-4 h-4 mr-1 rtl:ml-1 rtl:mr-0 transition-all duration-300 ${selectedAmenities.includes(amenity.key) ? 'text-info dark:text-info-dark' : 'text-text-secondary dark:text-text-secondary-dark'}`}
                 />
-                {t(`amenities.${amenity.key}`)}
+                {tSkateparks(amenity.label)}
               </Button>
             ))}
           </div>

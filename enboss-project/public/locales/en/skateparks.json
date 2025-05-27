@@ -2,23 +2,38 @@
     "all_skateparks": "All Skateparks",
     "filter_by_area": "Filter by Area",
     "all_areas": "All Areas",
-    "north": "North",
-    "center": "Center",
-    "south": "South",
+    "relatedParks": "Related Skateparks",
+
+    "area": {
+      "north": "North",
+      "center": "Center",
+      "south": "South"
+    },
+
     "inactive": "Inactive",
     "no_skateparks_found": "No skateparks found matching your filters",
     "openingHours": "Opening Hours",
     "lightingHours": "Lighting Hours",
+    "fromSunsetTill": "From Sunset Till",
     "features": "Features",
     "location": "Location",
     "address": "Address",
     "opening_year": "Opening Year",
     "closing_year": "Closing Year",
     "rating": "Rating",
+    "ratingTitle": "Ratings",
+    "ratingsDesc": "Rate the park and help us improve the information",
     "notes": "Notes",
-    "mapLinks.title": "Navigation Links",
+
+    "mapLinks": {
+      "title": "Navigation Links",
+      "googleLink": "Google Maps",
+      "wazeLink": "Waze",
+      "appleLink": "Apple Maps"
+    },
+
     "isPermanentlyClosed": "Permanently Closed",
-    "is24Hours": "24 Hours",
+    "is24Hours": "Open 24/7",
     "openAllDay": "Open All Day",
     "openingYear": "Opening Year",
     "closingYear": "Closing Year",
@@ -32,6 +47,13 @@
     "back_to_skateparks": "Back to Skateparks",
     "information": "Information",
     "no_features_listed": "No features listed",
+    
+    "parkCard": {
+      "featuredParkCard": "Popular",
+      "newParkCard": "New on the site",
+      "closedPark": "Permanently Closed"
+    },
+
     "amenities": {
       "title": "Services / Rules",
       "entryFee": "Entry Fee",

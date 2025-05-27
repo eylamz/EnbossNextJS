@@ -1,7 +1,9 @@
 'use client'
 
-import { useTranslation } from '@/lib/i18n/client'
+import { useTranslation } from '@/lib/i18n/server'
 import Link from 'next/link'
+import { Suspense } from 'react'
+import LoadingSpinner from '@/components/common/LoadingSpinner'
 
 interface BreadCrumbsProps {
   previousPage: {
@@ -14,11 +16,20 @@ interface BreadCrumbsProps {
   locale: string
 }
 
-export const BreadCrumbs = ({ previousPage, currentPage, locale }: BreadCrumbsProps) => {
-  const { t } = useTranslation(locale, 'common')
+// Loading component for translations
+function TranslationLoading() {
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <LoadingSpinner size={24} />
+    </div>
+  );
+}
+
+export const BreadCrumbs = async ({ previousPage, currentPage, locale }: BreadCrumbsProps) => {
+  const { t } = await useTranslation(locale, 'common')
 
   return (
-    <nav aria-label="Breadcrumb" className="select-none mx-auto w-full max-w-6xl absolute top-20 left-4 right-4 z-20"> 
+    <nav aria-label="Breadcrumb" className="select-none mx-auto max-w-6xl absolute top-20 left-4 right-4 z-20"> 
     
       <ol className="flex items-center text-sm text-text-dark/80 dark:text-text-dark/90 transition-color duration-300">
         <li>

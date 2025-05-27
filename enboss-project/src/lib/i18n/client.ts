@@ -17,7 +17,10 @@ if (!i18next.isInitialized) {
 }
 
 export function useTranslation(lng: string, ns: string, options = {}) {
-  const ret = useTranslationOrg(ns, options)
+  const ret = useTranslationOrg(ns, {
+    ...options,
+    lng, // Explicitly set the language
+  })
   const { i18n } = ret
   
   // Ensure language is set correctly and update document direction

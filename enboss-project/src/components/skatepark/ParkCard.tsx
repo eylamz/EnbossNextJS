@@ -32,6 +32,7 @@ interface ParkCardProps {
   animationDelay?: number,
   onHeartRatePark?: (parkId: string, rating: number) => Promise<void>,
   locale: string,
+  currentParkArea?: string,
 }
 
 // Utility function to optimize image URLs
@@ -39,7 +40,7 @@ const getOptimizedImageUrl = (originalUrl: string): string => {
   if (originalUrl?.includes('cloudinary.com')) {
     const urlParts = originalUrl.split('/upload/');
     if (urlParts.length === 2) {
-      return `${urlParts[0]}/upload/w_600,c_fill,q_auto:good,f_auto/${urlParts[1]}`;
+      return `${urlParts[0]}/upload/w_500,c_fill,q_auto:good,f_auto/${urlParts[1]}`;
     }
   }
   return originalUrl || '';
@@ -50,12 +51,14 @@ const SkateparkThumbnail = memo(({
   photoUrl, 
   parkName, 
   isTransitioning,
-  onLoad
+  onLoad,
+  currentPhotoIndex
 }: { 
   photoUrl: string, 
   parkName: string,
   isTransitioning: boolean,
-  onLoad?: () => void
+  onLoad?: () => void,
+  currentPhotoIndex: number
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   
@@ -84,10 +87,11 @@ const SkateparkThumbnail = memo(({
           src={getOptimizedImageUrl(photoUrl)}
           alt={parkName}
           fill
+          priority={currentPhotoIndex === 0}
           className={`object-cover transition-all duration-200 saturate-[1.75] select-none ${
             isTransitioning ? 'opacity-0' : 'opacity-100'
           } ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          loading="lazy"
+          loading={currentPhotoIndex === 0 ? "eager" : "lazy"}
           onLoad={handleImageLoad}
           onError={handleImageError}
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
@@ -160,6 +164,7 @@ const ParkCard = memo(({
   animationDelay = 0,
   onHeartRatePark,
   locale,
+  currentParkArea,
 }: ParkCardProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -417,15 +422,6 @@ const ParkCard = memo(({
     };
   }, []);
 
-  // Add debug logging for park data
-  useEffect(() => {
-    console.log('ParkCard Debug - Park Data:', {
-      id: park._id,
-      heartRating: park.heartRating,
-      rating: park.heartRating?.average || 0,
-      totalVotes: park.heartRating?.count || 0
-    });
-  }, [park]);
 
   return (
     <Card 
@@ -433,7 +429,7 @@ const ParkCard = memo(({
       as={Link}
       href={park.slug ? `/${locale}/skateparks/${park.slug}` : '#'}
       onClick={handleCardClick}
-      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[1] before:pointer-events-none before:opacity-0 before:transition-opacity before:duration-300 ${isNavigating ? 'before:opacity-100 before:animate-shimmerInfinite' : ''}`}
+      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[20] before:pointer-events-none before:opacity-0 before:transition-opacity before:duration-300 ${isNavigating ? 'before:opacity-100 before:animate-shimmerInfinite' : ''}`}
       style={{ animationDelay: `${animationDelay}ms` }}
       aria-label={park.nameEn}
     >
@@ -488,17 +484,17 @@ const ParkCard = memo(({
 
         {/* Add closed badge for parks with closingYear */}
         {park.closingYear && (
-          <div className={`absolute bottom-2 z-10 ${
-            [new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear) 
+          <div className={`absolute bottom-2 z-50 ${
+            (park.createdAt && isNewPark(park.createdAt)) 
               ? 'right-0' 
               : 'left-0'
           }`}>
             <div className={`flex gap-1 justify-center items-center bg-error dark:bg-error-dark text-white text-xs px-2 py-1 shadow-badge ${
-              [new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear)
+              (park.createdAt && isNewPark(park.createdAt))
                 ? 'rounded-l-3xl'
                 : 'rounded-r-3xl'
             }`}>
-              {t('closedPark')}
+              {t('skateparks:parkCard.closedPark')}
               <Icon name='closedPark' category="ui" className="w-3 h-3" />
             </div>
           </div>
@@ -506,17 +502,9 @@ const ParkCard = memo(({
 
         {/* Add new badge for parks created in the last 2 months */}
         {park.createdAt && isNewPark(park.createdAt) && (
-          <div className={`absolute bottom-2 z-10 ${
-            [new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear) 
-              ? 'right-0' 
-              : 'left-0'
-          }`}>
-            <div className={`flex gap-1 justify-center items-center bg-info text-white text-xs md:text-sm px-2 py-1 shadow-badge ${
-              [new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear)
-                ? 'rounded-l-3xl'
-                : 'rounded-r-3xl'
-            }`}>
-              {t('newParkCard')}
+          <div className="absolute bottom-2 z-10 left-0">
+            <div className="flex gap-1 justify-center items-center bg-info text-white text-xs md:text-sm px-2 py-1 shadow-badge rounded-r-3xl">
+              {t('skateparks:parkCard.newParkCard')}
               <Icon name='new' category="ui" className="w-4 h-4" />
             </div>
           </div>
@@ -536,7 +524,7 @@ const ParkCard = memo(({
                 ? 'rounded-l-3xl'
                 : 'rounded-r-3xl'
             }`}>
-              {t('featuredParkCard')}
+              {t('skateparks:parkCard.featuredParkCard')}
               <Icon name='featured' category="ui" className="w-3 h-3" />
             </div>
           </div>
@@ -547,6 +535,7 @@ const ParkCard = memo(({
             photoUrl={park.images[currentPhotoIndex]?.url}
             parkName={parkName}
             isTransitioning={isTransitioning}
+            currentPhotoIndex={currentPhotoIndex}
           />
         )}
         
@@ -575,9 +564,9 @@ const ParkCard = memo(({
             <Icon 
               name="location" 
               category="navigation" 
-              className="w-3.5 h-3.5 mr-1 rtl:ml-1 rtl:mr-0 flex-shrink-0"
+              className={`w-3.5 h-3.5 flex-shrink-0 ${locale === 'he' ? 'ml-1' : 'mr-1'} ${currentParkArea && currentParkArea !== park.area ? 'font-semibold text-info dark:text-info-dark' : ''}`}
             />
-            <span className="text-sm truncate">
+            <span className={`text-sm truncate ${currentParkArea && currentParkArea !== park.area ? 'font-semibold text-info dark:text-info-dark' : ''}`}>
               {distanceText || t(`area.${park.area}`)}
             </span>
           </div>

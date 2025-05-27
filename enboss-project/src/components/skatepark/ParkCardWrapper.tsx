@@ -3,6 +3,7 @@
 import React from 'react'
 import ParkCard from './ParkCard'
 import { updateRating } from '@/app/actions/rating'
+import { useTranslation } from '@/lib/i18n/client'
 
 interface SkateparkData {
   _id: string;
@@ -31,11 +32,13 @@ export function ParkCardWrapper({
   animationDelay,
   locale 
 }: ParkCardWrapperProps) {
+  const { t } = useTranslation(locale, 'skateparks')
+
   return (
     <ParkCard
       park={park}
       userLocation={null}
-      t={(key: string) => key} // This will be replaced by the actual translation in the client
+      t={t}
       refetchData={async () => {
         // Client-side refetch logic
         window.location.reload();

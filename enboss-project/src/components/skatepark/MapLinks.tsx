@@ -27,15 +27,8 @@ export function MapLinks({ mediaLinks, parkName }: MapLinksProps) {
   const { theme } = useTheme()
   const params = useParams()
   const router = useRouter()
-  const [mounted, setMounted] = useState(false)
   const locale = String(params.locale)
   const { t } = useTranslation(locale, 'skateparks')
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
 
   if (!mediaLinks?.googleMapsUrl && !mediaLinks?.appleMapsUrl && !mediaLinks?.wazeUrl) {
     return null
@@ -44,7 +37,7 @@ export function MapLinks({ mediaLinks, parkName }: MapLinksProps) {
   return (
     <section 
       aria-labelledby="directions-heading"
-      key={`map-links-${locale}-${mounted}`}
+      key={`map-links-${locale}`}
     >
       <h2 id="directions-heading" className="sr-only">{t('mapLinks.title')}</h2>
         <div className="flex flex-col space-y-4">
@@ -83,7 +76,7 @@ export function MapLinks({ mediaLinks, parkName }: MapLinksProps) {
                         name={theme === 'dark' ? "wazeDark" : "wazeBold"} 
                         category="action" 
                         className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-[#1acdff] dark:text-text-dark drop-shadow-md dark:drop-shadow-lg overflow-visible"
-                      />
+                        />
                     </motion.a>
                   </TooltipTrigger>
                   <TooltipContent side="bottom" className="text-center">

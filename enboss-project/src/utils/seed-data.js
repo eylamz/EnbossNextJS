@@ -346,7 +346,7 @@ const skateparks = [
   },
   {
     nameEn: 'Petah Tikva - Kfar Ganim C',
-    nameHe: 'פתח תקווה - כפר גנים ג',
+    nameHe: 'פתח תקווה - כפר גנים ג\'',
     slug: 'petah-tikva-kfar-ganim-c',
     area: 'center',
     status: 'active',

@@ -9,8 +9,8 @@ const dayOrder: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thur
 // Check if a day's schedule represents a "closed" day
 export const isDayClosed = (schedule: IDaySchedule): boolean => {
   if (!schedule.isOpen) return true;
-  // Check for special case where openingTime=00:02 and closingTime=23:58 - this indicates closed
-  if (schedule.openingTime === '00:02' && schedule.closingTime === '23:58') return true;
+  // Special case where openingTime=00:02 and closingTime=23:58 - this indicates 24/7 operation, not closed
+  if (schedule.openingTime === '00:02' && schedule.closingTime === '23:58') return false;
   return false;
 };
 
@@ -31,7 +31,7 @@ export const is24HourSchedule = (hours: IOperatingHours): boolean => {
      (day.openingTime === '00:00' && day.closingTime === '24:00'))
   );
 
-  return allDaysOpen || allDaysHaveSpecialClosedPattern;
+  return allDaysOpen;
 };
 
 // Function to check if all days have identical schedules
@@ -50,8 +50,8 @@ export const areAllNonHolidayDaysIdentical = (hours: IOperatingHours): boolean =
 // Helper function to create a unique key for each schedule type
 export const getScheduleKey = (schedule: IDaySchedule): string => {
   if (!schedule.isOpen) return 'closed';
-  // If it's the special "closed" pattern (00:02-23:58)
-  if (schedule.openingTime === '00:02' && schedule.closingTime === '23:58') return 'closed';
+  // If it's the special "24/7" pattern (00:02-23:58)
+  if (schedule.openingTime === '00:02' && schedule.closingTime === '23:58') return '24hours';
   // If it's the special "open all day" pattern (00:00-00:00)
   if (schedule.openingTime === '00:00' && schedule.closingTime === '00:00') return 'openAllDay';
   return `${schedule.openingTime || '00:00'}-${schedule.closingTime || '00:00'}`;
@@ -74,7 +74,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
   const allNonHolidayDaysIdentical = areAllNonHolidayDaysIdentical(hours);
 
   // Special case: if all days have identical hours, group them all together
-  if (allDaysIdentical && !is24HourSchedule(hours)) {
+  if (allDaysIdentical) {
     const schedule = hours['sunday'];
     const scheduleKey = getScheduleKey(schedule);
     
@@ -82,14 +82,14 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
     hoursByGroup[scheduleKey] = {
       openingTime: schedule.openingTime || '00:00',
       closingTime: schedule.closingTime || '00:00',
-      isOpen: schedule.isOpen && !(schedule.openingTime === '00:02' && schedule.closingTime === '23:58')
+      isOpen: schedule.isOpen
     };
     
     return { groupedDays: scheduleGroups, hoursByGroup, allDaysIdentical, allNonHolidayDaysIdentical };
   }
   
   // Special case: if all days except holidays have identical hours
-  if (allNonHolidayDaysIdentical && !allDaysIdentical && !is24HourSchedule(hours)) {
+  if (allNonHolidayDaysIdentical && !allDaysIdentical) {
     const nonHolidayDays: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     const holidaySchedule = hours.holidays;
     
@@ -101,7 +101,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
     hoursByGroup[scheduleKey] = {
       openingTime: schedule.openingTime || '00:00',
       closingTime: schedule.closingTime || '00:00',
-      isOpen: schedule.isOpen && !(schedule.openingTime === '00:02' && schedule.closingTime === '23:58')
+      isOpen: schedule.isOpen
     };
     
     // Add holidays separately
@@ -110,7 +110,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
     hoursByGroup[holidayKey] = {
       openingTime: holidaySchedule.openingTime || '00:00',
       closingTime: holidaySchedule.closingTime || '00:00',
-      isOpen: holidaySchedule.isOpen && !(holidaySchedule.openingTime === '00:02' && holidaySchedule.closingTime === '23:58')
+      isOpen: holidaySchedule.isOpen
     };
     
     return { groupedDays: scheduleGroups, hoursByGroup, allDaysIdentical, allNonHolidayDaysIdentical };
@@ -134,7 +134,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
     hoursByGroup[scheduleKey] = {
       openingTime: schedule.openingTime || '00:00',
       closingTime: schedule.closingTime || '00:00',
-      isOpen: schedule.isOpen && !(schedule.openingTime === '00:02' && schedule.closingTime === '23:58')
+      isOpen: schedule.isOpen
     };
   } else {
     // Otherwise, group days individually
@@ -147,7 +147,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
         hoursByGroup[scheduleKey] = {
           openingTime: daySchedule.openingTime || '00:00',
           closingTime: daySchedule.closingTime || '00:00',
-          isOpen: daySchedule.isOpen && !(daySchedule.openingTime === '00:02' && daySchedule.closingTime === '23:58')
+          isOpen: daySchedule.isOpen
         };
       }
       
@@ -163,7 +163,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
   hoursByGroup[`friday-${fridayKey}`] = {
     openingTime: fridaySchedule.openingTime || '00:00',
     closingTime: fridaySchedule.closingTime || '00:00',
-    isOpen: fridaySchedule.isOpen && !(fridaySchedule.openingTime === '00:02' && fridaySchedule.closingTime === '23:58')
+    isOpen: fridaySchedule.isOpen
   };
 
   // Handle Saturday and holidays together
@@ -178,7 +178,7 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
     hoursByGroup[`weekend-${satKey}`] = {
       openingTime: satSchedule.openingTime || '00:00',
       closingTime: satSchedule.closingTime || '00:00',
-      isOpen: satSchedule.isOpen && !(satSchedule.openingTime === '00:02' && satSchedule.closingTime === '23:58')
+      isOpen: satSchedule.isOpen
     };
   } else {
     // Handle them separately
@@ -186,14 +186,14 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
     hoursByGroup[`saturday-${satKey}`] = {
       openingTime: satSchedule.openingTime || '00:00',
       closingTime: satSchedule.closingTime || '00:00',
-      isOpen: satSchedule.isOpen && !(satSchedule.openingTime === '00:02' && satSchedule.closingTime === '23:58')
+      isOpen: satSchedule.isOpen
     };
     
     scheduleGroups[`holiday-${holidayKey}`] = ['holidays'];
     hoursByGroup[`holiday-${holidayKey}`] = {
       openingTime: holidaySchedule.openingTime || '00:00',
       closingTime: holidaySchedule.closingTime || '00:00',
-      isOpen: holidaySchedule.isOpen && !(holidaySchedule.openingTime === '00:02' && holidaySchedule.closingTime === '23:58')
+      isOpen: holidaySchedule.isOpen
     };
   }
 
@@ -201,80 +201,87 @@ export const groupDaysWithSameHours = (hours: IOperatingHours): {
 };
 
 // Format a group of days for display
-export const formatDayRanges = (days: DayOfWeek[], t: Function): string => {
-    // Check if all days of the week including holidays are in the array
-    if (days.length === dayOrder.length) {
-      return t('skatepark.allWeek');
+export function formatDayRanges(
+  days: string[],
+  t: {
+    satAndHolidays: string;
+    holidays: string;
+    days: string;
+    to: string;
+    dayNames: Record<string, string>;
+    shortDayNames: Record<string, string>;
+  }
+): string {
+  // Check if all days of the week including holidays are in the array
+  if (days.length === 7) {
+    return t.days;
+  }
+  
+  // Special case for Saturday and Holidays
+  if (days.length === 2 && days.includes('saturday') && days.includes('holidays')) {
+    return t.satAndHolidays;
+  }
+  
+  // Sort days according to the day order
+  const dayOrder = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const sortedDays = days.sort((a, b) => 
+    dayOrder.indexOf(a) - dayOrder.indexOf(b)
+  );
+
+  // If it's just one day
+  if (sortedDays.length === 1) {
+    // Use short version for Friday
+    if (sortedDays[0] === 'friday') {
+      return `${t.days} ${t.shortDayNames.friday}`;
     }
-  
-    // Special case for Saturday and Holidays
-    if (days.length === 2 && days.includes('saturday') && days.includes('holidays')) {
-      return t('common:time.satAndHolidays');
-    }
-  
-    // Sort days according to the day order
-    const sortedDays = days.sort((a, b) => 
-      dayOrder.indexOf(a) - dayOrder.indexOf(b)
-    );
-  
-    // If it's just one day
-    if (sortedDays.length === 1) {
-      // Use short version for Friday
-      if (sortedDays[0] === 'friday') {
-        return `${t('common:time.days.days')} ${t(`common:time.days.short.friday`)}`;
-      }
-      return `${t('common:time.days.days')} ${t(`common:time.days.${sortedDays[0]}`)}`;
-    }
-  
-    // Check if days are consecutive
-    const isConsecutive = sortedDays.every((day, index, array) => {
-      if (index === 0) return true;
-      const prevDayIndex = dayOrder.indexOf(array[index-1]);
-      const currentDayIndex = dayOrder.indexOf(day);
-      return currentDayIndex - prevDayIndex === 1;
-    });
-  
-    if (isConsecutive) {
-      // Get first and last day with special handling for Friday
-      const firstDay = sortedDays[0] === 'friday' 
-        ? t(`common:time.days.short.friday`) 
-        : t(`common:time.days.short.${sortedDays[0]}`);
-      
-      const lastDay = sortedDays[sortedDays.length-1] === 'friday' 
-        ? t(`common:time.days.short.friday`) 
-        : t(`common:time.days.short.${sortedDays[sortedDays.length-1]}`);
-      
-      return `${t('common:time.days.days')} ${firstDay} ${t('common:time.to')} ${lastDay}`;
-    }
-  
-    // Not consecutive, list them all with special handling for Friday
-    const formattedDays = sortedDays.map(day => {
-      if (day === 'friday') {
-        return t(`common:time.days.short.friday`);
-      }
-      return t(`common:time.days.${day}`);
-    }).join(', ');
+    return `${t.days} ${t.dayNames[sortedDays[0]]}`;
+  }
+
+  // Check if days are consecutive
+  const isConsecutive = sortedDays.every((day, index, array) => {
+    if (index === 0) return true;
+    const prevDayIndex = dayOrder.indexOf(array[index-1]);
+    const currentDayIndex = dayOrder.indexOf(day);
+    return currentDayIndex - prevDayIndex === 1;
+  });
+
+  if (isConsecutive) {
+    // Get first and last day with special handling for Friday
+    const firstDay = sortedDays[0] === 'friday' 
+      ? t.shortDayNames.friday 
+      : t.shortDayNames[sortedDays[0]];
     
-    return `${t('common:time.days.days')} ${formattedDays}`;
-  };
+    const lastDay = sortedDays[sortedDays.length-1] === 'friday' 
+      ? t.shortDayNames.friday 
+      : t.shortDayNames[sortedDays[sortedDays.length-1]];
+    
+    return `${t.days} ${firstDay} ${t.to} ${lastDay}`;
+  }
+
+  // Not consecutive, list them all with special handling for Friday
+  const formattedDays = sortedDays.map(day => {
+    if (day === 'friday') {
+      return t.shortDayNames.friday;
+    }
+    return t.dayNames[day];
+  }).join(', ');
+  
+  return `${t.days} ${formattedDays}`;
+}
 
 // Format lighting hours with special handling for sunset
-export const formatLightingHours = (lightingHours: ILightingHours | undefined, t: Function): string => {
-    if (!lightingHours) return t('skateparks.noLighting');
-    
-    // Special case for "almost 24 hours" (00:02-23:58) - treat as no lighting
-    if (lightingHours.startTime === '00:02' && lightingHours.endTime === '23:58') {
-      return t('skateparks.noLighting');
-    }
-    
-    // Always prioritize the sunset rule, even if is24Hours is set to true
-    // Special case for sunset - either the literal string 'sunset' or the encoded value '00:01'
-    if (lightingHours.startTime === '00:01' || lightingHours.startTime === 'sunset') {
-      return `${t('skateparks.fromSunsetTill')} ${lightingHours.endTime}` + '.';
-    }
-    
-    // Normal hours format
-    return `${lightingHours.startTime} - ${lightingHours.endTime}`;
-  };
+export function formatLightingHours(
+  lightingHours: ILightingHours,
+  t: {
+    notApplicable: string;
+  }
+): string {
+  if (!lightingHours) {
+    return t.notApplicable;
+  }
+
+  const { startTime, endTime } = lightingHours;
+  return `${startTime} - ${endTime}`;
+}
 
   

@@ -32,6 +32,26 @@ export default function RootLayout({
   
   return (
     <html lang={params.locale} dir={direction} className={`${poppins.variable} ${notoSansHebrew.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const storedTheme = localStorage.getItem('theme');
+                  if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {
+                  console.error('Error setting theme:', e);
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-noto-hebrew' : 'font-poppins'}`}>
         {children}
         <Toaster />

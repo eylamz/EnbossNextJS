@@ -18,17 +18,37 @@ interface AmenitiesGridProps {
   closingYear?: number;
   amenityOrder: string[];
   locale: string;
+  preloadedTranslations?: Record<string, { name: string; description: string }>;
 }
 
-export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: AmenitiesGridProps) => {
+export const AmenitiesGrid = ({ 
+  amenities, 
+  closingYear, 
+  amenityOrder, 
+  locale,
+  preloadedTranslations 
+}: AmenitiesGridProps) => {
   const { t, i18n } = useTranslation(locale, 'skateparks');
   const [openTooltip, setOpenTooltip] = useState<string | null>(null);
   const [translations, setTranslations] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!preloadedTranslations);
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   // Update translations when locale changes
   useEffect(() => {
     const updateTranslations = async () => {
+      if (preloadedTranslations) {
+        const newTranslations: Record<string, string> = {};
+        for (const [key, value] of Object.entries(preloadedTranslations)) {
+          newTranslations[key] = value.name;
+          newTranslations[`${key}.description`] = value.description;
+        }
+        setTranslations(newTranslations);
+        setIsLoading(false);
+        setPageLoaded(true);
+        return;
+      }
+
       setIsLoading(true);
       const newTranslations: Record<string, string> = {};
       const validAmenityKeys = [
@@ -54,10 +74,11 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
 
       setTranslations(newTranslations);
       setIsLoading(false);
+      setPageLoaded(true);
     };
 
     updateTranslations();
-  }, [locale, t, amenities]);
+  }, [locale, t, amenities, preloadedTranslations]);
 
   // Define valid amenity keys
   const validAmenityKeys = [
@@ -80,14 +101,20 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
   if (isLoading) {
     return (
       <div className="flex flex-wrap -mx-1">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <div key={index} className="w-1/4 px-1 mb-2">
+        {validAmenityKeys.map((key) => (
+          <div key={key} className="w-1/4 px-1 mb-2">
             <div className="rounded-lg p-2 h-full bg-black/[3%] dark:bg-black/[5%] dark:shadow-inner">
               <div className="text-center">
-                <div className="mb-1.5 flex justify-center">
-                  <LoadingSpinner size={20} />
+                <div className="mb-1.5">
+                  <Icon 
+                    name={key} 
+                    category="amenity" 
+                    className="w-5 h-5 mx-auto text-text-secondary dark:text-[#40535e]"
+                  />
                 </div>
-                <div className="h-4 bg-black/[3%] dark:bg-black/[5%] rounded animate-pulse" />
+                <div className="text-sm text-gray-400 dark:text-text-secondary line-through">
+                  {preloadedTranslations?.[key]?.name || t(`amenities.${key}`)}
+                </div>
               </div>
             </div>
           </div>
@@ -116,7 +143,7 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
                       className={`rounded-lg p-2 h-full cursor-pointer ${
                         isParkClosed
                           ? 'bg-error/[8%] dark:bg-error-bg-dark/[15%]' 
-                          : 'bg-brand-main/[8%] dark:bg-white/[2%]' 
+                          : `transition-all duration-300 ${pageLoaded ? 'animate-fadeIn bg-brand-main/[8%] dark:bg-white/[2%]' : 'bg-black/[3%] dark:bg-black/[5%]'}` 
                       }`}
                       onClick={(e: MouseEvent) => setOpenTooltip(openTooltip === key ? null : key)}
                       whileTap={{ scale: 0.95 }}
@@ -134,16 +161,16 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
                             className={`w-5 h-5 mx-auto ${
                               isParkClosed
                                 ? 'text-error dark:text-error/80' 
-                                : 'text-brand-700 dark:text-brand-main/80' 
+                                : `transition-all duration-300 ${pageLoaded ? 'text-brand-700 dark:text-brand-main/80' : 'text-text-secondary dark:text-[#40535e]'}` 
                             }`} 
                           />
                         </div>
-                        <div className={`text-xs font-normal ${
+                        <div className={`text-sm font-normal ${
                           isParkClosed
                             ? 'text-text dark:text-text-dark' 
-                            : 'text-text dark:text-text-dark' 
+                            : `transition-all duration-300 ${pageLoaded ? 'text-text dark:text-text-dark' : 'text-gray-400 dark:text-text-secondary line-through'}` 
                         }`}>
-                          {translations[key] || t(`amenities.${key}`)}
+                          {translations[key] || preloadedTranslations?.[key]?.name || t(`amenities.${key}`)}
                         </div>
                       </div>
                     </motion.div>
@@ -167,7 +194,9 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
                         className="w-3 h-3 text-gray-500 dark:text-gray-400"
                       />
                     </button>
-                    <p className="text-sm pr-4">{translations[`${key}.description`] || t(`amenities.${key}.description`)}</p>
+                    <p className="text-sm pr-4">
+                      {translations[`${key}.description`] || preloadedTranslations?.[key]?.description || t(`amenities.${key}.description`)}
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -181,8 +210,8 @@ export const AmenitiesGrid = ({ amenities, closingYear, amenityOrder, locale }: 
                       className="w-5 h-5 mx-auto text-text-secondary dark:text-[#40535e]"
                     />
                   </div>
-                  <div className="text-xs text-gray-400 dark:text-text-secondary line-through">
-                    {translations[key] || t(`amenities.${key}`)}
+                  <div className="text-sm text-gray-400 dark:text-text-secondary line-through">
+                    {translations[key] || preloadedTranslations?.[key]?.name || t(`amenities.${key}`)}
                   </div>
                 </div>
               </div>

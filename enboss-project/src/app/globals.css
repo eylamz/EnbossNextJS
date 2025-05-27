@@ -31,7 +31,7 @@
 
   /* Improve text contrast for accessibility */
   body {
-    @apply overflow-x-hidden bg-background dark:bg-background-dark text-content dark:text-content-dark min-h-screen;
+    @apply overflow-x-hidden bg-background dark:bg-background-dark text-content dark:text-content-dark min-h-screen transition-all duration-300;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

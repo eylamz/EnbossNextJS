@@ -121,12 +121,74 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
   }
   
   const { t } = await useTranslation(locale, 'skateparks')
+  const { t: tCommon } = await useTranslation(locale, 'common')
   
   // Get skatepark
   const skatepark = await getSkatepark(slug)
   
   if (!skatepark) {
     notFound()
+  }
+
+  // Preload amenity translations
+  const amenityTranslations: Record<string, { name: string; description: string }> = {}
+  const validAmenityKeys = [
+    'entryFee',
+    'parking',
+    'shade',
+    'bathroom',
+    'helmetRequired',
+    'guard',
+    'seating',
+    'bombShelter',
+    'scootersAllowed',
+    'bikesAllowed',
+    'noWax'
+  ]
+
+  for (const key of validAmenityKeys) {
+    if (key in skatepark.amenities) {
+      amenityTranslations[key] = {
+        name: t(`amenities.${key}`),
+        description: t(`amenities.${key}.description`)
+      }
+    }
+  }
+
+  // Preload FormattedHours translations
+  const hoursTranslations = {
+    openingHours: t('openingHours'),
+    lightingHours: t('lightingHours'),
+    is24Hours: t('is24Hours'),
+    isPermanentlyClosed: t('isPermanentlyClosed'),
+    notApplicable: t('notApplicable'),
+    allWeek: t('allWeek'),
+    openAllDay: t('openAllDay'),
+    satAndHolidays: tCommon('time.satAndHolidays'),
+    holidays: tCommon('time.days.holidays'),
+    closed: tCommon('common.closed'),
+    noLighting: t('noLighting'),
+    fromSunsetTill: t('fromSunsetTill'),
+    days: tCommon('time.days.days'),
+    to: tCommon('time.to'),
+    dayNames: {
+      sunday: tCommon('time.days.sunday'),
+      monday: tCommon('time.days.monday'),
+      tuesday: tCommon('time.days.tuesday'),
+      wednesday: tCommon('time.days.wednesday'),
+      thursday: tCommon('time.days.thursday'),
+      friday: tCommon('time.days.friday'),
+      saturday: tCommon('time.days.saturday')
+    },
+    shortDayNames: {
+      sunday: tCommon('time.days.short.sunday'),
+      monday: tCommon('time.days.short.monday'),
+      tuesday: tCommon('time.days.short.tuesday'),
+      wednesday: tCommon('time.days.short.wednesday'),
+      thursday: tCommon('time.days.short.thursday'),
+      friday: tCommon('time.days.short.friday'),
+      saturday: tCommon('time.days.short.saturday')
+    }
   }
 
   // Get the appropriate park name based on locale
@@ -187,7 +249,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
           </div>
         )}
 
-        <div className="container mx-auto px-4 py-8 relative">
+        <div className=" mx-auto px-4 py-8 relative">
           {/* Breadcrumbs */}
           <Suspense fallback={<SectionLoading />}>
             <BreadCrumbs
@@ -241,15 +303,14 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                   <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
                     <div className="flex gap-4 mb-4 justify-between">
                       <div className="">
-                        <Suspense fallback={<TranslationLoading />}>
-                          <FormattedHours 
-                            key={locale}
-                            operatingHours={skatepark.operatingHours}
-                            lightingHours={skatepark.lightingHours}
-                            closingYear={skatepark.closingYear}
-                            locale={locale}
-                          />
-                        </Suspense>
+                        <FormattedHours 
+                          key={locale}
+                          operatingHours={skatepark.operatingHours}
+                          lightingHours={skatepark.lightingHours}
+                          closingYear={skatepark.closingYear}
+                          locale={locale}
+                          preloadedTranslations={hoursTranslations}
+                        />
                       </div>
                       <div>
                         <ShareButton
@@ -276,7 +337,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </div>
 
                     {/* Opening/Closing Year Section */}
-                    <div className="mt-6 pt-4 px-7 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
+                    <div className="mt-6 pt-4 px-2 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
                       <div className="flex flex-col flex-wrap gap-2 mb-2">
                         <span>{t('opened_at')} {skatepark.openingYear}.</span>
                         {skatepark.closingYear && (
@@ -289,7 +350,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
                 {/* Amenities Card */}
                 <Suspense fallback={<SectionLoading />}>
-                  <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                  <Card className="p-4 w-full max-w-[564px] backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                     <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
                       <h2 className="text-lg font-semibold flex items-center">
                         <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
@@ -304,6 +365,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                         closingYear={skatepark.closingYear}
                         amenityOrder={Object.keys(skatepark.amenities)}
                         locale={locale}
+                        preloadedTranslations={amenityTranslations}
                       />
                     </Suspense>
 
@@ -345,16 +407,14 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               {(skatepark.mediaLinks?.googleMapsUrl || 
                 skatepark.mediaLinks?.appleMapsUrl || 
                 skatepark.mediaLinks?.wazeUrl) && (
-                <Suspense fallback={<SectionLoading />}>
-                  <div className="w-full mx-auto mb-8">
-                    <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                      <MapLinks 
-                        mediaLinks={skatepark.mediaLinks}
-                        parkName={parkName}
-                      />
-                    </Card>
-                  </div>
-                </Suspense>
+                <div className="w-full mx-auto mb-8">
+                  <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                    <MapLinks 
+                      mediaLinks={skatepark.mediaLinks}
+                      parkName={parkName}
+                    />
+                  </Card>
+                </div>
               )}
 
               {/* Rating Card */}
@@ -363,7 +423,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                   skateparkId={skatepark._id}
                   rating={skatepark.rating || 0}
                   totalVotes={skatepark.ratingCount || 0}
-                  title={t('rating.title')}
+                  title={t('ratingTitle')}
+                  subtitle={t('ratingsDesc')}
                   onHeartRatePark={async (parkId, rating) => {
                     'use server'
                     const formData = new FormData()
@@ -383,28 +444,28 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                   />
                 </Suspense>
               )}
+
+              {/* Related Skateparks Section */}
+              <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
+                <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
+                <Suspense fallback={<SectionLoading />}>
+                  <RelatedParks 
+                    currentParkId={skatepark._id} 
+                    area={skatepark.area}
+                    relatedParks={relatedParks}
+                    locale={locale}
+                    onHeartRatePark={async (parkId, rating) => {
+                      'use server'
+                      const formData = new FormData()
+                      formData.append('skateparkId', parkId)
+                      formData.append('rating', rating.toString())
+                      await updateRating(formData)
+                    }}
+                  />
+                </Suspense>
+              </section>
             </div>
           </div>
-
-          {/* Related Skateparks Section */}
-          <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
-            <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
-            <Suspense fallback={<SectionLoading />}>
-              <RelatedParks 
-                currentParkId={skatepark._id} 
-                area={skatepark.area}
-                relatedParks={relatedParks}
-                locale={locale}
-                onHeartRatePark={async (parkId, rating) => {
-                  'use server'
-                  const formData = new FormData()
-                  formData.append('skateparkId', parkId)
-                  formData.append('rating', rating.toString())
-                  await updateRating(formData)
-                }}
-              />
-            </Suspense>
-          </section>
         </div>
       </div>
     </Suspense>
