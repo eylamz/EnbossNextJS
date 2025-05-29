@@ -1,18 +1,19 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Icon } from '@/assets/icons';
 import { useTranslation } from '@/lib/i18n/client';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/Tooltip";
 
 interface RatingSortButtonProps {
   isActive: boolean;
   onClick: () => void;
   className?: string;
+  locale: string;
 }
 
-const RatingSortButton = ({ isActive, onClick, className }: RatingSortButtonProps) => {
-  const { t } = useTranslation('skateparks');
+const RatingSortButton = ({ isActive, onClick, className, locale }: RatingSortButtonProps) => {
+  const { t } = useTranslation(locale, 'skateparks');
   
   return (
     <TooltipProvider delayDuration={50}>

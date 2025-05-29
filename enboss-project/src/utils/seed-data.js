@@ -81,9 +81,6 @@ const skateparkSchema = new mongoose.Schema(
     images: [skateparkImageSchema],
     mediaLinks: {
       googleMapsFrame: { type: String },
-      googleMapsUrl: { type: String },
-      wazeUrl: { type: String },
-      appleMapsUrl: { type: String },
       youtubeUrl: { type: String }
     },
     notesEn: { type: Array },
@@ -197,7 +194,7 @@ const skateparks = [
     addressEn: 'Kfar Saba Park, Har Tavor St 123, Kfar Saba',
     addressHe: 'פארק כפר סבא, הר תבור 123, כפר סבא',
     openingYear: 2011,
-    location: { latitude: 32.1661, longitude: 34.8033 },
+    location: { latitude: 32.17949961763035, longitude: 34.92565599591348 },
     operatingHours: {
       sunday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
       monday: { openingTime: "15:00", closingTime: "22:00", isOpen: true },
@@ -235,10 +232,7 @@ const skateparks = [
       { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739737804/ez3dayp0ghrtlog2izhj.webp', isFeatured: false, orderNumber: 9 }
     ],
     mediaLinks: {
-      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3380.910012345678!2d34.80079831570995!3d32.16610098119000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d48f7b1a2c3d1%3A0x1234567890abcdef!2sHerzliya%20Skatepark!5e0!3m2!1sen!2sil!4v1620000000000!5m2!1sen!2sil',
-      googleMapsUrl: 'https://goo.gl/maps/1jvQDGCZPLZxYH8B7',
-      wazeUrl: 'https://waze.com/ul?ll=32.1661,34.8033&navigate=yes',
-      appleMapsUrl: 'https://maps.apple.com/?ll=32.1661,34.8033',
+      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13507.787629848921!2d34.91278500216247!3d32.17870638966543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d39291f50cf4f%3A0xb539f2798bc417ce!2z16HXp9eZ15nXmdeY16TXkNeo16cg15vXpNeoINeh15HXkA!5e0!3m2!1sen!2sil!4v1748506998861!5m2!1sen!2sil',
       youtubeUrl: 'https://www.youtube.com/watch?v=examplevideo1'
     },
     notesEn: ['Entry for scooter and bicycle riders is prohibited.', 'Helmet is mandatory for entry.'],
@@ -274,8 +268,8 @@ const skateparks = [
       { url: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=', isFeatured: true, orderNumber: 1 }
     ],
     mediaLinks: {
-      googleMapsUrl: 'https://goo.gl/maps/Mur7c8aqARf6XmQv5', // Example URL
-      wazeUrl: 'https://waze.com/ul?ll=32.1045,34.8095&navigate=yes'
+      googleMapsFrame: 'https://goo.gl/maps/Mur7c8aqARf6XmQv5', // Example URL
+      youtubeUrl: ''
     },
     notesEn: ['Large skatepark located within Sportek Tel Aviv. Usually crowded.'],
     notesHe: ['סקייטפארק גדול הממוקם בספורטק תל אביב. בדרך כלל עמוס.'],
@@ -333,10 +327,7 @@ const skateparks = [
       { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739872619/tloyxf2a', isFeatured: false, orderNumber: 13 }
     ],
     mediaLinks: {
-      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13467.71379705526',
-      googleMapsUrl: 'https://www.google.com/maps/place/skate+park+hadera+%D7%A1%D7%A7%D7%99',
-      wazeUrl: 'https://waze.com/ul/hsvbb6rq9j',
-      appleMapsUrl: 'https://maps.apple.com/?ll=32.427734,34.913104&q=Dropped%20Pin&t=h',
+      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13507.787629848921!2d34.91278500216247!3d32.17870638966543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d39291f50cf4f%3A0xb539f2798bc417ce!2z16HXp9eZ15nXmdeY16TXkNeo16cg15vXpNeoINeh15HXkA!5e0!3m2!1sen!2sil!4v1748506998861!5m2!1sen!2sil',
       youtubeUrl: ''
     },
     notesEn: [],
@@ -393,9 +384,6 @@ const skateparks = [
     ],
     mediaLinks: {
       googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6761.914277169549',
-      googleMapsUrl: 'https://maps.app.goo.gl/zmRzsR4jzNiBEkJ88?g_st=ic',
-      wazeUrl: 'https://waze.com/ul/hsv8y3q0xd',
-      appleMapsUrl: 'https://maps.apple.com/?ll=32.070343,34.860413&q=Dropped%20Pin&_ext=Ei',
       youtubeUrl: ''
     },
     notesEn: [],

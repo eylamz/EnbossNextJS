@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SearchInput } from '@/components/common/SearchInput'
 import { ParkCardWrapper } from '@/components/skatepark/ParkCardWrapper'
 import AmenitiesButton from './AmenitiesButton'
+import RatingSortButton from './RatingSortButton'
 
 interface SkateparkData {
   _id: string;
@@ -27,22 +28,48 @@ interface SearchableParksProps {
   locale: string;
 }
 
+// Fisher-Yates shuffle algorithm
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export function SearchableParks({ skateparks, locale }: SearchableParksProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
+  const [sortByRating, setSortByRating] = useState(false)
+  const [shuffledParks, setShuffledParks] = useState<SkateparkData[]>([])
   const { t } = useTranslation(['common', 'skateparks'])
 
-  const filteredParks = skateparks.filter((park) => {
-    const searchLower = searchQuery.toLowerCase()
-    const nameMatch = park.nameEn.toLowerCase().includes(searchLower) ||
-      park.nameHe.toLowerCase().includes(searchLower)
+  // Shuffle parks on initial load
+  useEffect(() => {
+    setShuffledParks(shuffleArray(skateparks))
+  }, [skateparks])
 
-    // Filter by amenities if any are selected
-    const amenitiesMatch = selectedAmenities.length === 0 || 
-      selectedAmenities.every(amenity => park.amenities[amenity])
+  const filteredAndSortedParks = React.useMemo(() => {
+    let filtered = shuffledParks.filter((park) => {
+      const searchLower = searchQuery.toLowerCase()
+      const nameMatch = park.nameEn.toLowerCase().includes(searchLower) ||
+        park.nameHe.toLowerCase().includes(searchLower)
 
-    return nameMatch && amenitiesMatch
-  })
+      // Filter by amenities if any are selected
+      const amenitiesMatch = selectedAmenities.length === 0 || 
+        selectedAmenities.every(amenity => park.amenities[amenity])
+
+      return nameMatch && amenitiesMatch
+    })
+
+    // Sort by rating if enabled
+    if (sortByRating) {
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    }
+
+    return filtered
+  }, [shuffledParks, searchQuery, selectedAmenities, sortByRating])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value)
@@ -56,18 +83,15 @@ export function SearchableParks({ skateparks, locale }: SearchableParksProps) {
     setSelectedAmenities(amenities)
   }, [])
 
+  const handleRatingSort = useCallback(() => {
+    setSortByRating(prev => !prev)
+  }, [])
+
   return (
     <>
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-center text-text-dark">
-          {t('skateparks:title')}
-        </h1>
-        <p className="text-center text-text-secondary mt-2">
-          {t('skateparks:description')}
-        </p>
-      </div>
 
-      {/* Search Input and Amenities Button */}
+
+      {/* Search Input and Filter Buttons */}
       <div className="max-w-md mx-auto mb-8 flex items-center gap-2">
         <div className="flex-1">
           <SearchInput
@@ -78,16 +102,23 @@ export function SearchableParks({ skateparks, locale }: SearchableParksProps) {
             maxWidth="md"
           />
         </div>
-        <AmenitiesButton
-          selectedAmenities={selectedAmenities}
-          onAmenitiesChange={handleAmenitiesChange}
-          locale={locale}
-        />
+        <div className="flex gap-2">
+          <RatingSortButton
+            isActive={sortByRating}
+            onClick={handleRatingSort}
+            locale={locale}
+          />
+          <AmenitiesButton
+            selectedAmenities={selectedAmenities}
+            onAmenitiesChange={handleAmenitiesChange}
+            locale={locale}
+          />
+        </div>
       </div>
 
       {/* Parks Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-        {filteredParks.map((park: SkateparkData, index: number) => (
+        {filteredAndSortedParks.map((park: SkateparkData, index: number) => (
           <ParkCardWrapper
             key={park._id}
             park={park}

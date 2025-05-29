@@ -71,19 +71,6 @@ export default async function SkateparksPage({ params: { locale } }: Props) {
     <Suspense fallback={<PageLoading />}>
       <div className="min-h-screen relative">
         <div className="container mx-auto px-4 py-8 relative">
-          {/* Breadcrumbs */}
-          <Suspense fallback={<SectionLoading />}>
-            <BreadCrumbs
-              previousPage={{
-                path: '/',
-                label: 'home'
-              }}
-              currentPage={{
-                label: 'skateparks'
-              }}
-              locale={locale}
-            />
-          </Suspense>
           
           <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
             <SearchableParks skateparks={skateparks} locale={locale} />

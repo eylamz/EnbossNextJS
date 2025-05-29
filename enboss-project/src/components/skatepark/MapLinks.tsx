@@ -15,24 +15,45 @@ import { Card } from '@/components/ui/Card'
 import { useEffect, useState } from 'react'
 
 interface MapLinksProps {
-  mediaLinks?: {
-    googleMapsUrl?: string;
-    appleMapsUrl?: string;
-    wazeUrl?: string;
-  };
   parkName: string;
+  nameHe: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
-export function MapLinks({ mediaLinks, parkName }: MapLinksProps) {
+export function MapLinks({ parkName, nameHe, location }: MapLinksProps) {
   const { theme } = useTheme()
   const params = useParams()
   const router = useRouter()
   const locale = String(params.locale)
   const { t } = useTranslation(locale, 'skateparks')
 
-  if (!mediaLinks?.googleMapsUrl && !mediaLinks?.appleMapsUrl && !mediaLinks?.wazeUrl) {
-    return null
-  }
+  const generateMoovitUrl = (): string => {
+    const baseUrl = 'https://moovit.onelink.me/3986059930';
+    const encodedParkName = encodeURIComponent(`סקייטפארק ${nameHe}`);
+    const tll = `${location.latitude}_${location.longitude}`;
+    return `${baseUrl}?to=${encodedParkName}&tll=${tll}&lang=${locale}`;
+  };
+
+  const generateWazeUrl = (): string => {
+    const baseUrl = 'https://waze.com/ul';
+    const params = `ll=${location.latitude},${location.longitude}&navigate=yes&q=${encodeURIComponent(`סקייטפארק ${nameHe}`)}`;
+    return `${baseUrl}?${params}`;
+  };
+
+  const generateAppleMapsUrl = (): string => {
+    const baseUrl = 'https://maps.apple.com/';
+    const params = `?ll=${location.latitude},${location.longitude}&q=${encodeURIComponent(`סקייטפארק ${nameHe}`)}`;
+    return `${baseUrl}${params}`;
+  };
+
+  const generateGoogleMapsUrl = (): string => {
+    const baseUrl = 'https://www.google.com/maps/dir/';
+    const destination = `${location.latitude},${location.longitude}`;
+    return `${baseUrl}?api=1&destination=${destination}`;
+  };
 
   return (
     <section 
@@ -41,137 +62,162 @@ export function MapLinks({ mediaLinks, parkName }: MapLinksProps) {
     >
       <h2 id="directions-heading" className="sr-only">{t('mapLinks.title')}</h2>
         <div className="flex flex-col space-y-4">
-          <h3 className="font-semibold text-text dark:text-[#96b6c9] mb-2">
+          <h3 className="font-semibold text-md text-text dark:text-[#96b6c9] mb-2">
             {t('mapLinks.title')}
           </h3>
 
           <div className="flex flex-wrap justify-center gap-6 items-center">
             {/* Waze Map Link with Tooltip */}
-            {mediaLinks?.wazeUrl && (
-              <TooltipProvider delayDuration={150}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <motion.a 
-                      href={mediaLinks.wazeUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label={`${t('mapLinks.wazeLink')} ${parkName}`}
-                      className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
-                      variants={{
-                        initial: { scale: 1 },
-                        hover: { 
-                          scale: 1.15,
-                          transition: { 
-                            type: "spring", 
-                            stiffness: 500,
-                            damping: 8,
-                            duration: 0.01
-                          }
-                        },
-                      }}
-                      initial="initial"
-                      whileHover="hover"
-                    >
-                      <Icon 
-                        name={theme === 'dark' ? "wazeDark" : "wazeBold"} 
-                        category="action" 
-                        className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-[#1acdff] dark:text-text-dark drop-shadow-md dark:drop-shadow-lg overflow-visible"
-                        />
-                    </motion.a>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="text-center">
-                    {t('mapLinks.wazeLink')}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-
-            {/* Google Maps Link with Tooltip */}
-            {mediaLinks?.googleMapsUrl && (
-              <TooltipProvider delayDuration={150}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <motion.a 
-                      href={mediaLinks.googleMapsUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label={`${t('mapLinks.googleLink')} ${parkName}`}
-                      className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
-                      variants={{
-                        initial: { scale: 1 },
-                        hover: { 
-                          scale: 1.15,
-                          transition: { 
-                            type: "spring", 
-                            stiffness: 500,
-                            damping: 8,
-                            duration: 0.01
-                          }
-                        },
-                      }}
-                      initial="initial"
-                      whileHover="hover"
-                    >
-                      <Icon 
-                        name="newGoogleMaps" 
-                        category="action" 
-                        className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-text-dark dark:text-text drop-shadow-md dark:drop-shadow-lg overflow-visible"
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.a 
+                    href={generateWazeUrl()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`${t('mapLinks.wazeLink')} ${parkName}`}
+                    className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { 
+                        scale: 1.15,
+                        transition: { 
+                          type: "spring", 
+                          stiffness: 500,
+                          damping: 8,
+                          duration: 0.01
+                        }
+                      },
+                    }}
+                    initial="initial"
+                    whileHover="hover"
+                  >
+                    <Icon 
+                      name={theme === 'dark' ? "wazeDark" : "wazeBold"} 
+                      category="action" 
+                      className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-[#1acdff] dark:text-text-dark drop-shadow-md dark:drop-shadow-lg overflow-visible"
                       />
-                    </motion.a>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="text-center">
-                    {t('mapLinks.googleLink')}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+                  </motion.a>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="text-center">
+                  {t('mapLinks.wazeLink')}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* Moovit Link with Tooltip */}
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.a 
+                    href={generateMoovitUrl()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`${t('mapLinks.moovitLink')} ${parkName}`}
+                    className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { 
+                        scale: 1.15,
+                        transition: { 
+                          type: "spring", 
+                          stiffness: 500,
+                          damping: 8,
+                          duration: 0.01
+                        }
+                      },
+                    }}
+                    initial="initial"
+                    whileHover="hover"
+                  >
+                    <Icon 
+                      name={theme === 'dark' ? "moovitDark" : "moovit"} 
+                      category="action" 
+                      className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-[#1a1a1a] drop-shadow-md dark:drop-shadow-lg overflow-visible"
+                    />
+                  </motion.a>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="text-center">
+                  {t('mapLinks.moovitLink')}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
             {/* Apple Maps Link with Tooltip */}
-            {mediaLinks?.appleMapsUrl && (
-              <TooltipProvider delayDuration={150}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <motion.a 
-                      href={mediaLinks.appleMapsUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      aria-label={`${t('mapLinks.appleLink')} ${parkName}`}
-                      className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
-                      variants={{
-                        initial: { scale: 1 },
-                        hover: { 
-                          scale: 1.15,
-                          transition: { 
-                            type: "spring", 
-                            stiffness: 500,
-                            damping: 8,
-                            duration: 0.05
-                          }
-                        },
-                        tap: { 
-                          scale: 0.95,
-                          transition: { 
-                            duration: 0.08
-                          }
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.a 
+                    href={generateAppleMapsUrl()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`${t('mapLinks.appleLink')} ${parkName}`}
+                    className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { 
+                        scale: 1.15,
+                        transition: { 
+                          type: "spring", 
+                          stiffness: 500,
+                          damping: 8,
+                          duration: 0.01
                         }
-                      }}
-                      initial="initial"
-                      whileHover="hover"
-                      whileTap="tap"
-                    >
-                      <Icon 
-                        name={theme === 'dark' ? "newAppleMapsDark" : "newAppleMaps"} 
-                        category="action" 
-                        className="w-12 h-12 sm:w-10 sm:h-10 text-[#3a3a3a] dark:text-text-secondary-dark drop-shadow-md dark:drop-shadow-lg overflow-visible"
-                      />
-                    </motion.a>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="text-center">
-                    {t('mapLinks.appleLink')}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+                      },
+                    }}
+                    initial="initial"
+                    whileHover="hover"
+                  >
+                    <Icon 
+                      name={theme === 'dark' ? "newAppleMapsDark" : "newAppleMaps"} 
+                      category="action" 
+                      className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-[#3a3a3a] dark:text-text-secondary-dark drop-shadow-md dark:drop-shadow-lg overflow-visible"
+                    />
+                  </motion.a>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="text-center">
+                  {t('mapLinks.appleLink')}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* Google Maps Link with Tooltip */}
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.a 
+                    href={generateGoogleMapsUrl()} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`${t('mapLinks.googleLink')} ${parkName}`}
+                    className="sm:p-3 rounded-xl sm:bg-background/30 sm:dark:bg-background-secondary/5 flex items-center justify-center"
+                    variants={{
+                      initial: { scale: 1 },
+                      hover: { 
+                        scale: 1.15,
+                        transition: { 
+                          type: "spring", 
+                          stiffness: 500,
+                          damping: 8,
+                          duration: 0.01
+                        }
+                      },
+                    }}
+                    initial="initial"
+                    whileHover="hover"
+                  >
+                    <Icon 
+                      name="newGoogleMaps" 
+                      category="action" 
+                      className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-text-dark dark:text-text drop-shadow-md dark:drop-shadow-lg overflow-visible"
+                    />
+                  </motion.a>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="text-center">
+                  {t('mapLinks.googleLink')}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
     </section>

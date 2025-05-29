@@ -22,6 +22,7 @@ import ErrorStateHandler from '@/components/skatepark/ErrorStateHandler'
 import { updateRating } from '@/app/actions/rating'
 import { RatingCard } from '@/components/skatepark/RatingCard'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import { MapSection } from '@/components/skatepark/MapSection'
 
 interface SkateparkImage {
   url: string;
@@ -403,19 +404,30 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 </Suspense>
               </div>
 
+              {/* Map Section */}
+              <Suspense fallback={<SectionLoading />}>
+                {skatepark.mediaLinks?.googleMapsFrame && (
+                  <MapSection 
+                    googleMapsFrame={skatepark.mediaLinks.googleMapsFrame}
+                    parkName={parkName}
+                    locationText={t('common:common.location')}
+                    mapText={t('common:common.map')}
+                    mapNotAvailableText={t('common:common.mapNotAvailable')}
+                  />
+                )}
+              </Suspense>
+
               {/* Map Links Card */}
-              {(skatepark.mediaLinks?.googleMapsUrl || 
-                skatepark.mediaLinks?.appleMapsUrl || 
-                skatepark.mediaLinks?.wazeUrl) && (
+
                 <div className="w-full mx-auto mb-8">
                   <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                     <MapLinks 
-                      mediaLinks={skatepark.mediaLinks}
                       parkName={parkName}
+                      nameHe={skatepark.nameHe}
+                      location={skatepark.location}
                     />
                   </Card>
                 </div>
-              )}
 
               {/* Rating Card */}
               <Suspense fallback={<SectionLoading />}>
@@ -425,7 +437,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                   totalVotes={skatepark.ratingCount || 0}
                   title={t('ratingTitle')}
                   subtitle={t('ratingsDesc')}
-                  onHeartRatePark={async (parkId, rating) => {
+                  onHeartRatePark={async (parkId: string, rating: number) => {
                     'use server'
                     const formData = new FormData()
                     formData.append('skateparkId', parkId)
@@ -436,7 +448,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               </Suspense>
 
               {/* YouTube Video Card */}
-              {skatepark.mediaLinks?.youtubeUrl && (
+              {skatepark.mediaLinks?.youtubeUrl && skatepark.mediaLinks.youtubeUrl.trim() !== '' && (
                 <Suspense fallback={<SectionLoading />}>
                   <YouTubeVideo 
                     youtubeUrl={skatepark.mediaLinks.youtubeUrl}
@@ -454,7 +466,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     area={skatepark.area}
                     relatedParks={relatedParks}
                     locale={locale}
-                    onHeartRatePark={async (parkId, rating) => {
+                    onHeartRatePark={async (parkId: string, rating: number) => {
                       'use server'
                       const formData = new FormData()
                       formData.append('skateparkId', parkId)

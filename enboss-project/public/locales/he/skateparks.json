@@ -3,6 +3,7 @@
     "filter_by_area": "סנן לפי אזור",
     "all_areas": "כל האזורים",
     "relatedParks": "סקייטפארקים נוספים",
+    "searchPlaceholder": "חיפוש סקייטפארק...",
 
     "area": {
       "north": "צפון",
@@ -34,9 +35,10 @@
 
     "mapLinks": {
       "title": "קישורי ניווט",
-      "googleLink": "Google Maps",
-      "wazeLink": "Waze",
-      "appleLink": "Apple Maps"
+      "googleLink": "גוגל מפות",
+      "wazeLink": "וייז",
+      "appleLink": "מפות אפל",
+      "moovitLink": "מוביט"
     },
 
     "back_to_skateparks": "חזרה לסקייטפארקים",
@@ -53,7 +55,7 @@
 
     "no_lighting": "אין תאורה",
     "amenities": {
-      "title": "שירותים / חוקים",
+      "title": "סינון לפי שירותים / חוקים",
       "entryFee": "דמי כניסה",
       "entryFee.description": "פארק זה דורש דמי כניסה",
       "parking": "חניה",

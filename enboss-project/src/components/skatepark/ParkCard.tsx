@@ -518,7 +518,7 @@ const ParkCard = memo(({
               ? 'right-0' 
               : 'left-0'
           }`}>
-            <div className={`flex justify-center items-center bg-yellow-400 text-black text-xs font-bold px-2 py-1 shadow-badge ${
+            <div className={`flex justify-center items-center bg-yellow-400 text-black text-xs font-semibold px-2 py-1 shadow-badge ${
               ([new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear) ||
               (park.createdAt && isNewPark(park.createdAt)))
                 ? 'rounded-l-3xl'

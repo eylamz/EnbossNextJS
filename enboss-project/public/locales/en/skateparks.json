@@ -3,6 +3,7 @@
     "filter_by_area": "Filter by Area",
     "all_areas": "All Areas",
     "relatedParks": "Related Skateparks",
+    "searchPlaceholder": "Search for a skatepark...",
 
     "area": {
       "north": "North",
@@ -29,7 +30,8 @@
       "title": "Navigation Links",
       "googleLink": "Google Maps",
       "wazeLink": "Waze",
-      "appleLink": "Apple Maps"
+      "appleLink": "Apple Maps",
+      "moovitLink": "Moovit"
     },
 
     "isPermanentlyClosed": "Permanently Closed",

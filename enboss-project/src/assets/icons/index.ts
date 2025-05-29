@@ -75,7 +75,8 @@ import Link from './link.svg';
 import Share from './share.svg';
 import ShareBold from './shareBold.svg';
 import User from './account.svg';
-
+import Moovit from './moovit.svg';
+import MoovitDark from './moovitDark.svg';
 
 // Type for SVG components
 type SvgComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -129,6 +130,8 @@ export const actionIcons = {
   newAppleMapsDark: { icon: newAppleMapsDark, label: 'Apple Maps' },
   waze: { icon: Waze, label: 'Waze' },
   wazeDark: { icon: WazeDark, label: 'Waze' },
+  moovit: { icon: Moovit, label: 'Moovit' },
+  moovitDark: { icon: MoovitDark, label: 'Moovit' },
   googleMapsBold: { icon: GoogleMapsBold, label: 'Google Maps' },
   appleMapsBold: { icon: AppleMapsBold, label: 'Apple Maps' },
   wazeBold: { icon: WazeBold, label: 'Waze' },

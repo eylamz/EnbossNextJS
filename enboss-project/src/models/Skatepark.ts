@@ -66,9 +66,6 @@ export interface ISkatepark {
   images: ISkateparkImage[]
   mediaLinks: {
     googleMapsFrame?: string
-    googleMapsUrl?: string
-    wazeUrl?: string
-    appleMapsUrl?: string
     youtubeUrl?: string
   }
   notesEn?: string[]
@@ -142,9 +139,6 @@ const SkateparkSchema = new Schema<ISkatepark>(
     images: [SkateparkImageSchema],
     mediaLinks: {
       googleMapsFrame: { type: String },
-      googleMapsUrl: { type: String },
-      wazeUrl: { type: String },
-      appleMapsUrl: { type: String },
       youtubeUrl: { type: String }
     },
     notesEn: { type: [String] },
