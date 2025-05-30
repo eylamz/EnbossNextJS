@@ -16,9 +16,7 @@
 
       .newGoogle-4 {
         fill: white;
-        stroke: white;
         stroke-width: 1;
-        filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.25));
       }
       .dark .newGoogle-4 {
         fill: hsl(0, 0%, 10%);

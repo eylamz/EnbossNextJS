@@ -82,14 +82,14 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className, loca
             </PopoverTrigger>
           </TooltipTrigger>
           <TooltipContent side="bottom" className="text-center">
-            {tSkateparks('amenities.title')}
+            {tSkateparks('amenities.filterBy')}
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <PopoverContent className="w-full max-w-sm p-2">
         <div className="space-y-2">
           <div className="flex items-center justify-between h-[32px]">
-            <h4 className="font-medium">{tSkateparks('amenities.title')}</h4>
+            <h4 className="font-medium">{tSkateparks('amenities.filterBy')}</h4>
             {selectedAmenities.length > 0 && (
               <Button
                 variant="error"

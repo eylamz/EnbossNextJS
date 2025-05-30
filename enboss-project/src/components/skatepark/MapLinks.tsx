@@ -62,11 +62,15 @@ export function MapLinks({ parkName, nameHe, location }: MapLinksProps) {
     >
       <h2 id="directions-heading" className="sr-only">{t('mapLinks.title')}</h2>
         <div className="flex flex-col space-y-4">
-          <h3 className="font-semibold text-md text-text dark:text-[#96b6c9] mb-2">
+          <div className="flex items-center gap-2  ">
+          <Icon name="map" category="ui" className="w-5 h-5 text-text dark:text-[#96b6c9]" />
+          <h3 className="font-semibold text-lg text-text dark:text-[#96b6c9]">
             {t('mapLinks.title')}
           </h3>
 
-          <div className="flex flex-wrap justify-center gap-6 items-center">
+          </div>
+
+          <div className="mx-auto max-w-[350px] grid grid-cols-2 xsm:flex xs:flex-wrap xs:justify-center gap-6 items-center">
             {/* Waze Map Link with Tooltip */}
             <TooltipProvider delayDuration={150}>
               <Tooltip>
@@ -133,7 +137,7 @@ export function MapLinks({ parkName, nameHe, location }: MapLinksProps) {
                     <Icon 
                       name={theme === 'dark' ? "moovitDark" : "moovit"} 
                       category="action" 
-                      className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-[#1a1a1a] drop-shadow-md dark:drop-shadow-lg overflow-visible"
+                      className="w-[3.15rem] h-[3.15rem] -mt-[2px] sm:w-[2.65rem] sm:h-[2.65rem] text-text-dark dark:text-text drop-shadow-md dark:drop-shadow-lg overflow-visible"
                     />
                   </motion.a>
                 </TooltipTrigger>

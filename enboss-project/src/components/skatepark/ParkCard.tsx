@@ -556,11 +556,11 @@ const ParkCard = memo(({
       </div>
       
       <CardContent className="px-4 py-3 space-y-1">
-        <h3 className="text-lg font-semibold truncate">
+        <h3 className="text-lg font-semibold truncate text-text dark:text-text-dark">
           {parkName}
         </h3>
         <div className="flex items-center justify-between">
-          <div className="flex items-center text-gray-600 dark:text-gray-400">
+          <div className="flex items-center text-text-secondary dark:text-text-secondary-dark">
             <Icon 
               name="location" 
               category="navigation" 

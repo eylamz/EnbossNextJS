@@ -288,7 +288,7 @@ const HeartRating = ({
         >
           <button
             className={cn(
-              "p-1 focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-full",
+              "p-1 focus:outline-none  focus:ring-2 focus:ring-brand-500 rounded-full",
               isTouchDevice ? "p-2" : "p-1"
             )}
             onClick={(e) => {

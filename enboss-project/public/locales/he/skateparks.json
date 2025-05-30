@@ -55,7 +55,8 @@
 
     "no_lighting": "אין תאורה",
     "amenities": {
-      "title": "סינון לפי שירותים / חוקים",
+      "title": "שירותים / חוקים",
+      "filterBy": "סינון לפי שירותים / חוקים",
       "entryFee": "דמי כניסה",
       "entryFee.description": "פארק זה דורש דמי כניסה",
       "parking": "חניה",

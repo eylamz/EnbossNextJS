@@ -142,7 +142,7 @@ export const AmenitiesGrid = ({
                     <motion.div 
                       className={`rounded-lg p-2 h-full cursor-pointer ${
                         isParkClosed
-                          ? 'bg-error/[8%] dark:bg-error-bg-dark/[15%]' 
+                          ? `transition-all duration-300 ${pageLoaded ? 'animate-fadeIn bg-error/[8%] dark:bg-error-bg-dark/[15%]' : 'bg-black/[3%] dark:bg-black/[5%]'}` 
                           : `transition-all duration-300 ${pageLoaded ? 'animate-fadeIn bg-brand-main/[8%] dark:bg-white/[2%]' : 'bg-black/[3%] dark:bg-black/[5%]'}` 
                       }`}
                       onClick={(e: MouseEvent) => setOpenTooltip(openTooltip === key ? null : key)}
@@ -160,14 +160,14 @@ export const AmenitiesGrid = ({
                             category="amenity" 
                             className={`w-5 h-5 mx-auto ${
                               isParkClosed
-                                ? 'text-error dark:text-error/80' 
+                                ? `transition-all duration-300 ${pageLoaded ? 'text-error dark:text-error/80' : 'text-text-secondary dark:text-[#40535e]'}` 
                                 : `transition-all duration-300 ${pageLoaded ? 'text-brand-700 dark:text-brand-main/80' : 'text-text-secondary dark:text-[#40535e]'}` 
                             }`} 
                           />
                         </div>
                         <div className={`text-sm font-normal ${
                           isParkClosed
-                            ? 'text-text dark:text-text-dark' 
+                            ? `transition-all duration-300 ${pageLoaded ? 'text-text dark:text-text-dark' : 'text-gray-400 dark:text-text-secondary line-through'}` 
                             : `transition-all duration-300 ${pageLoaded ? 'text-text dark:text-text-dark' : 'text-gray-400 dark:text-text-secondary line-through'}` 
                         }`}>
                           {translations[key] || preloadedTranslations?.[key]?.name || t(`amenities.${key}`)}

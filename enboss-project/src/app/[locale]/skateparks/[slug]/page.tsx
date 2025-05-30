@@ -326,7 +326,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     {/* Address Section */}
                     <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
                       <div className="flex items-center mb-3">
-                        <h2 className="text-lg font-semibold flex items-center">
+                        <h2 className="text-lg font-semibold flex items-center dark:text-[#96b6c9]">
                           <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
                           {t('address')} 
                         </h2>
@@ -353,7 +353,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 <Suspense fallback={<SectionLoading />}>
                   <Card className="p-4 w-full max-w-[564px] backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                     <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
-                      <h2 className="text-lg font-semibold flex items-center">
+                      <h2 className="text-lg font-semibold flex items-center dark:text-[#96b6c9]">
                         <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
                         {t('amenities.title')}
                       </h2>
@@ -376,8 +376,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                       (typeof parkNotes === 'string' && parkNotes.trim() !== '')
                     ) && (
                       <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#7991a0]">
-                        <div className="flex items-center mb-2">
-                          <Icon name="infoBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+                        <div className="flex items-center mb-2 gap-2 dark:text-[#96b6c9]">
+                          <Icon name="infoBold" category="ui" className="w-5 h-5" />
                           <h3 className="text-lg font-semibold">{t('notes')}</h3>
                         </div>
                         
@@ -417,9 +417,29 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 )}
               </Suspense>
 
-              {/* Map Links Card */}
+              {/* Map Links and Rating Card Combined */}
+              <div className="w-full mx-auto mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div className="w-full mx-auto mb-8">
+                  {/* Rating Card */}
+                  <Suspense fallback={<SectionLoading />}>
+                    <RatingCard
+                      skateparkId={skatepark._id}
+                      rating={skatepark.rating || 0}
+                      totalVotes={skatepark.ratingCount || 0}
+                      title={t('ratingTitle')}
+                      subtitle={t('ratingsDesc')}
+                      onHeartRatePark={async (parkId: string, rating: number) => {
+                        'use server'
+                        const formData = new FormData()
+                        formData.append('skateparkId', parkId)
+                        formData.append('rating', rating.toString())
+                        await updateRating(formData)
+                      }}
+                    />
+                  </Suspense>
+
+                  {/* Map Links Card */}
                   <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                     <MapLinks 
                       parkName={parkName}
@@ -427,25 +447,9 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                       location={skatepark.location}
                     />
                   </Card>
-                </div>
 
-              {/* Rating Card */}
-              <Suspense fallback={<SectionLoading />}>
-                <RatingCard
-                  skateparkId={skatepark._id}
-                  rating={skatepark.rating || 0}
-                  totalVotes={skatepark.ratingCount || 0}
-                  title={t('ratingTitle')}
-                  subtitle={t('ratingsDesc')}
-                  onHeartRatePark={async (parkId: string, rating: number) => {
-                    'use server'
-                    const formData = new FormData()
-                    formData.append('skateparkId', parkId)
-                    formData.append('rating', rating.toString())
-                    await updateRating(formData)
-                  }}
-                />
-              </Suspense>
+                </div>
+              </div>
 
               {/* YouTube Video Card */}
               {skatepark.mediaLinks?.youtubeUrl && skatepark.mediaLinks.youtubeUrl.trim() !== '' && (

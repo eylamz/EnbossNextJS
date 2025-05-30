@@ -39,8 +39,8 @@ const RelatedParks = ({
   }, [relatedParks]);
   
   return (
-    <div className="rounded-3xl overflow-hidden border border-background-dark/10 dark:border-background/10 shadow-container text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
-      <h2 className="text-xl font-semibold mb-6 text-text dark:text-[#7991a0]">
+    <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
+      <h2 className="text-xl font-semibold mb-6 text-text dark:text-[#96b6c9]">
         {t('relatedParks')}
       </h2>
       

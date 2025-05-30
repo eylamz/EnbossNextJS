@@ -58,16 +58,16 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, 
   }
 
   return (
-    <div className="max-w-6xl w-full mx-auto mb-8">
-      <Card className="p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+    <div className="max-w-6xl h-full w-full mx-auto mb-8">
+      <Card className="h-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
         <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
           <div>
-            <h2 className="text-lg font-semibold flex items-center">
-              <Icon name="heartBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
+            <h2 className="text-lg font-semibold flex items-center gap-2 dark:text-[#96b6c9]">
+              <Icon name="heartBold" category="ui" className="w-5 h-5 dark:text-[#96b6c9]" />
               {title}
             </h2>
             {subtitle && (
-              <p className="text-text-secondary dark:text-text-secondary-dark/80 mt-1 px-3">
+              <p className="text-text-secondary dark:text-[#7991a0] mt-1 px-3">
                 {subtitle}
               </p>
             )}
