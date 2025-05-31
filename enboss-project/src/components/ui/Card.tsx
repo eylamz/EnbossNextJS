@@ -36,7 +36,7 @@ const Card = React.forwardRef(
       <Component
         ref={ref}
         className={cn(
-          "rounded-3xl overflow-hidden text-card-foreground shadow-container",
+          "rounded-3xl overflow-hidden text-card-foreground shadow-container transition-all duration-200",
           className
         )}
         {...props}

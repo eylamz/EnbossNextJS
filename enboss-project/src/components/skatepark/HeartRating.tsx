@@ -324,7 +324,7 @@ const HeartRating = ({
           <motion.div 
             whileHover={{ scale: 1.05, transition: { duration: 0.15 } }}
             whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-            className="flex items-center gap-1 cursor-pointer rating-component p-2 -m-2"
+            className="flex items-center gap-1 cursor-pointer rating-component p-2 -m-2 transition-all duration-200"
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -345,7 +345,7 @@ const HeartRating = ({
               )} 
             />
             {!hideVotesCount && (
-              <span className="text-sm text-text-secondary dark:text-text-secondary-dark/90 ">
+              <span className="text-sm text-text-secondary dark:text-text-secondary-dark/90 transition-all duration-200">
                 ({totalVotes})
               </span>
             )}
@@ -426,7 +426,7 @@ const HeartRating = ({
             className="flex items-center gap-1 cursor-pointer px-4 -m-1" 
             tabIndex={-1}
           >
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-text dark:text-text-dark transition-all duration-200">
               {rating.toFixed(1)}
             </span>
             <Icon 

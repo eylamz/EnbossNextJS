@@ -477,7 +477,7 @@ const ParkCard = memo(({
         {/* Add year badge for parks opened in the last 3 years */}
         {[new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear) && (
           <div className="absolute bottom-2 left-0 z-10">
-            <div className="flex ltr:flex-row-reverse gap-1 justify-center items-center bg-header-dark text-black text-xs md:text-sm font-semibold px-2 py-1 rounded-r-full shadow-badge md:shadow-badgeMd">
+            <div className="flex ltr:flex-row-reverse gap-1 justify-center items-center bg-header-dark text-black text-xs md:text-sm font-semibold px-2 py-1 rounded-r-full shadow-badge md:shadow-badgeMd transition-all duration-200">
               {park.openingYear}
               <Icon name='sparks' category="ui" className="w-3 h-3" />
             </div>
@@ -491,7 +491,7 @@ const ParkCard = memo(({
               ? 'right-0' 
               : 'left-0'
           }`}>
-            <div className={`flex gap-1 justify-center items-center bg-error dark:bg-error-dark text-white text-xs px-2 py-1 shadow-badge ${
+            <div className={`flex gap-1 justify-center items-center bg-error dark:bg-error-dark text-white text-xs px-2 py-1 shadow-badge transition-all duration-200 ${
               (park.createdAt && isNewPark(park.createdAt))
                 ? 'rounded-l-3xl'
                 : 'rounded-r-3xl'
@@ -505,7 +505,7 @@ const ParkCard = memo(({
         {/* Add new badge for parks created in the last 2 months */}
         {park.createdAt && isNewPark(park.createdAt) && (
           <div className="absolute bottom-2 z-10 left-0">
-            <div className="flex gap-1 justify-center items-center bg-info text-white text-xs md:text-sm px-2 py-1 shadow-badge rounded-r-3xl">
+            <div className="flex gap-1 justify-center items-center bg-info text-white text-xs md:text-sm px-2 py-1 shadow-badge rounded-r-3xl transition-all duration-200">
               {t('skateparks:parkCard.newParkCard')}
               <Icon name='new' category="ui" className="w-4 h-4" />
             </div>
@@ -520,7 +520,7 @@ const ParkCard = memo(({
               ? 'right-0' 
               : 'left-0'
           }`}>
-            <div className={`flex justify-center items-center bg-yellow-400 text-black text-xs font-semibold px-2 py-1 shadow-badge ${
+            <div className={`flex justify-center items-center bg-yellow-400 text-black text-xs font-semibold px-2 py-1 shadow-badge transition-all duration-200 ${
               ([new Date().getFullYear(), new Date().getFullYear() - 1, new Date().getFullYear() - 2].includes(park.openingYear) ||
               (park.createdAt && isNewPark(park.createdAt)))
                 ? 'rounded-l-3xl'

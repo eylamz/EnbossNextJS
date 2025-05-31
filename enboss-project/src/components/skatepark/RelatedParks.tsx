@@ -1,8 +1,17 @@
 'use client';
 
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState, useMemo } from 'react';
 import { useTranslation } from '@/lib/i18n/client';
-import ParkCard from './ParkCard';
+import dynamic from 'next/dynamic';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+
+// Dynamically import ParkCard with no SSR
+const ParkCard = dynamic(() => import('./ParkCard'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-48 bg-card dark:bg-card-dark rounded-3xl animate-pulse" />
+  ),
+});
 
 interface RelatedParksProps {
   currentParkId: string;
@@ -24,12 +33,11 @@ const RelatedParks = ({
   locale
 }: RelatedParksProps) => {
   const { t } = useTranslation(locale, 'skateparks');
+  const [mounted, setMounted] = useState(false);
   
-  // Don't render anything if there are no related parks
-  if (!relatedParks || relatedParks.length === 0) return null;
-
   // Shuffle the related parks array
-  const shuffledParks = React.useMemo(() => {
+  const shuffledParks = useMemo(() => {
+    if (!relatedParks || relatedParks.length === 0) return [];
     const parks = [...relatedParks];
     for (let i = parks.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -37,6 +45,24 @@ const RelatedParks = ({
     }
     return parks;
   }, [relatedParks]);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Don't render anything if there are no related parks
+  if (!relatedParks || relatedParks.length === 0) return null;
+
+  // Show loading state during server-side rendering
+  if (!mounted) {
+    return (
+      <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
+        <div className="w-full h-32 flex items-center justify-center">
+          <LoadingSpinner size={32} />
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
@@ -59,7 +85,7 @@ const RelatedParks = ({
           />
         ))}
         {shuffledParks.length > 2 && (
-          <div className="hidden md:block bg-card dark:bg-card-dark !rounded-3xl overflow-hidden shadow-container">
+          <div className="hidden md:block bg-card dark:bg-card-dark !rounded-3xl overflow-hidden shadow-container transition-all duration-200">
             {shuffledParks.slice(2, 3).map((park, index) => (
               <ParkCard
                 key={park._id}
@@ -76,7 +102,7 @@ const RelatedParks = ({
           </div>
         )}
         {shuffledParks.length > 3 && (
-          <div className="hidden lg:block bg-card dark:bg-card-dark rounded-3xl overflow-hidden shadow-container">
+          <div className="hidden lg:block bg-card dark:bg-card-dark rounded-3xl overflow-hidden shadow-container transition-all duration-200">
             {shuffledParks.slice(3, 4).map((park, index) => (
               <ParkCard
                 key={park._id}

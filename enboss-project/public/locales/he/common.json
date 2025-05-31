@@ -12,7 +12,7 @@
     "login": "התחברות",
     "register": "הרשמה",
     "language": "שפה",
-    "dark_mode": "מצב חשוך",
+    "dark_mode": "מצב כהה",
     "light_mode": "מצב בהיר",
     "navigation": "ניווט",
     "follow_us": "עקבו אחרינו",
@@ -34,7 +34,7 @@
     "bike": "אופניים",
     "theme": {
       "light": "בהיר",
-      "dark": "חשוך"
+      "dark": "כהה"
     },
     "time": {
       "to": "-",
