@@ -3,9 +3,11 @@
     "skateparks": "סקייטפארקים",
     "guides": "מדריכים",
     "clear": "נקה",
+    "closed": "סגור",
     "shop": "חנות",
     "contact": "צור קשר",
     "about": "עלינו",
+    "events": "אירועים",
     "search": "חיפוש",
     "login": "התחברות",
     "register": "הרשמה",
@@ -77,5 +79,15 @@
       "copyright": "© {{year}} ENBOSS, כל הזכויות שמורות.",
       "terms": "תנאי שימוש",
       "accessibility": "הצהרת נגישות"
+    },
+    "rating": {
+      "successTitle": "הדירוג נשלח",
+      "success": "תודה על הדירוג שלך!",
+      "updated": "הדירוג שלך עודכן!",
+      "error": "שליחת הדירוג נכשלה. אנא נסה שוב.",
+      "overall": "דרג את הסקייטפארק",
+      "alreadyVoted": "כבר דירגת את הסקייטפארק הזה",
+      "totalVotes": "סך הכל הצבעות",
+      "votes": "הצבעות"
     }
   }

@@ -70,7 +70,7 @@ export function MapLinks({ parkName, nameHe, location }: MapLinksProps) {
 
           </div>
 
-          <div className="mx-auto max-w-[350px] grid grid-cols-2 xsm:flex xs:flex-wrap xs:justify-center gap-6 items-center">
+          <div className="mx-auto max-w-[350px] flex flex-wrap xs:justify-center gap-6 items-center">
             {/* Waze Map Link with Tooltip */}
             <TooltipProvider delayDuration={150}>
               <Tooltip>

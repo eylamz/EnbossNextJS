@@ -78,6 +78,26 @@ export default async function AdminPage({ params: { locale } }: { params: { loca
           </div>
         </div>
         
+        {/* Events Management */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-4">{t('events_management')}</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">{t('events_management_desc')}</p>
+          <div className="flex flex-col space-y-2">
+            <Link
+              href={`/${locale}/admin/events`}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center"
+            >
+              {t('view_all_events')}
+            </Link>
+            <Link
+              href={`/${locale}/admin/events/create`}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-center"
+            >
+              {t('add_new_event')}
+            </Link>
+          </div>
+        </div>
+        
         {/* Orders Management */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">{t('orders_management')}</h2>

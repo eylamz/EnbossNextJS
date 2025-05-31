@@ -33,6 +33,7 @@ interface ParkCardProps {
   onHeartRatePark?: (parkId: string, rating: number) => Promise<void>,
   locale: string,
   currentParkArea?: string,
+  className?: string,
 }
 
 // Utility function to optimize image URLs
@@ -165,6 +166,7 @@ const ParkCard = memo(({
   onHeartRatePark,
   locale,
   currentParkArea,
+  className,
 }: ParkCardProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -429,7 +431,7 @@ const ParkCard = memo(({
       as={Link}
       href={park.slug ? `/${locale}/skateparks/${park.slug}` : '#'}
       onClick={handleCardClick}
-      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[20] before:pointer-events-none before:opacity-0 before:transition-opacity before:duration-300 ${isNavigating ? 'before:opacity-100 before:animate-shimmerInfinite' : ''}`}
+      className={`h-fit hover:shadow-lg dark:hover:!scale-[1.02] bg-card dark:bg-card-dark rounded-3xl overflow-hidden cursor-pointer relative group select-none transform-gpu transition-all duration-200 opacity-0 animate-popFadeIn before:content-[''] before:absolute before:top-0 before:right-[-150%] before:w-[150%] before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent before:z-[20] before:pointer-events-none before:opacity-0 before:transition-opacity before:duration-300 ${isNavigating ? 'before:opacity-100 before:animate-shimmerInfinite' : ''} ${className}`}
       style={{ animationDelay: `${animationDelay}ms` }}
       aria-label={park.nameEn}
     >

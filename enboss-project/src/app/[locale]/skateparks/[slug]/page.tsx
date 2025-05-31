@@ -55,11 +55,26 @@ async function getSkatepark(slug: string) {
 async function getRelatedParks(currentParkId: string, area: string) {
   await dbConnect()
   
-  // First try to get parks from the same area
-  const sameAreaParks = await Skatepark.find({ 
+  console.log('=== RELATED PARKS DEBUG ===')
+  console.log('Current Park ID:', currentParkId)
+  console.log('Area:', area)
+  
+  // Get total count of parks
+  const totalParks = await Skatepark.countDocuments({})
+  console.log('Total parks in database:', totalParks)
+  
+  // Get count of parks in same area
+  const sameAreaCount = await Skatepark.countDocuments({ area })
+  console.log('Parks in same area:', sameAreaCount)
+  
+  // First get parks from the same area
+  const sameAreaParks = await Skatepark.find({
     _id: { $ne: currentParkId },
-    area: area 
-  }).limit(4)
+    area: area
+  }).sort({ rating: -1 }).limit(4)
+  
+  console.log('Same area parks found:', sameAreaParks.length)
+  console.log('Same area parks:', sameAreaParks.map(p => ({ id: p._id, name: p.nameEn, area: p.area })))
   
   // If we have 4 parks from the same area, return them
   if (sameAreaParks.length >= 4) {
@@ -67,13 +82,20 @@ async function getRelatedParks(currentParkId: string, area: string) {
   }
   
   // If we need more parks, get them from other areas
-  const otherAreaParks = await Skatepark.find({ 
-    _id: { $ne: currentParkId },
-    area: { $ne: area }
-  }).limit(4 - sameAreaParks.length)
+  const otherAreaParks = await Skatepark.find({
+    _id: { 
+      $ne: currentParkId,
+      $nin: sameAreaParks.map(p => p._id)
+    }
+  }).sort({ rating: -1 }).limit(4 - sameAreaParks.length)
+  
+  console.log('Other area parks found:', otherAreaParks.length)
+  console.log('Other area parks:', otherAreaParks.map(p => ({ id: p._id, name: p.nameEn, area: p.area })))
   
   // Combine and return the parks
   const allParks = [...sameAreaParks, ...otherAreaParks]
+  console.log('Total parks to return:', allParks.length)
+  
   return JSON.parse(JSON.stringify(allParks))
 }
 
@@ -167,7 +189,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
     openAllDay: t('openAllDay'),
     satAndHolidays: tCommon('time.satAndHolidays'),
     holidays: tCommon('time.days.holidays'),
-    closed: tCommon('common.closed'),
+    closed: tCommon('closed'),
     noLighting: t('noLighting'),
     fromSunsetTill: t('fromSunsetTill'),
     days: tCommon('time.days.days'),
@@ -221,7 +243,11 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
   };
 
   // Get related parks
+  console.log('=== CALLING GET RELATED PARKS ===')
+  console.log('Skatepark ID:', skatepark._id)
+  console.log('Skatepark Area:', skatepark.area)
   const relatedParks = await getRelatedParks(skatepark._id, skatepark.area)
+  console.log('Related parks returned:', relatedParks.length)
 
   return (
     <Suspense fallback={<PageLoading />}>
@@ -298,10 +324,10 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               )}
 
               {/* Info Cards */}
-              <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {/* Hours Card */}
                 <Suspense fallback={<SectionLoading />}>
-                  <Card className="text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
+                  <Card className="w-full text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
                     <div className="flex gap-4 mb-4 justify-between">
                       <div className="">
                         <FormattedHours 
@@ -351,7 +377,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
                 {/* Amenities Card */}
                 <Suspense fallback={<SectionLoading />}>
-                  <Card className="p-4 w-full max-w-[564px] backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+                  <Card className="p-4 w-full backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
                     <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
                       <h2 className="text-lg font-semibold flex items-center dark:text-[#96b6c9]">
                         <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
@@ -360,6 +386,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </div>
                     
                     {/* Amenities grid */}
+                    
                     <Suspense fallback={<TranslationLoading />}>
                       <AmenitiesGrid 
                         amenities={skatepark.amenities}
@@ -418,7 +445,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               </Suspense>
 
               {/* Map Links and Rating Card Combined */}
-              <div className="w-full mx-auto mb-8">
+              <div className="w-full mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                   {/* Rating Card */}
@@ -462,7 +489,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               )}
 
               {/* Related Skateparks Section */}
-              <section aria-labelledby="related-parks-heading" className="w-full max-w-6xl mx-auto mt-8">
+              <section aria-labelledby="related-parks-heading" className="w-full mt-8">
                 <h2 id="related-parks-heading" className="sr-only">{t('relatedParks')}</h2>
                 <Suspense fallback={<SectionLoading />}>
                   <RelatedParks 

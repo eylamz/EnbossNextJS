@@ -26,6 +26,7 @@ interface HeartRatingProps {
   onVoteComplete?: () => void;
   hideVotesCount?: boolean;
   skateparkId: string;
+  className?: string;
 }
 
 let activeDialogId: string | null = null;
@@ -114,7 +115,8 @@ const HeartRating = ({
   userRating = null,
   onVoteComplete,
   hideVotesCount = false,
-  skateparkId
+  skateparkId,
+  className
 }: HeartRatingProps) => {
   const dialogIdRef = useRef<string>(getUniqueDialogId());
   const [isRating, setIsRating] = useState(false);
@@ -245,10 +247,10 @@ const HeartRating = ({
   const getIconSize = useCallback((value: number) => {
     const sizes = {
       1: "w-5 h-5",
-      2: "w-6 h-6",
-      3: "w-7 h-7",
-      4: "w-8 h-8",
-      5: "w-9 h-9"
+      2: "w-7 h-7",
+      3: "w-9 h-9",
+      4: "w-11 h-11",
+      5: "w-[3.25rem] h-[3.25rem]"
     };
     return sizes[value as keyof typeof sizes];
   }, []);
@@ -343,7 +345,7 @@ const HeartRating = ({
               )} 
             />
             {!hideVotesCount && (
-              <span className="text-sm text-text-secondary dark:text-text-secondary-dark/90">
+              <span className="text-sm text-text-secondary dark:text-text-secondary-dark/90 ">
                 ({totalVotes})
               </span>
             )}
@@ -416,7 +418,7 @@ const HeartRating = ({
   
   // For non-touch devices - HoverCard version
   return (
-    <div ref={containerRef} className="rating-component">
+    <div ref={containerRef} className={cn("rating-component", className)}>
       <HoverCard>
         <HoverCardTrigger asChild>
           <motion.div 

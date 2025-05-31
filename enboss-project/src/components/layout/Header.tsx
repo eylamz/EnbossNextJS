@@ -106,7 +106,7 @@ export default function Header({ lng }: { lng: string }) {
               </Link>
 
               {/* Desktop Navigation */}
-              <div className="hidden md:flex gap-3 lg:gap-5 items-center font-medium" role="menubar">
+              <div className="hidden min-[880px]:flex gap-3 lg:gap-5 items-center font-medium" role="menubar">
                 <Link href={`/${lng}/skateparks`} className={navLinkClasses(`/${lng}/skateparks`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('skateparks')}
@@ -118,6 +118,12 @@ export default function Header({ lng }: { lng: string }) {
                     {t('guides')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/guides`)} aria-hidden="true"></span>
+                </Link>
+                <Link href={`/${lng}/events`} className={navLinkClasses(`/${lng}/events`)} role="menuitem">
+                  <span className="flex items-center gap-1 light:navShadow">
+                    {t('events')}
+                  </span>
+                  <span className={activeLinkIndicatorClasses(`/${lng}/events`)} aria-hidden="true"></span>
                 </Link>
                 <Link href={`/${lng}/shop`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
@@ -140,7 +146,7 @@ export default function Header({ lng }: { lng: string }) {
               </div>
 
               {/* Desktop Action Icons */}
-              <div className="hidden md:flex ltr:flex-row-reverse items-center gap-2 lg:gap-3">
+              <div className="hidden min-[880px]:flex ltr:flex-row-reverse items-center gap-2 lg:gap-3">
                 <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
                    <Icon name="user" category="ui" size={20} className="light:navShadow" />
                    <span className="sr-only">{t('login')}</span>
@@ -151,7 +157,7 @@ export default function Header({ lng }: { lng: string }) {
               </div>
 
               {/* Mobile menu button */}
-              <div className="md:hidden flex items-center">
+              <div className="min-[880px]:hidden flex items-center">
                 <button
                   className="p-2 -m-2 transition-transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-inset focus:ring-header-text/50 dark:focus:ring-header-text-dark/50 rounded-md"
                   onClick={() => {
@@ -176,7 +182,7 @@ export default function Header({ lng }: { lng: string }) {
             <div 
               id="mobile-menu"
               className={`
-                md:hidden 
+                min-[880px]:hidden 
                 overflow-hidden 
                 transition-[max-height,opacity]
                 duration-350 
@@ -187,27 +193,40 @@ export default function Header({ lng }: { lng: string }) {
               aria-hidden={!isMenuOpen}
             >
               <nav className="pb-4 px-2" aria-label="Mobile Navigation">
-                <div className="flex flex-col">
-                <Link href={`/${lng}/skateparks`} className={`${mobileNavLinkClasses(`/${lng}/skateparks`)} animate-fadeIn`} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span>{t('skateparks')}</span>
-                </Link>
-                <Link href={`/${lng}/guides`} className={`${mobileNavLinkClasses(`/${lng}/guides`)} animate-fadeIn`} style={{ animationDelay: '150ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span>{t('guides')}</span>
-                </Link>
-                <Link href={`/${lng}/shop`} className={`${mobileNavLinkClasses(`/${lng}/shop`)} animate-fadeIn`} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span>{t('shop')}</span>
-                </Link>
-                <Link href={`/${lng}/login`} className={`${mobileNavLinkClasses(`/${lng}/login`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                  <span>{t('login')}</span>
-                </Link>
-                </div>
-                <div className="pt-4 px-2">
-                  <div 
-                    className={`flex items-center justify-start gap-4 ${isMenuOpen ? 'animate-fadeIn' : ''}`}
-                    style={{ animationDelay: '300ms' }}
-                  >
-                    <ThemeToggle lng={lng} />
-                    <LanguageToggle lng={lng} />
+                <div className="flex justify-between">
+                  {/* Left column - Navigation Links */}
+                  <div className="flex flex-col">
+                    <Link href={`/${lng}/skateparks`} className={`${mobileNavLinkClasses(`/${lng}/skateparks`)} animate-fadeIn`} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <span>{t('skateparks')}</span>
+                    </Link>
+                    <Link href={`/${lng}/guides`} className={`${mobileNavLinkClasses(`/${lng}/guides`)} animate-fadeIn`} style={{ animationDelay: '150ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <span>{t('guides')}</span>
+                    </Link>
+                    <Link href={`/${lng}/events`} className={`${mobileNavLinkClasses(`/${lng}/events`)} animate-fadeIn`} style={{ animationDelay: '175ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <span>{t('events')}</span>
+                    </Link>
+                    <Link href={`/${lng}/shop`} className={`${mobileNavLinkClasses(`/${lng}/shop`)} animate-fadeIn`} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <span>{t('shop')}</span>
+                    </Link>
+                      <Link href={`/${lng}/contact`} className={`${mobileNavLinkClasses(`/${lng}/contact`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                        <span>{t('contact')}</span>
+                      </Link>
+                      <Link href={`/${lng}/about`} className={`${mobileNavLinkClasses(`/${lng}/about`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                        <span>{t('about')}</span>
+                      </Link>
+                  </div>
+
+                  {/* Right column - Action Icons */}
+                  <div className="flex flex-col items-end gap-4 pt-2">
+                    <Link href={`/${lng}/login`} className={`${mobileNavLinkClasses(`/${lng}/login`)} animate-fadeIn`} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <Icon name="user" category="ui" size={24} className="light:navShadow" />
+                    </Link>
+                    <div className="animate-fadeIn" style={{ animationDelay: '150ms' }}>
+                      <ThemeToggle lng={lng} />
+                    </div>
+                    <div className="animate-fadeIn" style={{ animationDelay: '175ms' }}>
+                      <LanguageToggle lng={lng} />
+                    </div>
                   </div>
                 </div>
               </nav>
@@ -217,7 +236,7 @@ export default function Header({ lng }: { lng: string }) {
 
         {/* Backdrop for mobile menu */}
         <div 
-          className={`fixed inset-0 bg-black/30 dark:bg-black/50 md:hidden -z-10 transition-opacity duration-300 ease-in-out ${
+          className={`fixed inset-0 bg-black/30 dark:bg-black/50 min-[880px]:hidden -z-10 transition-opacity duration-300 ease-in-out ${
             isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           onClick={() => setIsMenuOpen(false)}

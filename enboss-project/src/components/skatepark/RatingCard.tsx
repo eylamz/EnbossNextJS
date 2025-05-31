@@ -59,7 +59,7 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, 
 
   return (
     <div className="max-w-6xl h-full w-full mx-auto mb-8">
-      <Card className="h-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
+      <Card className="flex flex-col justify-between h-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
         <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2 dark:text-[#96b6c9]">
@@ -67,7 +67,7 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, 
               {title}
             </h2>
             {subtitle && (
-              <p className="text-text-secondary dark:text-[#7991a0] mt-1 px-3">
+              <p className="text-text dark:text-[#7991a0] mt-1 px-3">
                 {subtitle}
               </p>
             )}
@@ -79,6 +79,7 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, 
           onRate={handleRate}
           readonly={isClosed}
           skateparkId={skateparkId}
+          className=""
         />
       </Card>
     </div>

@@ -139,10 +139,38 @@ const guideSchema = new mongoose.Schema(
   }
 );
 
+const eventSchema = new mongoose.Schema(
+  {
+    title: {
+      en: { type: String, required: true },
+      he: { type: String, required: true }
+    },
+    slug: { type: String, required: true, unique: true },
+    description: {
+      en: { type: String, required: true },
+      he: { type: String, required: true }
+    },
+    category: { type: String, required: true, enum: ['competition', 'workshop', 'event'] },
+    images: [{ type: String, required: true }],
+    featuredImage: { type: String, required: true },
+    isFeatured: { type: Boolean, default: false },
+    tags: {
+      en: [{ type: String }],
+      he: [{ type: String }]
+    },
+    status: { type: String, required: true, enum: ['published', 'draft', 'cancelled'] },
+    date: { type: Date, required: true }
+  },
+  {
+    timestamps: true
+  }
+);
+
 // --- Create Models ---
 const Skatepark = mongoose.models.Skatepark || mongoose.model('Skatepark', skateparkSchema);
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 const Guide = mongoose.models.Guide || mongoose.model('Guide', guideSchema);
+const Event = mongoose.models.Event || mongoose.model('Event', eventSchema);
 
 // --- Sample Data ---
 
@@ -233,7 +261,6 @@ const skateparks = [
     ],
     mediaLinks: {
       googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13507.787629848921!2d34.91278500216247!3d32.17870638966543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151d39291f50cf4f%3A0xb539f2798bc417ce!2z16HXp9eZ15nXmdeY16TXkNeo16cg15vXpNeoINeh15HXkA!5e0!3m2!1sen!2sil!4v1748506998861!5m2!1sen!2sil',
-      youtubeUrl: 'https://www.youtube.com/watch?v=examplevideo1'
     },
     notesEn: ['Entry for scooter and bicycle riders is prohibited.', 'Helmet is mandatory for entry.'],
     notesHe: ['הכניסה לרוכבי קורקינט ואופניים אסורה.', 'כניסה עם קסדה חובה.'],
@@ -273,6 +300,63 @@ const skateparks = [
     },
     notesEn: ['Large skatepark located within Sportek Tel Aviv. Usually crowded.'],
     notesHe: ['סקייטפארק גדול הממוקם בספורטק תל אביב. בדרך כלל עמוס.'],
+    rating: 0,
+    ratingCount: 0
+  },
+  {
+    nameEn: 'Kiryat Ata',
+    nameHe: 'קרית אתא',
+    slug: 'kiryat-ata',
+    area: 'north',
+    status: 'active',
+    addressEn: 'Kiryat Ata Park, Har Tavor St 123, Kfar Saba',
+    addressHe: 'פארק הספורט לוקי, רחוב נתן שפריצר, קרית אתא',
+    openingYear: 2023,
+    location: { latitude: 32.81479158068334, longitude: 35.121177318088115 },
+    operatingHours: {
+      sunday: { openingTime: "08:00", closingTime: "23:00", isOpen: false },
+      monday: { openingTime: "08:00", closingTime: "23:00", isOpen: true },
+      tuesday: { openingTime: "08:00", closingTime: "23:00", isOpen: true },
+      wednesday: { openingTime: "08:00", closingTime: "23:00", isOpen: true },
+      thursday: { openingTime: "08:00", closingTime: "23:00", isOpen: true },
+      friday: { openingTime: "08:00", closingTime: "17:00", isOpen: true },
+      saturday: { openingTime: "08:00", closingTime: "23:00", isOpen: true },
+      holidays: { openingTime: "08:00", closingTime: "23:00", isOpen: true }
+    },
+    lightingHours: { ...defaultLightingHours },
+    amenities: {
+      entryFee: true,
+      parking: true,
+      bathroom: true,
+      shade: false,
+      helmetRequired: false,
+      guard: false,
+      seating: false,
+      bombShelter: false,
+      scootersAllowed: true,
+      bikesAllowed: false,
+      noWax: false
+    },
+    isFeatured: false,
+    images: [
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340699/tu5doswkvvbop3cef3x1.webp', isFeatured: true, orderNumber: 1 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340700/z6ti8ixky8ldjt30xiow.webp', isFeatured: false, orderNumber: 2 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340701/e9wimyncuxivttw6uyyt.webp', isFeatured: false, orderNumber: 3 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340702/hd1traazpxo5obldvif0.webp', isFeatured: false, orderNumber: 4 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340703/psdpw4qyuvqsieeuxb2k.webp', isFeatured: false, orderNumber: 5 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340704/d1pcunlqkphvoaw2waev.webp', isFeatured: false, orderNumber: 6 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340705/cuznzkckgxginknmkc88.webp', isFeatured: false, orderNumber: 7 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340706/ddgwmprydwdlp4l5tsok.webp', isFeatured: false, orderNumber: 8 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340707/oeaocdh5fkrwcvd7jssu.webp', isFeatured: false, orderNumber: 9 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340708/ffshs7zuqlxhn6weetga.webp', isFeatured: false, orderNumber: 10 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340709/o7xecfpv2dhvs4x8x1qh.webp', isFeatured: false, orderNumber: 11 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1740340711/z7m9sizwdkghh6cvldrt.webp', isFeatured: false, orderNumber: 12 }
+    ],
+    mediaLinks: {
+      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6149.783432268138!2d35.12651847668962!3d32.81362186166062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151db6a17420f5af%3A0xefc840f7c2afbf18!2z16TXkNeo16cg16HXpNeV16jXmNenINe015zXlden15nXtCAo16fXqNeZ16og15DXqteQKQ!5e0!3m2!1siw!2sil!4v1726041751201!5m2!1siw!2sil',
+    },
+    notesEn: ['Admission fee : Adult - 60₪, Child - 30₪.', 'Free entry for Kiryat Ata residents.', 'Bike riders are not allowed to enter.'],
+    notesHe: ['כניסה בתשלום : מבוגר - 60 ₪, ילד - 30 ₪.', 'הכניסה חינם לתושבי קרית אתא.', 'הכניסה לרוכבי אופניים אסורה.'],
     rating: 0,
     ratingCount: 0
   },
@@ -390,7 +474,7 @@ const skateparks = [
     notesHe: [],
     rating: 0,
     ratingCount: 0
-  },
+  }
 ];
 
 const products = [
@@ -452,6 +536,34 @@ const guides = [
   },
 ];
 
+const events = [
+  {
+    title: {
+      en: 'Tel Aviv Skateboarding Championship 2024',
+      he: 'אליפות תל אביב בסקייטבורד 2024'
+    },
+    slug: 'tel-aviv-skateboarding-championship-2024',
+    description: {
+      en: 'Join us for the biggest skateboarding competition in Tel Aviv! Open to all skill levels, with special categories for beginners, intermediate, and professional riders. Prizes include cash rewards, sponsored gear, and more!',
+      he: 'הצטרפו אלינו לתחרות הסקייטבורד הגדולה בתל אביב! פתוח לכל הרמות, עם קטגוריות מיוחדות למתחילים, מתקדמים ומקצוענים. פרסים כוללים פרסים כספיים, ציוד מחסות ועוד!'
+    },
+    category: 'competition',
+    images: [
+      'https://res.cloudinary.com/dr0rvohz9/image/upload/v1741269936/lwfn1e8oqfjgp9msrwib.webp',
+      'https://res.cloudinary.com/dr0rvohz9/image/upload/v1741269935/jnqdr1jjf8fdovgi1kec.webp',
+      'https://res.cloudinary.com/dr0rvohz9/image/upload/v1741269942/qwxxps1ii8tlez5dcqnw.webp'
+    ],
+    featuredImage: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1741269936/lwfn1e8oqfjgp9msrwib.webp',
+    isFeatured: true,
+    tags: {
+      en: ['competition', 'skateboarding', 'tel-aviv', 'championship'],
+      he: ['תחרות', 'סקייטבורד', 'תל-אביב', 'אליפות']
+    },
+    status: 'published',
+    date: new Date('2024-07-15T10:00:00.000Z')
+  }
+];
+
 // --- Connect to MongoDB and Seed Database ---
 async function seedDatabase() {
   try {
@@ -462,17 +574,20 @@ async function seedDatabase() {
     await Skatepark.deleteMany({});
     await Product.deleteMany({});
     await Guide.deleteMany({});
+    await Event.deleteMany({});
     console.log('Existing data cleared.');
 
     console.log('Inserting new data...');
     await Skatepark.insertMany(skateparks);
     await Product.insertMany(products);
     await Guide.insertMany(guides);
+    await Event.insertMany(events);
     console.log('New data inserted.');
 
     console.log(`Inserted ${skateparks.length} skateparks.`);
     console.log(`Inserted ${products.length} products.`);
     console.log(`Inserted ${guides.length} guides.`);
+    console.log(`Inserted ${events.length} events.`);
 
     console.log('Database seeding completed successfully!');
   } catch (error) {

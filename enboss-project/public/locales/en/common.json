@@ -6,7 +6,9 @@
   "contact": "Contact",
   "about": "About",
   "search": "Search",
+  "events": "Events",
   "login": "Login",
+  "closed": "Closed",
   "register": "Register",
   "language": "Language",
   "dark_mode": "Dark Mode",
@@ -76,5 +78,15 @@
     "copyright": "© {{year}} ENBOSS, All Rights Reserved.",
     "terms": "Terms of Use",
     "accessibility": "Accessibility Statement"
+  },
+  "rating": {
+    "successTitle": "Rating Submitted",
+    "success": "Thank you for your rating!",
+    "updated": "Your rating has been updated!",
+    "error": "Failed to submit rating. Please try again.",
+    "overall": "Rate this skatepark",
+    "alreadyVoted": "You've already rated this skatepark",
+    "totalVotes": "total votes",
+    "votes": "votes"
   }
 }
