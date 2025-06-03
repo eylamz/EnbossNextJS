@@ -21,7 +21,7 @@ export default {
       fontFamily: {
         sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
         'poppins': ['var(--font-poppins)', 'system-ui', 'sans-serif'],
-        'noto-hebrew': ['var(--font-noto-hebrew)', 'system-ui', 'sans-serif'],
+        'arimo': ['var(--font-arimo)', 'system-ui', 'sans-serif'],
         rtl: ['Arimo', 'system-ui', 'sans-serif'],
         ltr: ['Poppins', 'system-ui', 'sans-serif'],
       },
@@ -59,6 +59,8 @@ export default {
           900: colors.brand[900],
           main: colors.brand.main,
           dark: colors.brand.dark,
+          text: colors.brand.text,
+          color: colors.brand.color,
         },
         background: {
           DEFAULT: colors.background.light,
@@ -295,9 +297,8 @@ export default {
           'to': { right: '100%' }
         },
         'shimmerInfinite': {
-          '0%': { right: '-100%' },
-          '50%': { right: '100%' },
-          '100%': { right: '-100%' }
+          'from': { right: '-100%' },
+          'to': { right: '100%' }
         },
         'expandWidth': {
           '0%': { width: '50px', opacity: '0' },
@@ -376,6 +377,10 @@ export default {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
         slideUp: {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
@@ -410,6 +415,7 @@ export default {
         scaleDownFade: 'scaleDownFade 0.25s ease-in forwards',
         scaleFadeUp: 'scaleFadeUp 0.15s ease-in forwards',
         fadeIn: 'fadeIn 0.3s ease-out forwards',
+        fadeOut: 'fadeOut 0.3s ease-out forwards',
         slideUp: 'slideUp 0.3s ease-out forwards',
         slideRight: 'slideRight 0.3s ease-out forwards',
         slideLeft: 'slideLeft 0.3s ease-out forwards',

@@ -10,7 +10,6 @@ interface SearchInputProps {
   onClear: () => void;
   placeholder: string;
   className?: string;
-  maxWidth?: string;
   variant?: 'default' | 'header' | 'error';
 }
 
@@ -20,10 +19,16 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(({
   onClear,
   placeholder,
   className = '',
-  maxWidth = '',
   variant = 'default'
 }, ref) => {
-  const { t } = useTranslation(['common']);
+  const { t, i18n } = useTranslation(['common']);
+  const [isTranslationReady, setIsTranslationReady] = React.useState(false);
+
+  React.useEffect(() => {
+    if (i18n.isInitialized) {
+      setIsTranslationReady(true);
+    }
+  }, [i18n.isInitialized]);
 
   const defaultIconColor = 'text-text-secondary dark:text-text-secondary ';
   const searchIconColor = variant === 'header'
@@ -44,11 +49,11 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(({
     : 'md:focus-visible:outline-brand-main/35';
 
   return (
-    <div className={`relative flex-1 group  sm:max-w-[${maxWidth}] ${className}`}>
+    <div className={`relative flex-1 group sm:max-w-[250px] ${className}`}>
       <Input
         ref={ref}
         type="text"
-        placeholder={placeholder}
+        placeholder={isTranslationReady ? placeholder : ''}
         value={value}
         onChange={onChange}
         className={`w-full px-4 py-2 ${
@@ -59,29 +64,31 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(({
         autoComplete="off"
         variant={variant === 'error' ? 'default' : variant}
       />
-      <div className="absolute top-2.5 ltr:right-0 rtl:left-0 flex items-center px-3">
-        {value ? (
-          <button
-            onClick={onClear}
-            className={`p-1 -mt-1 rounded-full transition-colors duration-300 hover:bg-black/5 dark:hover:bg-white/5 ${defaultIconColor}`}
-            title={t('common:common.clear')}
-            aria-label={t('common:common.clear')}
-          >
-            <X className="w-5 h-5 animate-pop" />
-          </button>
-        ) : (
-          <div 
-            className={`p-1 -mt-1 rounded-full ${defaultIconColor}`}
-            aria-hidden="true"
-          >
-            <Icon 
-              name="search" 
-              category="navigation"
-              className={`w-5 h-5 transition-all duration-200 group-focus-within:animate-popIn pointer-events-none ${searchIconColor}`} 
-            />
-          </div>
-        )}
-      </div>
+      {isTranslationReady && (
+        <div className="absolute top-2.5 ltr:right-0 rtl:left-0 flex items-center px-3">
+          {value ? (
+            <button
+              onClick={onClear}
+              className={`p-1 -mt-1 rounded-full transition-colors duration-300 hover:bg-black/5 dark:hover:bg-white/5 ${defaultIconColor}`}
+              title={t('common:common.clear')}
+              aria-label={t('common:common.clear')}
+            >
+              <X className="w-5 h-5 animate-pop" />
+            </button>
+          ) : (
+            <div 
+              className={`p-1 -mt-1 rounded-full ${defaultIconColor}`}
+              aria-hidden="true"
+            >
+              <Icon 
+                name="search" 
+                category="navigation"
+                className={`w-5 h-5 transition-all duration-200 group-focus-within:animate-popIn pointer-events-none ${searchIconColor}`} 
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }); 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Noto_Sans_Hebrew } from "next/font/google";
+import { Inter, Poppins, Arimo } from "next/font/google";
 import "./globals.css";
 import { dir } from 'i18next';
 import { Toaster } from "@/components/ui/toaster";
@@ -10,10 +10,10 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-const notoSansHebrew = Noto_Sans_Hebrew({
-  subsets: ["hebrew"],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-noto-hebrew',
+const arimo = Arimo({
+  subsets: ["hebrew", "latin"],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-arimo',
 });
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function RootLayout({
   const direction = params.locale === 'he' ? 'rtl' : 'ltr';
   
   return (
-    <html lang={params.locale} dir={direction} className={`${poppins.variable} ${notoSansHebrew.variable}`}>
+    <html lang={params.locale} dir={direction} className={`${poppins.variable} ${arimo.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -52,7 +52,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-noto-hebrew' : 'font-poppins'}`}>
+      <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-arimo' : 'font-poppins'}`}>
         {children}
         <Toaster />
       </body>

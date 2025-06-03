@@ -1,3 +1,6 @@
+ENBOSS New Color - 
+beacuse nothing says "extreme sports" like radioactive lime
+
 # Enboss - Skatepark Directory & Shop
 
 Enboss is a comprehensive platform for skateparks in Israel, providing information about skateparks, guides for various board sports, and an e-commerce shop for related equipment.

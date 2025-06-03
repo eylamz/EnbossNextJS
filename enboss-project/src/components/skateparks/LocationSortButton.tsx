@@ -9,10 +9,12 @@ interface LocationSortButtonProps {
   isActive: boolean;
   onClick: () => void;
   className?: string;
+  style?: React.CSSProperties;
+  locale: string;
 }
 
-const LocationSortButton = ({ isActive, onClick, className }: LocationSortButtonProps) => {
-  const { t } = useTranslation('skateparks');
+const LocationSortButton = ({ isActive, onClick, className, style, locale }: LocationSortButtonProps) => {
+  const { t } = useTranslation(locale, 'skateparks');
   
   return (
     <TooltipProvider delayDuration={50}>

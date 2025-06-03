@@ -19,25 +19,30 @@ interface SkateparkData {
   closingYear?: number;
   createdAt: Date;
   isFeatured: boolean;
+  coordinates?: string;
 }
 
 interface ParkCardWrapperProps {
   park: SkateparkData;
   animationDelay: number;
   locale: string;
+  userLocation: { latitude: number; longitude: number } | null;
+  isLocationSortActive?: boolean;
 }
 
 export function ParkCardWrapper({ 
   park, 
   animationDelay,
-  locale 
+  locale,
+  userLocation,
+  isLocationSortActive = false
 }: ParkCardWrapperProps) {
   const { t } = useTranslation(locale, 'skateparks')
 
   return (
     <ParkCard
       park={park}
-      userLocation={null}
+      userLocation={userLocation}
       t={t}
       refetchData={async () => {
         // Client-side refetch logic
@@ -51,6 +56,7 @@ export function ParkCardWrapper({
         await updateRating(formData)
       }}
       locale={locale}
+      isLocationSortActive={isLocationSortActive}
     />
   )
 } 

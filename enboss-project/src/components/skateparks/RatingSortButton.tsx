@@ -9,10 +9,11 @@ interface RatingSortButtonProps {
   isActive: boolean;
   onClick: () => void;
   className?: string;
+  style?: React.CSSProperties;
   locale: string;
 }
 
-const RatingSortButton = ({ isActive, onClick, className, locale }: RatingSortButtonProps) => {
+const RatingSortButton = ({ isActive, onClick, className, style, locale }: RatingSortButtonProps) => {
   const { t } = useTranslation(locale, 'skateparks');
   
   return (

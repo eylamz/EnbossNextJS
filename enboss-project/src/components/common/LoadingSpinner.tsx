@@ -72,13 +72,13 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
           strokeLinecap="round"
         />
         <defs>
-          {/* Default Google colors gradient */}
+          {/* Default gradient */}
           <linearGradient id="googleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#4285F4' }} /> {/* Blue */}
-            <stop offset="25%" style={{ stopColor: '#DB4437' }} /> {/* Red */}
-            <stop offset="50%" style={{ stopColor: '#F4B400' }} /> {/* Yellow */}
-            <stop offset="75%" style={{ stopColor: '#0F9D58' }} /> {/* Green */}
-            <stop offset="100%" style={{ stopColor: '#4285F4' }} /> {/* Blue again for smooth transition */}
+            <stop offset="0%" style={{ stopColor: 'red' }} /> {/* Blue */}
+            <stop offset="25%" style={{ stopColor: 'blue' }} /> {/* Red */}
+            <stop offset="50%" style={{ stopColor: 'green' }} /> {/* Yellow */}
+            <stop offset="75%" style={{ stopColor: '#326111' }} /> {/* Green */}
+            <stop offset="100%" style={{ stopColor: '#6bff00' }} /> {/* Blue again for smooth transition */}
           </linearGradient>
 
           {/* Black gradient */}

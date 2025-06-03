@@ -1,9 +1,29 @@
 {
+    "kilometer": "km",
     "all_skateparks": "All Skateparks",
     "filter_by_area": "Filter by Area",
     "all_areas": "All Areas",
     "relatedParks": "Related Skateparks",
     "searchPlaceholder": "Search for a skatepark...",
+    "sort": {
+      "byDistance": "Sort by distance",
+      "byRating": "Sort by rating"
+    },
+    "search": {
+      "noResults": "No skateparks found matching your search",
+      "noAreaResults": "No matching skateparks found in {{area}}",
+      "noAmenitiesResults": "No matching skateparks for this filter",
+      "noSkateparks": "No matching skateparks found",
+      
+      "filterStatus": {
+        "showing": "Showing {{filtered}} / {{total}} skateparks",
+        "sortedByAmenities": "Filtered by amenities:",
+        "sortedByRating": "Sorted by rating",
+        "sortedByDistance": "Sorted by distance",
+        "sortedByDifficulty": "Sorted by difficulty",
+        "filteredByArea": "Filtered by area:"
+      }
+    },
 
     "area": {
       "north": "North",
@@ -53,11 +73,12 @@
     "parkCard": {
       "featuredParkCard": "Popular",
       "newParkCard": "New on the site",
-      "closedPark": "Permanently Closed"
+      "closedPark": "Closed"
     },
 
     "amenities": {
       "title": "Services / Rules",
+      "filterBy": "Filter by services / rules",
       "entryFee": "Entry Fee",
       "entryFee.description": "This park requires an entry fee",
       "parking": "Parking",

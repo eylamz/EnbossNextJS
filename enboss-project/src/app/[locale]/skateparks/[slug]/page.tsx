@@ -55,26 +55,11 @@ async function getSkatepark(slug: string) {
 async function getRelatedParks(currentParkId: string, area: string) {
   await dbConnect()
   
-  console.log('=== RELATED PARKS DEBUG ===')
-  console.log('Current Park ID:', currentParkId)
-  console.log('Area:', area)
-  
-  // Get total count of parks
-  const totalParks = await Skatepark.countDocuments({})
-  console.log('Total parks in database:', totalParks)
-  
-  // Get count of parks in same area
-  const sameAreaCount = await Skatepark.countDocuments({ area })
-  console.log('Parks in same area:', sameAreaCount)
-  
   // First get parks from the same area
   const sameAreaParks = await Skatepark.find({
     _id: { $ne: currentParkId },
     area: area
   }).sort({ rating: -1 }).limit(4)
-  
-  console.log('Same area parks found:', sameAreaParks.length)
-  console.log('Same area parks:', sameAreaParks.map(p => ({ id: p._id, name: p.nameEn, area: p.area })))
   
   // If we have 4 parks from the same area, return them
   if (sameAreaParks.length >= 4) {
@@ -89,13 +74,7 @@ async function getRelatedParks(currentParkId: string, area: string) {
     }
   }).sort({ rating: -1 }).limit(4 - sameAreaParks.length)
   
-  console.log('Other area parks found:', otherAreaParks.length)
-  console.log('Other area parks:', otherAreaParks.map(p => ({ id: p._id, name: p.nameEn, area: p.area })))
-  
-  // Combine and return the parks
   const allParks = [...sameAreaParks, ...otherAreaParks]
-  console.log('Total parks to return:', allParks.length)
-  
   return JSON.parse(JSON.stringify(allParks))
 }
 
@@ -242,12 +221,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
     ...(skatepark.closingYear && { "dateClosed": skatepark.closingYear })
   };
 
-  // Get related parks
-  console.log('=== CALLING GET RELATED PARKS ===')
-  console.log('Skatepark ID:', skatepark._id)
-  console.log('Skatepark Area:', skatepark.area)
   const relatedParks = await getRelatedParks(skatepark._id, skatepark.area)
-  console.log('Related parks returned:', relatedParks.length)
 
   return (
     <Suspense fallback={<PageLoading />}>
@@ -291,7 +265,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
             />
           </Suspense>
           
-          <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
+          <div className="max-w-6xl w-full mx-auto py-[70px] md:py-18">
             <div className="flex flex-col">
               {/* Header Section */}
               <div className="mb-2 md:mb-6">
@@ -327,7 +301,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
               <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {/* Hours Card */}
                 <Suspense fallback={<SectionLoading />}>
-                  <Card className="w-full text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
+                  <Card className="w-full text-text dark:text-[#b3b3b3] p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/80 transform-gpu">
                     <div className="flex gap-4 mb-4 justify-between">
                       <div className="">
                         <FormattedHours 
@@ -350,9 +324,9 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </div>
 
                     {/* Address Section */}
-                    <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#7991a0]">
+                    <div className="mt-6 pt-4 border-t border-border-dark/20 dark:border-text-secondary-dark/70 dark:text-[#b3b3b3]">
                       <div className="flex items-center mb-3">
-                        <h2 className="text-lg font-semibold flex items-center dark:text-[#96b6c9]">
+                        <h2 className="text-lg font-semibold flex items-center dark:text-[#f2f2f2]">
                           <Icon name="locationBold" category="navigation" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
                           {t('address')} 
                         </h2>
@@ -364,7 +338,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     </div>
 
                     {/* Opening/Closing Year Section */}
-                    <div className="mt-6 pt-4 px-2 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#7991a0]">
+                    <div className="mt-6 pt-4 px-2 border-t border-border-dark/20 dark:border-text-secondary-dark/30 dark:text-[#b3b3b3]">
                       <div className="flex flex-col flex-wrap gap-2 mb-2">
                         <span>{t('opened_at')} {skatepark.openingYear}.</span>
                         {skatepark.closingYear && (
@@ -378,8 +352,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                 {/* Amenities Card */}
                 <Suspense fallback={<SectionLoading />}>
                   <Card className="p-4 w-full backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                    <div className="flex items-center justify-between mb-3 text-text dark:text-[#7991a0]">
-                      <h2 className="text-lg font-semibold flex items-center dark:text-[#96b6c9]">
+                    <div className="flex items-center justify-between mb-3 text-text dark:text-[#b3b3b3]">
+                      <h2 className="text-lg font-semibold flex items-center dark:text-[#f2f2f2]">
                         <Icon name="amenitiesBold" category="ui" className="w-5 h-5 mr-1.5 rtl:mr-0 rtl:ml-1.5" />
                         {t('amenities.title')}
                       </h2>
@@ -402,8 +376,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                       (Array.isArray(parkNotes) && parkNotes.length > 0) || 
                       (typeof parkNotes === 'string' && parkNotes.trim() !== '')
                     ) && (
-                      <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#7991a0]">
-                        <div className="flex items-center mb-2 gap-2 dark:text-[#96b6c9]">
+                      <div className="mt-3 pt-3 border-t border-border-dark/20 dark:border-text-secondary-dark/70 text-text dark:text-[#b3b3b3]">
+                        <div className="flex items-center mb-2 gap-2 dark:text-[#f2f2f2]">
                           <Icon name="infoBold" category="ui" className="w-5 h-5" />
                           <h3 className="text-lg font-semibold">{t('notes')}</h3>
                         </div>
@@ -468,11 +442,17 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
 
                   {/* Map Links Card */}
                   <Card className="w-full p-4 backdrop-blur-custom bg-background/80 dark:bg-background-secondary-dark/70 transform-gpu">
-                    <MapLinks 
-                      parkName={parkName}
-                      nameHe={skatepark.nameHe}
-                      location={skatepark.location}
-                    />
+                    <Suspense fallback={
+                      <div className="w-full h-32 flex items-center justify-center">
+                        <LoadingSpinner size={32} />
+                      </div>
+                    }>
+                      <MapLinks 
+                        parkName={parkName}
+                        nameHe={skatepark.nameHe}
+                        location={skatepark.location}
+                      />
+                    </Suspense>
                   </Card>
 
                 </div>

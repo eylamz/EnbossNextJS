@@ -1,9 +1,29 @@
 {
+    "kilometer": "ק\"מ",
     "all_skateparks": "כל הסקייטפארקים",
     "filter_by_area": "סנן לפי אזור",
     "all_areas": "כל האזורים",
     "relatedParks": "סקייטפארקים נוספים",
     "searchPlaceholder": "חיפוש סקייטפארק...",
+    "sort": {
+      "byDistance": "מיון לפי מרחק",
+      "byRating": "מיון לפי דירוג"
+    },
+    "search": {
+      "noResults": "לא נמצאו סקייטפארקים מתאימים לחיפוש",
+      "noAreaResults": "לא נמצאו סקייטפארקים מתאימים באזור {{area}}",
+      "noAmenitiesResults": "לא נמצאו סקייטפארקים מתאימים לסינון",
+      "noSkateparks": "לא נמצאו סקייטפארקים",
+      
+      "filterStatus": {
+        "showing": "מציג {{total}} / {{filtered}} סקייטפארקים",
+        "sortedByAmenities": "מסונן לפי שירותים / חוקים",
+        "sortedByRating": "ממוין לפי דירוג",
+        "sortedByDistance": "ממוין לפי מרחק",
+        "sortedByDifficulty": "ממוין לפי רמת קושי",
+        "filteredByArea": "מסונן לפי אזור:"
+      }
+    },
 
     "area": {
       "north": "צפון",

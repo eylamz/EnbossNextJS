@@ -10,6 +10,7 @@ import {
 import LanguageToggle from './header/LanguageToggle'
 import ThemeToggle from './header/ThemeToggle'
 import { useError } from '@/context/ErrorContext'
+import LoadingSpinner from '../common/LoadingSpinner'
 
 // Define the IconProps type if your icons need it
 interface IconProps {
@@ -53,7 +54,7 @@ export default function Header({ lng }: { lng: string }) {
     `rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 ${shouldShowError ? 'bg-[#3c0101]/70' : 'bg-header-text/70 dark:bg-header-text-dark/70'} transition-all duration-200 ease-out ${isActive(path) ? 'w-3/5 md:w-2/5' : 'w-0 group-hover:w-3/5 md:group-hover:w-2/5'}`
 
   const mobileNavLinkClasses = (path: string) =>
-    `block py-3 text-lg opacity-0 ${isActive(path) ? 'font-semibold' : 'font-medium'} ${isMenuOpen ? 'animate-fadeIn' : ' '}`
+    `block py-2 text-lg opacity-0 ${isActive(path) ? 'font-semibold' : 'font-medium'} ${isMenuOpen ? 'animate-fadeIn' : ' '}`
 
   // Close menu on route change
   useEffect(() => {
@@ -67,14 +68,18 @@ export default function Header({ lng }: { lng: string }) {
     return (
       <header className="fixed top-0 w-full z-[50] px-3 select-none">
         <nav className="flex justify-center pt-3" aria-label="Main Navigation">
-          <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible`}>
-            <div className="flex justify-between items-center h-14">
+          <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-7 overflow-visible`}>
+            <div className={`flex ${lng === 'en' ? 'flex-row-reverse' : 'flex-row-reverse'} justify-between items-center h-14`}>
+              <div className="min-[880px]:hidden flex items-center">
+                <LoadingSpinner className='w-[2rem]'/>
+              </div>
+              <span className='hidden sm:block w-[124px] sm:w-[128px]'></span>
+
               <Link 
                 href={`/${lng}`} 
                 className="text-xl sm:text-2xl font-bold group" 
                 aria-label="Enboss Home"
               >
-                {/* ENBOSS Logo */}
                 <span className="light:navShadow transition-opacity duration-200 group-hover:opacity-80">
                   <Icon name="logoHostage3" category="ui" className="-mb-1 w-[124px] h-[39px] sm:w-[128px] sm:h-[24px]" />
                 </span>
@@ -90,8 +95,8 @@ export default function Header({ lng }: { lng: string }) {
     <>
       <header className="fixed top-0 w-full z-[50] px-3 select-none">
         <nav className="flex justify-center pt-3" aria-label="Main Navigation">
-          <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-4 sm:px-6 lg:px-7 overflow-visible`}>
-            <div className="flex flex-row ltr:flex-row-reverse justify-between items-center h-14">
+          <div className={`w-full max-w-7xl ${shouldShowError ? 'bg-error dark:bg-error' : 'bg-header-dark'} ${shouldShowError ? 'text-[#3c0101]' : 'text-header-text dark:text-header-text-dark'} shadow-container backdrop-blur-custom rounded-custom px-7 overflow-visible`}>
+            <div className="flex justify-between items-center h-14">
               {/* Logo */}
               <Link 
                 href={`/${lng}`} 
@@ -146,7 +151,7 @@ export default function Header({ lng }: { lng: string }) {
               </div>
 
               {/* Desktop Action Icons */}
-              <div className="hidden min-[880px]:flex ltr:flex-row-reverse items-center gap-2 lg:gap-3">
+              <div className="hidden min-[880px]:flex ${lng === 'en' ? 'flex-row-reverse' : 'flex-row-reverse'} items-center gap-2 lg:gap-3">
                 <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
                    <Icon name="user" category="ui" size={20} className="light:navShadow" />
                    <span className="sr-only">{t('login')}</span>
@@ -192,7 +197,7 @@ export default function Header({ lng }: { lng: string }) {
               role={isMenuOpen ? "menu" : undefined}
               aria-hidden={!isMenuOpen}
             >
-              <nav className="pb-4 px-2" aria-label="Mobile Navigation">
+              <nav className="pb-4" aria-label="Mobile Navigation">
                 <div className="flex justify-between">
                   {/* Left column - Navigation Links */}
                   <div className="flex flex-col">

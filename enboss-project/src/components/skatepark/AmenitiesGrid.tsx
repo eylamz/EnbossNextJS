@@ -143,7 +143,7 @@ export const AmenitiesGrid = ({
                       className={`rounded-lg p-2 h-full cursor-pointer ${
                         isParkClosed
                           ? `transition-all duration-300 ${pageLoaded ? 'animate-fadeIn bg-error/[8%] dark:bg-error-bg-dark/[15%]' : 'bg-black/[3%] dark:bg-black/[5%]'}` 
-                          : `transition-all duration-300 ${pageLoaded ? 'animate-fadeIn bg-brand-main/[8%] dark:bg-white/[2%]' : 'bg-black/[3%] dark:bg-black/[5%]'}` 
+                          : `transition-all duration-300 ${pageLoaded ? 'animate-fadeIn bg-brand-color/[12%] dark:bg-brand-main/[5%]' : 'bg-black/[3%] dark:bg-black/[5%]'}` 
                       }`}
                       onClick={(e: MouseEvent) => setOpenTooltip(openTooltip === key ? null : key)}
                       whileTap={{ scale: 0.95 }}
@@ -161,7 +161,7 @@ export const AmenitiesGrid = ({
                             className={`w-5 h-5 mx-auto ${
                               isParkClosed
                                 ? `transition-all duration-300 ${pageLoaded ? 'text-error dark:text-error/80' : 'text-text-secondary dark:text-[#40535e]'}` 
-                                : `transition-all duration-300 ${pageLoaded ? 'text-brand-700 dark:text-brand-main/80' : 'text-text-secondary dark:text-[#40535e]'}` 
+                                : `transition-all duration-300 ${pageLoaded ? 'text-brand-color dark:text-brand-main/80' : 'text-text-secondary dark:text-[#40535e]'}` 
                             }`} 
                           />
                         </div>

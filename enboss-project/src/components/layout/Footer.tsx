@@ -32,7 +32,7 @@ export default function Footer({ lng }: { lng: string }) {
     if (shouldShowError) {
       return 'bg-error dark:bg-error !border-[#ad2626] text-[#3c0101]'
     }
-    return 'bg-gradient-to-t from-brand-main to-[#59dcbe] text-header-text dark:from-header dark:to-[#06a07e]'
+    return 'bg-header-dark text-text dark:text-text-dark'
   }
 
   const footerBgClass = getFooterBgClass()
@@ -111,7 +111,7 @@ export default function Footer({ lng }: { lng: string }) {
             </div>
           </div>
           {/* Theme and Language Controls */}
-          <div className="hidden xsm:block absolute right-4 top-4 flex flex-col items-right space-y-2">
+          <div className="hidden xsm:flex absolute right-4 top-4 flex-col items-right space-y-2">
             <ThemeToggle lng={lng} variant={shouldShowError ? 'error' : 'default'} isError={shouldShowError} />
             <LanguageSwitcher lng={lng} variant={shouldShowError ? 'error' : 'default'} isError={shouldShowError} />
           </div>

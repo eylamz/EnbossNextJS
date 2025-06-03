@@ -32,6 +32,8 @@
     "skate": "סקייט",
     "scoot": "קורקינט",
     "bike": "אופניים",
+      "tapToZoom": "הקש להגדלה",
+      "doubleClickToZoom": "לחיצה כפולה להגדלה",
     "theme": {
       "light": "בהיר",
       "dark": "כהה"

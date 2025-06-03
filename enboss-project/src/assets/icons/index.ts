@@ -77,6 +77,7 @@ import ShareBold from './shareBold.svg';
 import User from './account.svg';
 import Moovit from './moovit.svg';
 import MoovitDark from './moovitDark.svg';
+import Park from './trees.svg';
 
 // Type for SVG components
 type SvgComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -185,6 +186,7 @@ export const uiIcons = {
   closedPark: { icon: ClosedPark, label: 'Closed Park' },
   israelFlag: { icon: IsraelFlag, label: 'Israel Flag' },
   usaFlag: { icon: UsaFlag, label: 'Usa Flag' },
+  park: { icon: Park, label: 'Park' },
 } as const;
 
 //  Guide Icons

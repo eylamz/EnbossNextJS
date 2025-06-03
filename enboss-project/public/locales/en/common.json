@@ -31,6 +31,8 @@
   "skate": "Skate",
   "scoot": "Scoot",
   "bike": "Bike",
+    "tapToZoom": "Tap to zoom",
+    "doubleClickToZoom": "Double-click to zoom",
   "theme": {
     "light": "Light",
     "dark": "Dark"

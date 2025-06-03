@@ -34,6 +34,7 @@ interface ParkCardProps {
   locale: string,
   currentParkArea?: string,
   className?: string,
+  isLocationSortActive?: boolean,
 }
 
 // Utility function to optimize image URLs
@@ -41,7 +42,7 @@ const getOptimizedImageUrl = (originalUrl: string): string => {
   if (originalUrl?.includes('cloudinary.com')) {
     const urlParts = originalUrl.split('/upload/');
     if (urlParts.length === 2) {
-      return `${urlParts[0]}/upload/w_500,c_fill,q_auto:good,f_auto/${urlParts[1]}`;
+      return `${urlParts[0]}/upload/w_800,c_fill,q_auto:good,f_auto/${urlParts[1]}`;
     }
   }
   return originalUrl || '';
@@ -167,6 +168,7 @@ const ParkCard = memo(({
   locale,
   currentParkArea,
   className,
+  isLocationSortActive = false,
 }: ParkCardProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -350,18 +352,17 @@ const ParkCard = memo(({
   }, [park._id, onHeartRatePark, refetchData, t, toast]);
 
   const distanceText = useMemo(() => {
-    if (!userLocation || !park.coordinates) return null;
+    if (!isLocationSortActive || !userLocation || !park.location) return null;
     
-    const coords = getCoordinates(park.coordinates);
     const distance = calculateDistance(
       userLocation.latitude,
       userLocation.longitude,
-      coords[1],
-      coords[0]
+      park.location.latitude,
+      park.location.longitude
     ).toFixed(1);
     
-    return `(${distance}${' ' + String(t('common:common.kilometer'))})`;
-  }, [userLocation, park.coordinates, t]);
+    return `${distance}${' ' + String(t('skateparks:kilometer'))}`;
+  }, [userLocation, park.location, t, isLocationSortActive]);
 
   const handleCardClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();

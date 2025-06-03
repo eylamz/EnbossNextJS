@@ -10,7 +10,7 @@ const textBadgeVariants = cva(
         default: "bg-black/5 text-brand-900 dark:bg-btn-dark/50",
         primary: "bg-btn text-white dark:bg-btn-dark dark:text-black",
         success: "bg-success/10 dark:bg-success-dark/15 text-success dark:text-success-dark",
-        brand: "bg-brand-main/10 dark:bg-brand-dark/15 text-brand-main dark:text-brand-dark",
+        brand: "bg-brand-main/10 dark:bg-brand-color/15 text-brand-main dark:text-brand-color",
         warning: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100",
         info: "bg-info/10 dark:bg-info-dark/10 text-info dark:text-info-dark",
         destructive: "bg-destructive/80 text-destructive-foreground",

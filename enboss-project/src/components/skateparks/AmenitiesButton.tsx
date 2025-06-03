@@ -31,10 +31,11 @@ interface AmenitiesButtonProps {
   selectedAmenities: string[];
   onAmenitiesChange: (amenities: string[]) => void;
   className?: string;
+  style?: React.CSSProperties;
   locale: string;
 }
 
-const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className, locale }: AmenitiesButtonProps) => {
+const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className, style, locale }: AmenitiesButtonProps) => {
   const { t: tSkateparks } = useTranslation(locale, 'skateparks');
   const { t: tCommon } = useTranslation(locale, 'common');
   const [isOpen, setIsOpen] = useState(false);

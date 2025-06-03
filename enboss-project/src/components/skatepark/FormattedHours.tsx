@@ -75,7 +75,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
     return (
       <div className={`space-y-2 ${className}`}>
         {/* Header with closed badge */}
-        <div className="flex items-center gap-2 text-text dark:text-[#96b6c9]">
+        <div className="flex items-center gap-2 text-text dark:text-[#f2f2f2] transition-all duration-200">
           <Icon name="clock" category="ui" className="w-5 h-5 " />
           <span className="font-semibold">{t.openingHours}  :</span>
           <TextBadge 
@@ -111,11 +111,11 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
       <div className={`space-y-2 ${className}`}>
         {/* 24/7 Header */}
         <div className="flex items-center gap-2">
-          <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-[#96b6c9]" />
+          <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-[#f2f2f2] transition-all duration-200" />
           <span className="font-semibold">{t.openingHours}: </span>
           <TextBadge 
             variant='brand'
-            className="font-semibold text-sm border border-b-[3px] border-brand-700 text-brand-700"
+            className="font-semibold text-sm border border-b-[3px] border-brand-color text-brand-color"
           >
             {t.is24Hours}
           </TextBadge>
@@ -167,11 +167,11 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         <div className={`space-y-2 ${className}`}>
           {/* 24/7 Header */}
           <div className="flex items-center gap-2">
-            <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-[#96b6c9]" />
+            <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-[#f2f2f2] transition-all duration-200" />
             <span className="font-semibold">{t.openingHours}: </span>
             <TextBadge 
               variant='brand'
-              className="font-semibold text-sm border border-b-[3px] border-brand-700 text-brand-700"
+              className="font-semibold text-sm border border-b-[3px] border-brand-text text-brand-text dark:border-brand-main dark:text-brand-main"
             >
               {t.is24Hours}
             </TextBadge>
@@ -200,13 +200,13 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
       <div className={`space-y-2 ${className}`}>
         {/* Header */}
         <div className="flex items-center gap-2">
-          <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark" />
+          <Icon name="clock" category="ui" className="w-5 h-5 text-text dark:text-text-secondary-dark transition-all duration-200" />
           <span className="font-semibold">{t.openingHours}</span>
         </div>
         
         {/* All week hours */}
         <div className="flex items-start gap-1">
-          <span className="font-semibold dark:text-[#96b6c9] mr-2">
+          <span className="font-semibold dark:text-[#f2f2f2] mr-2">
             {t.allWeek} :
           </span>
           
@@ -232,7 +232,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
     return (
       <div className={`space-y-3 min-w-[240px] ${className}`}>
         {/* Header */}
-        <div className="flex items-center gap-2 text-text dark:text-[#96b6c9]">
+        <div className="flex items-center gap-2 text-text dark:text-[#f2f2f2] transition-all duration-200">
           <Icon name="clock" category="ui" className="w-5 h-5 " />
           <span className="font-semibold">{t.openingHours}</span>
         </div>
@@ -240,7 +240,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
         {/* All week hours */}
         <div className="ml-6 space-y-2">
           <div className="flex items-start gap-1">
-            <span className="font-semibold dark:text-[#96b6c9] mr-2">
+            <span className="font-semibold dark:text-[#f2f2f2] mr-2">
               {t.allWeek} :
             </span>
             
@@ -253,7 +253,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
           
           {/* Holidays hours */}
           <div className="flex items-start gap-1">
-            <span className="font-semibold dark:text-[#96b6c9] mr-2">
+            <span className="font-semibold dark:text-[#f2f2f2] mr-2">
               {t.holidays} :
             </span>
             
@@ -271,7 +271,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
   return (
     <div className={`space-y-3 min-w-[290px] ${locale === 'he' ? 'ml-[-60px]' : 'mr-[-60px]'} ${className}`}>
       {/* Header */}
-      <div className="flex items-center gap-2 text-text dark:text-[#96b6c9]">
+      <div className="flex items-center gap-2 text-text dark:text-[#f2f2f2] transition-all duration-200">
         <Icon name="clock" category="ui" className="w-5 h-5 " />
         <span className="font-semibold">{t.openingHours}</span>
       </div>
@@ -292,7 +292,7 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
           
           return (
             <div key={scheduleKey} className="flex items-start gap-1">
-              <span className="font-semibold dark:text-[#7991a0] mr-2">
+              <span className="font-semibold dark:text-[#b3b3b3] mr-2">
                 {daysDisplay} :
               </span>
               

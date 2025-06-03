@@ -1,8 +1,10 @@
 export const colors = {
   
     brand: {
-      main: 'hsl(166, 100%, 40%)',
-      dark: 'hsl(166, 100%, 40%)',
+      main: 'hsl(79, 99%, 44%)',
+      dark: 'hsl(79, 99%, 44%)',
+      text: 'hsl(79, 100%, 23%)',
+      color: 'hsl(79, 56%, 45%)',
       50: 'hsl(171, 100%, 95%)',
       100: 'hsl(171, 100%, 85%)', 
       200: 'hsl(171, 100%, 75%)d',
@@ -24,15 +26,15 @@ export const colors = {
       'custom': '5px',
     },
     header: {
-      light: 'hsl(166, 100%, 40%)',
-      dark: 'hsl(161, 91%, 59%)',
+      light: 'hsl(79, 99%, 48%)',
+      dark: 'hsl(79, 99%, 48%)',
       border: {
         light: 'hsla(166, 94.70%, 29.60%, 1)',
         dark: 'hsl(166 98% 28% / 1)',  
       },
       text: {
-        light: 'hsl(164, 97%, 12%)',
-        dark: 'hsl(164, 97%, 12%)',
+        light: 'hsl(121, 48%, 16%)',
+        dark: 'hsl(121, 48%, 16%)',
       }
     },
     card: {
@@ -154,8 +156,8 @@ export const colors = {
   
    
     success: {
-      light: 'hsl(95, 98%, 43%)',    // Emerald teal
-      dark: 'hsl(95, 98%, 43%)',     // Bright aqua
+      light: 'hsl(95, 98%, 43%)',    
+      dark: 'hsl(95, 98%, 43%)',    
       bg: {
         light: 'hsl(162, 75%, 96%)',  // Crisp mint white
         dark: 'hsl(162, 95%, 8%)',    // Deep teal shade
@@ -167,8 +169,10 @@ export const colors = {
     },
   
     error: {
-      light: 'hsl(360, 100%, 65%)',    // Deep ruby
-      dark: '#f41f57',     // Soft coral rose
+      light: 'hsl(354, 85%, 45%)',
+      dark: 'hsl(354, 89%, 59%)',
+      // light: 'hsl(360, 100%, 65%)',  
+      // dark: '#f41f57',  
       bg: {
         light: 'hsl(354, 85%, 92%)',  // Delicate pink white
         dark: 'hsl(0, 100%, 8%)',   // Rich ruby shade
@@ -180,8 +184,10 @@ export const colors = {
     },
   
     warning: {
-      light: 'hsl(35, 100%, 50%)',     // Warm amber
-      dark: 'hsl(56, 90%, 72%)',      // Bright peach
+      light: 'hsl(32, 90%, 42%)',   
+      dark: 'hsl(32, 98%, 60%)',     
+      // light: 'hsl(35, 100%, 50%)',   
+      // dark: 'hsl(56, 90%, 72%)',     
       bg: {
         light: 'hsl(38, 93%, 65%)',   // Soft cream white
         dark: 'hsl(38, 98%, 48%)',      // Bright peach
@@ -193,8 +199,10 @@ export const colors = {
     },
   
     info: {
-      light: 'hsl(205, 90%, 40%)',    // Ocean blue
-      dark: 'hsl(180, 100%, 48%)',     // Clear sky blue
+      light: 'hsl(199, 85%, 42%)',
+      // light: 'hsl(205, 90%, 40%)',   
+      dark: 'hsl(199, 95%, 60%)',
+      // dark: 'hsl(180, 100%, 48%)', 
       bg: {
         light: 'hsl(185, 93%, 21%)',  // Fresh azure white
         dark: 'hsl(185, 93%, 21%)',   // Deep ocean shade

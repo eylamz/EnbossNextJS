@@ -867,7 +867,7 @@ const FullscreenImageViewer = ({
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {isTouchDevice ? t('common:common.tapToZoom') : t('common:common.doubleClickToZoom')}
+                {isTouchDevice ? t('common:tapToZoom') : t('common:doubleClickToZoom')}
               </div>
             )}
 

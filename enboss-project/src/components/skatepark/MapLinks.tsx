@@ -13,6 +13,7 @@ import { useTranslation } from '@/lib/i18n/client'
 import { useParams, useRouter } from 'next/navigation'
 import { Card } from '@/components/ui/Card'
 import { useEffect, useState } from 'react'
+import LoadingSpinner from '@/components/common/LoadingSpinner'
 
 interface MapLinksProps {
   parkName: string;
@@ -29,6 +30,23 @@ export function MapLinks({ parkName, nameHe, location }: MapLinksProps) {
   const router = useRouter()
   const locale = String(params.locale)
   const { t } = useTranslation(locale, 'skateparks')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Simulate a small delay to ensure smooth loading
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-32 flex items-center justify-center">
+        <LoadingSpinner size={32} />
+      </div>
+    )
+  }
 
   const generateMoovitUrl = (): string => {
     const baseUrl = 'https://moovit.onelink.me/3986059930';
@@ -63,8 +81,8 @@ export function MapLinks({ parkName, nameHe, location }: MapLinksProps) {
       <h2 id="directions-heading" className="sr-only">{t('mapLinks.title')}</h2>
         <div className="flex flex-col space-y-4">
           <div className="flex items-center gap-2  ">
-          <Icon name="map" category="ui" className="w-5 h-5 text-text dark:text-[#96b6c9]" />
-          <h3 className="font-semibold text-lg text-text dark:text-[#96b6c9]">
+          <Icon name="map" category="ui" className="w-5 h-5 text-text dark:text-[#f2f2f2]" />
+          <h3 className="font-semibold text-lg text-text dark:text-[#f2f2f2]">
             {t('mapLinks.title')}
           </h3>
 

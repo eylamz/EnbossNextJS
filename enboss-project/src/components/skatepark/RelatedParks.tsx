@@ -56,7 +56,7 @@ const RelatedParks = ({
   // Show loading state during server-side rendering
   if (!mounted) {
     return (
-      <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
+      <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#b3b3b3] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
         <div className="w-full h-32 flex items-center justify-center">
           <LoadingSpinner size={32} />
         </div>
@@ -65,8 +65,8 @@ const RelatedParks = ({
   }
   
   return (
-    <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#7991a0] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
-      <h2 className="text-xl font-semibold mb-6 text-text dark:text-[#96b6c9]">
+    <div className="rounded-3xl overflow-hidden bord shadow-container text-text dark:text-[#b3b3b3] p-4 backdrop-blur-custom bg-background/70 dark:bg-background-secondary-dark/60">
+      <h2 className="text-xl font-semibold mb-6 text-text dark:text-[#f2f2f2]">
         {t('relatedParks')}
       </h2>
       

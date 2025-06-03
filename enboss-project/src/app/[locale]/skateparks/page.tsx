@@ -72,7 +72,7 @@ export default async function SkateparksPage({ params: { locale } }: Props) {
       <div className="min-h-screen relative">
         <div className="container mx-auto px-4 py-8 relative">
           
-          <div className="max-w-6xl w-full mx-auto py-[70px] md:py-24">
+          <div className="max-w-6xl w-full mx-auto py-[70px] md:py-20">
             <SearchableParks skateparks={skateparks} locale={locale} />
           </div>
         </div>
