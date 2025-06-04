@@ -51,7 +51,7 @@ export default function ThemeToggle({ className = '', lng }: ThemeToggleProps) {
         />
       )}
       <span 
-        className="rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 bg-header-text/30 dark:bg-header-text-dark/50 transition-all duration-200 ease-out w-0 group-hover:w-1/5" 
+        className="rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 bg-header-text/70 dark:bg-header-text-dark/70 transition-all duration-200 ease-out w-0 group-hover:w-2/5" 
         aria-hidden="true"
       />
     </button>

@@ -302,6 +302,13 @@ export default {
           'from': { right: '-100%' },
           'to': { right: '100%' }
         },
+        'infiniteLoader': {
+          '0%': { right: '0%' },
+          '25%': { right: '-20%' },
+          '75%': { right: '70%' },
+          '100%': { right: '0%' }
+        },
+        
         'expandWidth': {
           '0%': { width: '50px', opacity: '0' },
           '50%': { opacity: '1' },
@@ -429,6 +436,7 @@ export default {
         'popFadeIn': 'popFadeIn 0.5s ease-out forwards',
         'shimmer': 'shimmerMove 0.6s forwards',
         'shimmerInfinite': 'shimmerInfinite 1s ease-in-out infinite',
+        'infiniteLoader': 'infiniteLoader 1s infinite',
         'fadeUpIn': 'fadeUpIn 0.5s ease-out forwards',
         'fadeInDown': 'fadeInDown 0.2s ease-out forwards',
       },

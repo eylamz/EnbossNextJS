@@ -152,17 +152,23 @@ input{
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
+  margin-left: -10px;
+}
+
+html {
+  scrollbar-gutter: stable;
+  /* You can also use 'stable both-edges' if you need to reserve space on both sides, though less common for vertical scrollbars */
 }
 
 
 /* Firefox Scrollbar */
 * {
-  scrollbar-color: #888 #f1f1f1;
+  scrollbar-color: #dde3ea #f1f1f1;
 }
 
 .dark {
   scrollbar-width: auto;
-  scrollbar-color: #4a4a4a #1a1a1a;
+  scrollbar-color: #3d3f42 #1a1a1a;
 }
 
 /* Light Mode Scrollbar */
@@ -178,7 +184,7 @@ input{
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #c4c7c5;
 }
 
 /* Dark Mode Scrollbar */
@@ -187,11 +193,11 @@ input{
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #4a4a4a;
+  background: #3d3f42;
   border: 2px solid #1a1a1a;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #666;
+  background: #4a5050;
 }
 

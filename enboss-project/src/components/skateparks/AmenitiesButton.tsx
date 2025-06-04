@@ -108,14 +108,14 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className, styl
               </Button>
             )}
           </div>
-          <Separator className="bg-text-secondary" />
+          <Separator className="bg-text-secondary dark:bg-white/20" />
           <div className="grid grid-cols-2 gap-2">
             {amenityOptions.map((amenity) => (
               <Button
                 key={amenity.key}
                 variant={selectedAmenities.includes(amenity.key) ? "info" : "ghost2"}
                 size="sm"
-                className={`min-w-[100px] justify-start text-nowrap ${selectedAmenities.includes(amenity.key) ? '' : 'text-text-secondary'}`}
+                className={`min-w-[100px]  justify-start text-nowrap ${selectedAmenities.includes(amenity.key) ? '' : 'text-text dark:text-text-dark/90'}`}
                 onClick={() => toggleAmenity(amenity.key)}
               >
                 <Icon 

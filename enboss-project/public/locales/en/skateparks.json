@@ -24,7 +24,7 @@
       
       "filterStatus": {
         "showing": "Showing {{filtered}} / {{total}} skateparks",
-        "sortedByAmenities": "Filtered by amenities:",
+        "sortedByAmenities": "Filtered by amenities",
         "sortedByRating": "Sorted by rating",
         "sortedByDistance": "Sorted by distance",
         "sortedByDifficulty": "Sorted by difficulty",

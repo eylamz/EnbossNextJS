@@ -26,6 +26,8 @@ export default function Header({ lng }: { lng: string }) {
   const [isClient, setIsClient] = useState(false)
   const { isError } = useError()
   const isShopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED === 'true'
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingPath, setLoadingPath] = useState('')
 
   // Set isClient to true after mount
   useEffect(() => {
@@ -51,8 +53,28 @@ export default function Header({ lng }: { lng: string }) {
   const navLinkClasses = (path: string) => 
     `group relative py-1 px-2 transition-all duration-200 ${shouldShowError ? 'text-[#3c0101] dark:text-[#3c0101] hover:text-opacity-80' : 'text-header-text dark:text-header-text-dark hover:text-opacity-80 dark:hover:text-opacity-80'}`
   
+  const logoIndicatorClasses = () =>
+    `rounded-full absolute left-1/2 -translate-x-1/2 translate-y-[10px] bottom-0 h-0.5 ${shouldShowError ? 'bg-[#3c0101]/70' : 'bg-header-text/70 dark:bg-header-text-dark/70'} transition-all duration-200 ease-out ${
+      loadingPath === `/${lng}` ? 'w-1/8 md:w-1/5 animate-infiniteLoader' :
+      'w-0 group-hover:w-3/5 md:group-hover:w-2/5'
+    }`
+
   const activeLinkIndicatorClasses = (path: string) =>
-    `rounded-full absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 ${shouldShowError ? 'bg-[#3c0101]/70' : 'bg-header-text/70 dark:bg-header-text-dark/70'} transition-all duration-200 ease-out ${isActive(path) ? 'w-3/5 md:w-2/5' : 'w-0 group-hover:w-3/5 md:group-hover:w-2/5'}`
+    `rounded-full absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-0.5 ${shouldShowError ? 'bg-[#3c0101]/70' : 'bg-header-text/70 dark:bg-header-text-dark/70'} transition-all duration-200 ease-out ${
+      isActive(path) ? 'w-3/5 md:w-2/5' : 
+      loadingPath === path ? 'w-1/8 md:w-2/5 animate-infiniteLoader' :
+      'w-0 group-hover:w-3/5 md:group-hover:w-2/5'
+    }`
+
+  const handleLinkClick = (path: string) => {
+    setIsLoading(true)
+    setLoadingPath(path)
+    // Reset loading state after animation duration
+    setTimeout(() => {
+      setIsLoading(false)
+      setLoadingPath('')
+    }, 1000) // Match this with your animation duration
+  }
 
   const mobileNavLinkClasses = (path: string) =>
     `block py-2 text-lg opacity-0 ${isActive(path) ? 'font-semibold' : 'font-medium'} ${isMenuOpen ? 'animate-fadeIn' : ' '}`
@@ -101,62 +123,93 @@ export default function Header({ lng }: { lng: string }) {
               {/* Logo */}
               <Link 
                 href={`/${lng}`} 
-                className="text-xl sm:text-2xl font-bold group" 
+                className="text-xl sm:text-2xl font-bold group relative" 
                 aria-label="Enboss Home"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => handleLinkClick(`/${lng}`)}
               >
                 {/* ENBOSS Logo */}
                 <span className="light:navShadow transition-opacity duration-200 group-hover:opacity-80">
                   <Icon name="logoHostage3" category="ui" className="-mb-1 w-[124px] h-[39px] sm:w-[128px] sm:h-[24px]" />
                 </span>
+                <span className={logoIndicatorClasses()} aria-hidden="true"></span>
               </Link>
 
               {/* Desktop Navigation */}
               <div className="hidden min-[880px]:flex gap-3 lg:gap-5 items-center font-medium" role="menubar">
-                <Link href={`/${lng}/skateparks`} className={navLinkClasses(`/${lng}/skateparks`)} role="menuitem">
+                <Link 
+                  href={`/${lng}/skateparks`} 
+                  className={navLinkClasses(`/${lng}/skateparks`)} 
+                  role="menuitem"
+                  onClick={() => handleLinkClick(`/${lng}/skateparks`)}
+                >
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('skateparks')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/skateparks`)} aria-hidden="true"></span>
                 </Link>
-                <Link href={`/${lng}/guides`} className={navLinkClasses(`/${lng}/guides`)} role="menuitem">
+                <Link 
+                  href={`/${lng}/guides`} 
+                  className={navLinkClasses(`/${lng}/guides`)} 
+                  role="menuitem"
+                  onClick={() => handleLinkClick(`/${lng}/guides`)}
+                >
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('guides')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/guides`)} aria-hidden="true"></span>
                 </Link>
-                <Link href={`/${lng}/events`} className={navLinkClasses(`/${lng}/events`)} role="menuitem">
+                <Link 
+                  href={`/${lng}/events`} 
+                  className={navLinkClasses(`/${lng}/events`)} 
+                  role="menuitem"
+                  onClick={() => handleLinkClick(`/${lng}/events`)}
+                >
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('events')}
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/events`)} aria-hidden="true"></span>
                 </Link>
                 {isShopEnabled && (
-                  <Link href={`/${lng}/shop`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
+                  <Link 
+                    href={`/${lng}/shop`} 
+                    className={navLinkClasses(`/${lng}/shop`)} 
+                    role="menuitem"
+                    onClick={() => handleLinkClick(`/${lng}/shop`)}
+                  >
                     <span className="flex items-center gap-1 light:navShadow">
                       {t('shop')}
                     </span>
                     <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
                   </Link>
                 )}
-                <Link href={`/${lng}/contact`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
+                <Link 
+                  href={`/${lng}/contact`} 
+                  className={navLinkClasses(`/${lng}/contact`)} 
+                  role="menuitem"
+                  onClick={() => handleLinkClick(`/${lng}/contact`)}
+                >
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('contact')}
                   </span>
-                  <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
+                  <span className={activeLinkIndicatorClasses(`/${lng}/contact`)} aria-hidden="true"></span>
                 </Link>
-                <Link href={`/${lng}/about`} className={navLinkClasses(`/${lng}/about`)} role="menuitem">
+                <Link 
+                  href={`/${lng}/about`} 
+                  className={navLinkClasses(`/${lng}/about`)} 
+                  role="menuitem"
+                  onClick={() => handleLinkClick(`/${lng}/about`)}
+                >
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('about')}
                   </span>
-                  <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
+                  <span className={activeLinkIndicatorClasses(`/${lng}/about`)} aria-hidden="true"></span>
                 </Link>
               </div>
 
               {/* Desktop Action Icons */}
               <div className="hidden min-[880px]:flex ${lng === 'en' ? 'flex-row-reverse' : 'flex-row-reverse'} items-center gap-2 lg:gap-3">
                 {isShopEnabled && (
-                  <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
+                  <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1 py-2`} aria-label={t('login')}>
                     <Icon name="user" category="ui" size={20} className="light:navShadow" />
                     <span className="sr-only">{t('login')}</span>
                     <span className={activeLinkIndicatorClasses(`/${lng}/login`)} aria-hidden="true"></span>

@@ -215,7 +215,7 @@ const skateparks = [
         saturday: { openingTime: "00:00", closingTime: "00:00", isOpen: true },
         holidays: { openingTime: "00:00", closingTime: "00:00", isOpen: true }
     },
-    lightingHours: { startTime: "00:00", endTime: "23:59", is24Hours: true },
+    lightingHours: { startTime: "00:00", endTime: "23:59", is24Hours: false },
     amenities: {
       entryFee: false,
       parking: true,
@@ -749,6 +749,260 @@ const skateparks = [
     createdAt: new Date('2024-01-01T00:00:00.000Z')
   },
 
+
+  {
+    nameEn: 'Jerusalem - Har Homa',
+    nameHe: 'ירושלים - הר חומה',
+    slug: 'jerusalem-har-homa',
+    area: 'south',
+    status: 'active',
+    addressEn: 'Park Har Homa, Ha-Rav Dolgin St, Jerusalem',
+    addressHe: 'פארק הר חומה, הרב ישעיהו דוגלין, ירושלים',
+    openingYear: 2023,
+    location: { latitude: 31.71920536848611, longitude: 35.2272913689222 },
+    operatingHours: {
+      sunday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      monday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      tuesday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      wednesday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      thursday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      friday: { openingTime: "08:00", closingTime: "19:00", isOpen: true },
+      saturday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      holidays: { openingTime: "08:00", closingTime: "22:00", isOpen: true }
+    },
+    lightingHours: { startTime: "00:01", endTime: "23:00", is24Hours: true },
+    amenities: {
+      entryFee: false,
+      parking: true,
+      bathroom: false,
+      shade: false,
+      helmetRequired: false,
+      guard: false,
+      seating: true,
+      bombShelter: false,
+      scootersAllowed: true,
+      bikesAllowed: true,
+      noWax: false,
+      nearbyRestaurants: false
+    },
+    isFeatured: false,
+    images: [
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681583/etoncxotcuzn7cafhn3k.webp', isFeatured: true, orderNumber: 1 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681585/zueumjliayuqgk4czcac.webp', isFeatured: false, orderNumber: 2 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681588/vw9n9d9fyr4mlbx2ok56.webp', isFeatured: false, orderNumber: 3 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681591/h7euej9ryc87ws0haoko.webp', isFeatured: false, orderNumber: 4 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681593/ukq4jkcujy5lv9nlnms6.webp', isFeatured: false, orderNumber: 5 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681596/pvc63dsxqgsjplk9mo2e.webp', isFeatured: false, orderNumber: 6 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681599/b6gpk6m75zjszqvch15o.webp', isFeatured: false, orderNumber: 7 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681601/qbzicc9m5bjed1zkongu.webp', isFeatured: false, orderNumber: 8 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681605/uwsnekuciafz09qrhxnw.webp', isFeatured: false, orderNumber: 9 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681607/ltcqqanera0k5dvdphzn.webp', isFeatured: false, orderNumber: 10 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681609/mempdfojm9yiwa9vm42s.webp', isFeatured: false, orderNumber: 11 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681611/phy31rqdrbbncopdp9gs.webp', isFeatured: false, orderNumber: 12 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681614/lbxuw5waqebeqnpkygea.webp', isFeatured: false, orderNumber: 13 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681616/h8zjsmipynppboehdo6b.webp', isFeatured: false, orderNumber: 14 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681620/bhfandwleouyjdjnfgsa.webp', isFeatured: false, orderNumber: 15 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681622/kb7ikn5oqqojeaa5mwqq.webp', isFeatured: false, orderNumber: 16 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1743681624/bwmctij68iwhhhugknvx.webp', isFeatured: false, orderNumber: 17 },
+      
+    ],
+    mediaLinks: {
+      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d5618.4776323136475!2d35.22780023472081!3d31.721030392235356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzHCsDQzJzA5LjIiTiAzNcKwMTMnMzguMyJF!5e0!3m2!1siw!2sil!4v1734588927707!5m2!1siw!2sil',
+    },
+    rating: 4.2,
+    ratingCount: 26,
+    createdAt: new Date('2025-06-06T00:00:00.000Z')
+  },
+
+
+  {
+    nameEn: 'Holon',
+    nameHe: 'חולון',
+    slug: 'holon',
+    area: 'center',
+    status: 'active',
+    addressEn: 'Gan Habanim Park, Karsel St 6, Holon',
+    addressHe: 'גן הבנים, קרסל 6, חולון',
+    openingYear: 2019,
+    location: { latitude: 31.996052250275312, longitude: 34.76796230882455 },
+    operatingHours: {
+      sunday: { openingTime: "16:00", closingTime: "22:00", isOpen: true },
+      monday: { openingTime: "16:00", closingTime: "22:00", isOpen: true },
+      tuesday: { openingTime: "16:00", closingTime: "22:00", isOpen: true },
+      wednesday: { openingTime: "16:00", closingTime: "22:00", isOpen: true },
+      thursday: { openingTime: "16:00", closingTime: "22:00", isOpen: true },
+      friday: { openingTime: "12:00", closingTime: "18:00", isOpen: true },
+      saturday: { openingTime: "12:00", closingTime: "22:00", isOpen: true },
+      holidays: { openingTime: "12:00", closingTime: "22:00", isOpen: true }
+    },
+    lightingHours: { startTime: "00:01", endTime: "23:00", is24Hours: false },
+    amenities: {
+      entryFee: false,
+      parking: true,
+      bathroom: false,
+      shade: false,
+      helmetRequired: false,
+      guard: true,
+      seating: true,
+      bombShelter: false,
+      scootersAllowed: false,
+      bikesAllowed: false,
+      noWax: false,
+      nearbyRestaurants: true
+    },
+    isFeatured: false,
+    images: [
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894759/je4e3goz4i6piv0hkact.webp', isFeatured: true, orderNumber: 1 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894761/iqwufvb5wnozm0lmnumj.webp', isFeatured: false, orderNumber: 2 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894762/e5mh4qug5iuvddwwomum.webp', isFeatured: false, orderNumber: 3 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894763/arjjycjeaxncw1bgobhn.webp', isFeatured: false, orderNumber: 4 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894765/grt10sduppxo4krczx08.webp', isFeatured: false, orderNumber: 5 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894766/celz6da0nckbpaxhen9u.webp', isFeatured: false, orderNumber: 6 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894767/naxllmnj8gbnxjzuzgkq.webp', isFeatured: false, orderNumber: 7 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894769/gtr2zdehuh5lgtjcukfv.webp', isFeatured: false, orderNumber: 8 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1739894771/hjprzoezyyqg2hvdanft.webp', isFeatured: false, orderNumber: 9 },
+    ],
+    mediaLinks: {
+      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96573.03380885656!2d34.82714623522721!3d31.89336613344081!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502b3800db48a59%3A0xac46628b4ff7aa80!2z16HXp9eZ15nXmNek15DXqNenINeX15XXnNeV158!5e0!3m2!1siw!2sil!4v1726039630735!5m2!1siw!2sil',
+    },
+    notesEn: [
+      'Scooter and bike riders are not allowed to enter',
+      'Riders are required to wear a helmet'
+    ],
+    notesHe: [
+        'הכניסה לרוכבי קורקינט ואופניים אסורה',
+        'כניסה עם קסדה חובה'
+    ],
+    rating: 0,
+    ratingCount: 0,
+    createdAt: new Date('2024-01-01T00:00:00.000Z')
+  },
+
+
+    {
+    nameEn: 'Rishon LeZion',
+    nameHe: 'ראשון לציון',
+    slug: 'rishon-lezion',
+    area: 'center',
+    status: 'active',
+    addressEn: 'Herzel St 136, Rishon LeTsiyon',
+    addressHe: 'הרצל 136, ראשון לציון',
+    openingYear: 2013,
+    location: { latitude: 31.954409480144424, longitude: 34.80179950751663 },
+    operatingHours: {
+      sunday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      monday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      tuesday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      wednesday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      thursday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      friday: { openingTime: "08:00", closingTime: "19:00", isOpen: true },
+      saturday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+      holidays: { openingTime: "08:00", closingTime: "22:00", isOpen: true }
+    },
+    lightingHours: { startTime: "00:01", endTime: "22:00", is24Hours: true },
+    amenities: {
+      entryFee: false,
+      parking: true,
+      bathroom: true,
+      shade: true,
+      helmetRequired: false,
+      guard: false,
+      seating: true,
+      bombShelter: true,
+      scootersAllowed: true,
+      bikesAllowed: false,
+      noWax: false,
+      nearbyRestaurants: false
+    },
+    isFeatured: false,
+    images: [
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653921/qjvkv6qfo1gaf7bwyo7p.webp', isFeatured: true, orderNumber: 1 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653922/u3zhwgk9hbinzgockf0t.webp', isFeatured: false, orderNumber: 2 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653923/yttf1bin0lkhw3zft88m.webp', isFeatured: false, orderNumber: 3 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653925/o42jtmoo8ohhqjukhzm3.webp', isFeatured: false, orderNumber: 4 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653926/aug3k0bjyu8mfulikc61.webp', isFeatured: false, orderNumber: 5 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653927/dren0mcb0cgxyaavzccy.webp', isFeatured: false, orderNumber: 6 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653928/iagzt0akvsffyjy3fwip.webp', isFeatured: false, orderNumber: 7 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653930/mluuxfzq8kev1hwzotmn.webp', isFeatured: false, orderNumber: 8 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653931/fqvt6xj31bx8jzzxpzk2.webp', isFeatured: false, orderNumber: 9 },
+      { url: 'https://res.cloudinary.com/dr0rvohz9/image/upload/v1744653932/zr67n80kcmvzzifyop8h.webp', isFeatured: false, orderNumber: 10 },
+    ],
+    mediaLinks: {
+      googleMapsFrame: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14767.142629359287!2d34.81746226887096!3d31.9505008710586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502b424a833fc73%3A0xd2a9e83422988e4f!2z16HXp9eZ15nXmNek15DXqNenINeo15DXqdeV158g15zXpteZ15XXnw!5e0!3m2!1siw!2sil!4v1726036338289!5m2!1siw!2sil',
+    },
+    notesEn: [
+      'There is covering for sun protection in the park',
+    ],
+    notesHe: [
+        'קיימת הצללה בפארק נגד השמש',
+    ],
+    rating: 4.1,
+    ratingCount: 10,
+    createdAt: new Date('2024-01-01T00:00:00.000Z')
+  },
+
+
+
+  // {
+  //   nameEn: '',
+  //   nameHe: '',
+  //   slug: '',
+  //   area: 'center',
+  //   status: 'active',
+  //   addressEn: '',
+  //   addressHe: '',
+  //   openingYear: 2017,
+  //   location: { latitude: 32.1930830916651, longitude: 34.86185918110985 },
+  //   operatingHours: {
+  //     sunday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+  //     monday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+  //     tuesday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+  //     wednesday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+  //     thursday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+  //     friday: { openingTime: "08:00", closingTime: "19:00", isOpen: true },
+  //     saturday: { openingTime: "08:00", closingTime: "22:00", isOpen: true },
+  //     holidays: { openingTime: "08:00", closingTime: "22:00", isOpen: true }
+  //   },
+  //   lightingHours: { startTime: "00:01", endTime: "23:00", is24Hours: false },
+  //   amenities: {
+  //     entryFee: false,
+  //     parking: true,
+  //     bathroom: false,
+  //     shade: false,
+  //     helmetRequired: false,
+  //     guard: false,
+  //     seating: true,
+  //     bombShelter: false,
+  //     scootersAllowed: false,
+  //     bikesAllowed: false,
+  //     noWax: false,
+  //     nearbyRestaurants: false
+  //   },
+  //   isFeatured: false,
+  //   images: [
+  //     { url: '', isFeatured: true, orderNumber: 1 },
+  //     { url: '', isFeatured: false, orderNumber: 2 },
+  //     { url: '', isFeatured: false, orderNumber: 3 },
+  //     { url: '', isFeatured: false, orderNumber: 4 },
+  //     { url: '', isFeatured: false, orderNumber: 5 },
+  //     { url: '', isFeatured: false, orderNumber: 6 },
+  //     { url: '', isFeatured: false, orderNumber: 7 },
+  //     { url: '', isFeatured: false, orderNumber: 8 },
+  //   ],
+  //   mediaLinks: {
+  //     googleMapsFrame: '',
+  //     youtubeUrl: ''
+  //   },
+  //   notesEn: [
+  //     '',
+  //   ],
+  //   notesHe: [
+  //       '',
+  //   ],
+  //   rating: 0,
+  //   ratingCount: 0,
+  //   createdAt: new Date('2024-01-01T00:00:00.000Z')
+  // },
 
 ];
 

@@ -579,6 +579,7 @@ const ParkCard = memo(({
               onVoteComplete={refetchData}
               skateparkId={park._id || ''}
               className=""
+              locale={locale}
             />
           </div>
         </div>

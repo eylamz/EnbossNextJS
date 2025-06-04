@@ -103,8 +103,8 @@ const FormattedHours: React.FC<FormattedHoursProps> = ({
     );
   }
   
-  // Check if it's a 24/7 operation
-  const is24Hours = is24HourSchedule(operatingHours);
+  // Check if it's a 24/7 operation based on lightingHours.is24Hours
+  const is24Hours = lightingHours?.is24Hours || false;
   
   if (is24Hours) {
     return (

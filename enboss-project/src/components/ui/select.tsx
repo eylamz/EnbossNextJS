@@ -68,7 +68,7 @@ const SelectItem = React.forwardRef<
     className={cn(
       "relative flex rtl:flex-row-reverse  mb-[2px] w-full cursor-pointer select-none items-center rounded-lg py-1.5 px-3 text-sm outline-none transition-colors duration-200",
       // Selected state styling
-      "data-[state=checked]:bg-brand-main/10 data-[state=checked]:text-brand-main dark:data-[state=checked]:text-brand-main data-[state=checked]:font-normal dark:data-[state=checked]:bg-brand-main/10",
+      "data-[state=checked]:bg-brand-main/10 data-[state=checked]:text-brand-text dark:data-[state=checked]:text-brand-main data-[state=checked]:font-normal dark:data-[state=checked]:bg-brand-main/10",
       // Focus styling
       "focus:bg-black/5 focus:text-text focus:dark:text-text-dark focus:font-normal dark:focus:bg-black/15",
       // Disabled styling

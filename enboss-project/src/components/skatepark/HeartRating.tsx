@@ -27,6 +27,7 @@ interface HeartRatingProps {
   hideVotesCount?: boolean;
   skateparkId: string;
   className?: string;
+  locale?: string;
 }
 
 let activeDialogId: string | null = null;
@@ -116,7 +117,8 @@ const HeartRating = ({
   onVoteComplete,
   hideVotesCount = false,
   skateparkId,
-  className
+  className,
+  locale = 'en'
 }: HeartRatingProps) => {
   const dialogIdRef = useRef<string>(getUniqueDialogId());
   const [isRating, setIsRating] = useState(false);
