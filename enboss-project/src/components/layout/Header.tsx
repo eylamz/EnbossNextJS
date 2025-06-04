@@ -241,7 +241,7 @@ export default function Header({ lng }: { lng: string }) {
 
         {/* Backdrop for mobile menu */}
         <div 
-          className={`fixed inset-0 bg-black/30 dark:bg-black/50 min-[880px]:hidden -z-10 transition-opacity duration-300 ease-in-out ${
+          className={`fixed inset-0 backdrop-blur-[1.2px]  bg-black/30 dark:bg-black/50 min-[880px]:hidden -z-10 transition-opacity duration-300 ease-in-out ${
             isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           onClick={() => setIsMenuOpen(false)}

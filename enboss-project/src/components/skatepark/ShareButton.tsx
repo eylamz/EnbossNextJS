@@ -29,10 +29,10 @@ export function ShareButton({ parkName, area, closingYear, locale }: ShareButton
           navigator.clipboard.writeText(window.location.href);
         }
       }}
-      className={`p-2 h-[35px] flex items-center justify-center rounded-lg ${
+      className={`p-2 h-[35px] flex items-center justify-center rounded-lg transition-colors duration-200 ${
         closingYear 
           ? 'text-error dark:text-error shadow-md active:shadow-none border border-b-[4px] border-error dark:border-error/20 active:border-b-[1px] active:translate-y-[2px] transition-all duration-200'
-          : 'text-info dark:text-info-dark shadow-md active:shadow-none border border-b-[4px] border-info dark:border-info-dark/20 active:border-b-[1px] active:translate-y-[2px] transition-all duration-200'
+          : 'text-info hover:text-[#13a7ec] dark:text-info-dark  dark:hover:text-[#14b4ff] shadow-md active:shadow-none border border-b-[4px] border-info dark:border-info-dark/20 active:border-b-[1px] active:translate-y-[2px] transition-all duration-200'
       }`}
       aria-label={t('share')}
     >

@@ -40,16 +40,32 @@ export function RatingCard({ skateparkId, rating, totalVotes, isClosed = false, 
 
     if (onHeartRatePark) {
       try {
-        await onHeartRatePark(skateparkId, rating)
+        // Create FormData with both ratings
+        const formData = new FormData()
+        formData.append('skateparkId', skateparkId)
+        formData.append('rating', rating.toString())
+        if (previousRating !== null) {
+          formData.append('previousRating', previousRating.toString())
+        }
+        
+        // Call updateRating directly
+        await updateRating(formData)
+        
+        // Update localStorage
+        if (typeof window !== 'undefined') {
+          try {
+            const ratings = JSON.parse(localStorage.getItem('skateparkRatings') || '{}')
+            ratings[skateparkId] = rating
+            localStorage.setItem('skateparkRatings', JSON.stringify(ratings))
+          } catch (error) {
+            console.error('Error updating localStorage:', error)
+          }
+        }
+        
         console.log('=== RATING CARD UPDATE DEBUG ===')
         console.log('Update completed')
         console.log('Current rating state:', { rating, totalVotes })
         console.log('=== END RATING CARD UPDATE DEBUG ===')
-        
-        // Force a hard refresh to ensure we get the latest data
-        if (typeof window !== 'undefined') {
-          window.location.reload()
-        }
       } catch (error) {
         console.error('Error in handleRate:', error)
       }

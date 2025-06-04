@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/Tooltip';
 import { MouseEvent } from 'react';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import React from 'react';
 
 interface AmenitiesGridProps {
   amenities: Record<string, boolean>;
@@ -33,6 +34,7 @@ export const AmenitiesGrid = ({
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(!preloadedTranslations);
   const [pageLoaded, setPageLoaded] = useState(false);
+  const translationsRef = React.useRef<Record<string, string>>({});
 
   // Update translations when locale changes
   useEffect(() => {
@@ -43,6 +45,7 @@ export const AmenitiesGrid = ({
           newTranslations[key] = value.name;
           newTranslations[`${key}.description`] = value.description;
         }
+        translationsRef.current = newTranslations;
         setTranslations(newTranslations);
         setIsLoading(false);
         setPageLoaded(true);
@@ -72,13 +75,14 @@ export const AmenitiesGrid = ({
         }
       }
 
+      translationsRef.current = newTranslations;
       setTranslations(newTranslations);
       setIsLoading(false);
       setPageLoaded(true);
     };
 
     updateTranslations();
-  }, [locale, t, amenities, preloadedTranslations]);
+  }, [locale, amenities, preloadedTranslations]);
 
   // Define valid amenity keys
   const validAmenityKeys = [

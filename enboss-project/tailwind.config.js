@@ -21,8 +21,10 @@ export default {
       fontFamily: {
         sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
         'poppins': ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        'rubik': ['var(--font-rubik)', 'system-ui', 'sans-serif'],
         'arimo': ['var(--font-arimo)', 'system-ui', 'sans-serif'],
         rtl: ['Arimo', 'system-ui', 'sans-serif'],
+        rtl: ['Rubik', 'system-ui', 'sans-serif'],
         ltr: ['Poppins', 'system-ui', 'sans-serif'],
       },
       backdropBlur: {
@@ -426,7 +428,7 @@ export default {
         'expandWidth': 'expandWidth 0.3s ease-in forwards',
         'popFadeIn': 'popFadeIn 0.5s ease-out forwards',
         'shimmer': 'shimmerMove 0.6s forwards',
-        'shimmerInfinite': 'shimmerInfinite 1.5s ease-in-out infinite',
+        'shimmerInfinite': 'shimmerInfinite 1s ease-in-out infinite',
         'fadeUpIn': 'fadeUpIn 0.5s ease-out forwards',
         'fadeInDown': 'fadeInDown 0.2s ease-out forwards',
       },

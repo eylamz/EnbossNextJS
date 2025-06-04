@@ -50,10 +50,35 @@ export function ParkCardWrapper({
       }}
       animationDelay={animationDelay}
       onHeartRatePark={async (parkId: string, rating: number) => {
+        console.log('=== PARK CARD WRAPPER DEBUG ===')
+        // Get previous rating from localStorage
+        let previousRating = null;
+        if (typeof window !== 'undefined') {
+          try {
+            const ratings = JSON.parse(localStorage.getItem('skateparkRatings') || '{}');
+            previousRating = ratings[parkId] || null;
+            console.log('Previous rating from localStorage:', previousRating)
+          } catch (error) {
+            console.error('Error reading from localStorage:', error);
+          }
+        }
+
         const formData = new FormData()
         formData.append('skateparkId', parkId)
         formData.append('rating', rating.toString())
+        if (previousRating !== null) {
+          console.log('Appending previousRating to formData:', previousRating)
+          formData.append('previousRating', previousRating.toString())
+        }
+        
+        console.log('FormData contents:')
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`)
+        }
+        
         await updateRating(formData)
+        window.location.reload();
+        console.log('=== END PARK CARD WRAPPER DEBUG ===')
       }}
       locale={locale}
       isLocationSortActive={isLocationSortActive}

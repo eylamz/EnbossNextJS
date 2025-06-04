@@ -5,6 +5,11 @@
     "all_areas": "All Areas",
     "relatedParks": "Related Skateparks",
     "searchPlaceholder": "Search for a skatepark...",
+    "metaDescription": {
+      "type": "Skatepark",
+      "closed": "Closed in {{year}}",
+      "features": "Features: {{features}}"
+    },
     "sort": {
       "byDistance": "Sort by distance",
       "byRating": "Sort by rating"

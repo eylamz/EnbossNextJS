@@ -15,7 +15,6 @@ import { BreadCrumbs } from '@/components/skatepark/BreadCrumbs'
 import { MapLinks } from '@/components/skatepark/MapLinks'
 import { YouTubeVideo } from '@/components/skatepark/YouTubeVideo'
 import RelatedParks from '@/components/skatepark/RelatedParks'
-import HeartRating from '@/components/skatepark/HeartRating'
 import React, { Suspense } from 'react'
 import Script from 'next/script'
 import ErrorStateHandler from '@/components/skatepark/ErrorStateHandler'
@@ -38,6 +37,45 @@ function getFeaturedImage(images: any[]) {
   if (!images || images.length === 0) return null
   const featured = images.find(img => img.isFeatured)
   return featured ? featured.url : images[0].url
+}
+
+// Helper function to get Cloudinary OG image URL
+function getCloudinaryOgImageUrl(parkSlug: string) {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+  return `https://res.cloudinary.com/${cloudName}/image/upload/v1746969636/${parkSlug}-fav.png`
+}
+
+// Helper function to format opening hours for schema
+function formatOpeningHoursForSchema(hours: any) {
+  if (!hours) return []
+  
+  const dayMap: Record<string, string> = {
+    sunday: 'Su',
+    monday: 'Mo',
+    tuesday: 'Tu',
+    wednesday: 'We',
+    thursday: 'Th',
+    friday: 'Fr',
+    saturday: 'Sa'
+  }
+  
+  return Object.entries(hours)
+    .filter(([_, dayData]: [string, any]) => dayData.isOpen)
+    .map(([day, dayData]: [string, any]) => {
+      const dayAbbr = dayMap[day]
+      return `${dayAbbr} ${dayData.openTime}-${dayData.closeTime}`
+    })
+}
+
+// Helper function to get amenity features for schema
+function getAmenityFeatures(amenities: Record<string, boolean>, t: any) {
+  return Object.entries(amenities)
+    .filter(([_, available]) => available)
+    .map(([amenity]) => ({
+      "@type": "LocationFeatureSpecification",
+      "name": t(`amenities.${amenity}`),
+      "value": true
+    }))
 }
 
 async function getSkatepark(slug: string) {
@@ -81,10 +119,105 @@ async function getRelatedParks(currentParkId: string, area: string) {
 // Add this before the SkateparkPage component
 export async function generateMetadata({ params: { locale, slug } }: Props) {
   const skatepark = await getSkatepark(slug)
+  if (!skatepark) return {}
+  
+  const { t } = await useTranslation(locale, 'skateparks')
+  const { t: tCommon } = await useTranslation(locale, 'common')
+  
+  // Get the appropriate park name based on locale
+  const parkName = locale === 'he' ? skatepark.nameHe : skatepark.nameEn
+  const parkAddress = locale === 'he' ? skatepark.addressHe : skatepark.addressEn
+  const parkNotes = locale === 'he' ? skatepark.notesHe : skatepark.notesEn
+  
+  // Get featured image and OG image
+  const featuredImage = getFeaturedImage(skatepark.images)
+  const ogImageUrl = getCloudinaryOgImageUrl(skatepark.slug)
+  
+  // Construct meta description
+  const metaDescription = [
+    parkName,
+    t('metaDescription.type'),
+    skatepark.area,
+    skatepark.closingYear ? t('metaDescription.closed', { year: skatepark.closingYear }) : '',
+    t('metaDescription.features', {
+      features: Object.entries(skatepark.amenities)
+        .filter(([_, available]) => available)
+        .slice(0, 3)
+        .map(([key]) => t(`amenities.${key}`))
+        .join(', ')
+    })
+  ].filter(Boolean).join('. ')
+  
+  // Construct canonical URL
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://enboss.com'
+  const canonicalUrl = `${baseUrl}/${locale}/skateparks/${slug}`
+  
+  // Prepare alternate language URLs
+  const alternateLanguages = languages.reduce((acc, lang) => ({
+    ...acc,
+    [lang]: `${baseUrl}/${lang}/skateparks/${slug}`
+  }), {})
+  
+  // Prepare structured data
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SportsActivityLocation",
+    "name": parkName,
+    "description": parkNotes,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": parkAddress
+    },
+    "openingHours": formatOpeningHoursForSchema(skatepark.operatingHours),
+    "amenityFeature": getAmenityFeatures(skatepark.amenities, t),
+    "image": skatepark.images?.map((img: SkateparkImage) => img.url) || [],
+    "dateOpened": skatepark.openingYear,
+    ...(skatepark.closingYear && { "dateClosed": skatepark.closingYear }),
+    ...(skatepark.rating && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": skatepark.rating,
+        "ratingCount": skatepark.ratingCount,
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    })
+  }
   
   return {
+    metadataBase: new URL(baseUrl),
+    title: `${parkName} | ${t('metaDescription.type')} | ENBOSS`,
+    description: metaDescription,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: alternateLanguages
+    },
+    openGraph: {
+      type: 'website',
+      url: canonicalUrl,
+      title: `${parkName} | ${t('metaDescription.type')}`,
+      description: metaDescription,
+      images: [
+        {
+          url: ogImageUrl,
+          secureUrl: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${parkName} | ENBOSS`,
+          type: 'image/png'
+        }
+      ],
+      siteName: 'ENBOSS'
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${parkName} | ${t('metaDescription.type')}`,
+      description: metaDescription,
+      images: [ogImageUrl],
+      site: '@enboss'
+    },
     other: {
-      isClosed: !!skatepark?.closingYear
+      isClosed: !!skatepark.closingYear
     }
   }
 }
@@ -333,7 +466,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                       </div>
 
                       <div className="flex flex-col px-2 gap-2 mb-2">
-                        <span itemProp="address">{parkAddress}</span>
+                        <span itemProp="address">{parkAddress.endsWith('.') ? parkAddress : `${parkAddress}.`}</span>
                       </div>
                     </div>
 
@@ -387,14 +520,14 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                             parkNotes.map((note, index) => (
                               <div key={index} className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
                                 <div className="text-sm">
-                                  • {note}
+                                  • {note.endsWith('.') ? note : `${note}.`}
                                 </div>
                               </div>
                             ))
                           ) : (
                             <div className="bg-gray-50/40 w-fit dark:bg-gray-400/[7.5%] px-2.5 py-1.5 rounded-md text-text dark:text-text-dark/80">
                               <div className="text-sm">
-                                • {parkNotes}
+                                <p>• {parkNotes.endsWith('.') ? parkNotes : `${parkNotes}.`}</p>
                               </div>
                             </div>
                           )}
@@ -414,6 +547,7 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     locationText={t('common:common.location')}
                     mapText={t('common:common.map')}
                     mapNotAvailableText={t('common:common.mapNotAvailable')}
+                    locale={locale}
                   />
                 )}
               </Suspense>

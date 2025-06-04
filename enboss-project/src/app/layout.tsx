@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Arimo } from "next/font/google";
+import { Inter, Poppins, Arimo, Rubik } from "next/font/google";
 import "./globals.css";
 import { dir } from 'i18next';
 import { Toaster } from "@/components/ui/toaster";
@@ -9,6 +9,13 @@ const poppins = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-poppins',
 });
+
+const rubik = Rubik({
+  subsets: ["hebrew", "latin"],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-rubik',
+});
+
 
 const arimo = Arimo({
   subsets: ["hebrew", "latin"],
@@ -31,7 +38,7 @@ export default function RootLayout({
   const direction = params.locale === 'he' ? 'rtl' : 'ltr';
   
   return (
-    <html lang={params.locale} dir={direction} className={`${poppins.variable} ${arimo.variable}`}>
+    <html lang={params.locale} dir={direction} className={`${poppins.variable} ${rubik.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -52,7 +59,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-arimo' : 'font-poppins'}`}>
+      <body className={`flex flex-col min-h-screen bg-background dark:bg-background-dark dark:text-white ${params.locale === 'he' ? 'font-rubik' : 'font-poppins'}`}>
         {children}
         <Toaster />
       </body>

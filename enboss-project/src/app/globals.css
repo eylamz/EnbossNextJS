@@ -99,3 +99,99 @@
       @apply border border-border dark:border-border-dark
     }
   
+
+
+    /* Improve scrolling performance with transforms */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform; /* Use sparingly - only for elements that actually change */
+}
+
+/* Container for maintaining layouts during scroll */
+
+
+/* Optimize image rendering */
+img {
+  image-rendering: auto;
+  /* Remove any filters that might affect performance */
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+input{
+  caret-color: theme('colors.brand.main');
+}
+
+/* Default (light mode) */
+::selection {
+  color: theme('colors.text.DEFAULT');
+  background-color: theme('colors.brand.main'); /* Uses your Tailwind theme color */
+}
+
+/* Dark mode */
+.dark ::selection {
+  color: theme('colors.text.DEFAULT');
+  background-color: theme('colors.brand.main'); /* Uses your Tailwind theme color */
+}
+
+
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.dark {
+  scrollbar-width: auto;
+  scrollbar-color: #4a4a4a #1a1a1a;
+}
+
+/* Light Mode Scrollbar */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+  border: 2px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Dark Mode Scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border: 2px solid #1a1a1a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+

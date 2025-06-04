@@ -41,6 +41,7 @@ export async function updateRating(formData: FormData) {
 
     console.log('Found skatepark:', skatepark.nameEn)
     console.log('Current rating from DB:', skatepark.rating)
+    console.log('Current votes from DB:', skatepark.ratingCount)
 
     // Validate and sanitize current rating
     let currentRating = parseFloat(skatepark.rating) || 0
@@ -56,6 +57,9 @@ export async function updateRating(formData: FormData) {
 
     // Check if this is an update or new vote
     const isUpdate = previousRating !== null && !isNaN(previousRating) && currentVotes > 0
+    console.log('Is update?', isUpdate)
+    console.log('Previous rating valid?', previousRating !== null && !isNaN(previousRating))
+    console.log('Current votes > 0?', currentVotes > 0)
 
     if (isUpdate) {
       console.log('=== UPDATING EXISTING VOTE ===')

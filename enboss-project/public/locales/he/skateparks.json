@@ -5,6 +5,11 @@
     "all_areas": "כל האזורים",
     "relatedParks": "סקייטפארקים נוספים",
     "searchPlaceholder": "חיפוש סקייטפארק...",
+    "metaDescription": {
+      "type": "סקייטפארק",
+      "closed": "נסגר בשנת {{year}}",
+      "features": "מאפיינים: {{features}}"
+    },
     "sort": {
       "byDistance": "מיון לפי מרחק",
       "byRating": "מיון לפי דירוג"

@@ -182,7 +182,7 @@ const HeartRating = ({
   }, [getPreviousRating, skateparkId]);
 
   // Function to handle rating selection
-  const handleRating = useCallback(async (value: number) => {
+  const handleRate = useCallback(async (value: number) => {
     if (readonly || isRating || !skateparkId) return;
     
     try {
@@ -262,7 +262,7 @@ const HeartRating = ({
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1, rotate: 360 }}
           transition={{ duration: 0.2 }}
-          className="w-6 h-6 rounded-full border-3 border-t-transparent border-brand-400"
+          className="w-6 h-6 rounded-full border-3 border-t-transparent border-brand-main"
           style={{ borderWidth: '3px' }}
         />
       );
@@ -290,13 +290,13 @@ const HeartRating = ({
         >
           <button
             className={cn(
-              "p-1 focus:outline-none  focus:ring-2 focus:ring-brand-500 rounded-full",
+              "p-1 focus:outline-none  focus:ring-2 focus:ring-brand-main rounded-full",
               isTouchDevice ? "p-2" : "p-1"
             )}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              handleRating(heartValue);
+              handleRate(heartValue);
             }}
             disabled={readonly || isRating}
             tabIndex={-1}
@@ -314,7 +314,7 @@ const HeartRating = ({
         </motion.div>
       );
     });
-  }, [isRating, hoverValue, selectedValue, animateSuccess, rating, isTouchDevice, readonly, handleRating, handleMouseEnter, handleMouseLeave, getIconSize]);
+  }, [isRating, hoverValue, selectedValue, animateSuccess, rating, isTouchDevice, readonly, handleRate, handleMouseEnter, handleMouseLeave, getIconSize]);
 
   // For touch devices - Dialog version
   if (isTouchDevice) {

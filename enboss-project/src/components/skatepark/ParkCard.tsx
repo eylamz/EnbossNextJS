@@ -324,11 +324,6 @@ const ParkCard = memo(({
         await onHeartRatePark(park._id, rating);
         console.log('Rating update completed');
         
-        // Force a hard refresh to ensure we get the latest data
-        if (typeof window !== 'undefined') {
-          window.location.reload();
-        }
-        
         toast({
           title: t('common:common.success'),
           description: t('common:common.ratingSuccess'),
@@ -583,6 +578,7 @@ const ParkCard = memo(({
               userRating={park._id ? park.userRating : null}
               onVoteComplete={refetchData}
               skateparkId={park._id || ''}
+              className=""
             />
           </div>
         </div>
