@@ -40,6 +40,7 @@ export interface IAmenities {
   scootersAllowed: boolean
   bikesAllowed: boolean
   noWax: boolean
+  nearbyRestaurants: boolean
 }
 
 export interface ISkateparkImage {
@@ -108,7 +109,8 @@ const AmenitiesSchema = new Schema<IAmenities>({
   bombShelter: { type: Boolean, default: false },
   scootersAllowed: { type: Boolean, default: false },
   bikesAllowed: { type: Boolean, default: false },
-  noWax: { type: Boolean, default: false }
+  noWax: { type: Boolean, default: false },
+  nearbyRestaurants: { type: Boolean, default: false }
 })
 
 const SkateparkImageSchema = new Schema<ISkateparkImage>({

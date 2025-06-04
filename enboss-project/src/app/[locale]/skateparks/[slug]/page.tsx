@@ -278,7 +278,8 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
     'bombShelter',
     'scootersAllowed',
     'bikesAllowed',
-    'noWax'
+    'nearbyRestaurants',
+    'noWax',
   ]
 
   for (const key of validAmenityKeys) {
@@ -547,7 +548,6 @@ export default async function SkateparkPage({ params: { locale, slug } }: Props)
                     locationText={t('common:common.location')}
                     mapText={t('common:common.map')}
                     mapNotAvailableText={t('common:common.mapNotAvailable')}
-                    locale={locale}
                   />
                 )}
               </Suspense>

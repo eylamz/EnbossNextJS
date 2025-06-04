@@ -20,6 +20,7 @@ const amenityOptions = [
   { key: 'shade', label: 'amenities.shade' },
   { key: 'seating', label: 'amenities.seating' },
   { key: 'noWax', label: 'amenities.noWax' },
+  { key: 'nearbyRestaurants', label: 'amenities.nearbyRestaurants' },
   { key: 'guard', label: 'amenities.guard' },
   { key: 'helmetRequired', label: 'amenities.helmetRequired' },
   { key: 'scootersAllowed', label: 'amenities.scootersAllowed' },
@@ -64,7 +65,7 @@ const AmenitiesButton = ({ selectedAmenities, onAmenitiesChange, className, styl
               <Button
                 variant={isActive ? "info" : "outline"}
                 size="xl"
-                className={`relative ${isActive ? '' : ''} active:scale-95 transition-transform duration-100 ${className || ''}`}
+                className={`relative ${isActive ? '' : ''} active:scale-95 transition-all duration-200 ${className || ''}`}
               >
                 <Icon 
                   name="filter" 

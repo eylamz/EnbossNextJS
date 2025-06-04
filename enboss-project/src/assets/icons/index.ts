@@ -54,6 +54,7 @@ import GoogleMapsBold from './googleMapsBold.svg';
 import AppleMapsBold from './appleMapsBold.svg';
 import WazeBold from './wazeBold.svg';
 import NoWax from './Wax.svg';
+import NearbyRestaurants from './nearbyResturants.svg';
 import Roller from './Roller.svg';
 import Skate from './Skate.svg';
 import Search from './search.svg';
@@ -103,7 +104,8 @@ export const amenityIcons = {
   helmetRequired: { icon: Helmet, label: 'Helmet Required' },
   scootersAllowed: { icon: Scoot, label: 'Scooters Allowed' },
   bikesAllowed: { icon: Bike, label: 'Bikes Allowed' },
-  noWax: { icon: NoWax, label: 'No Wax Allowed' }
+  noWax: { icon: NoWax, label: 'No Wax Allowed' },
+  nearbyRestaurants: { icon: NearbyRestaurants, label: 'Nearby Restaurants' }
 } as const;
 
 // Navigation Icons

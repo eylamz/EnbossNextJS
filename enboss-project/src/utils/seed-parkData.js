@@ -48,7 +48,8 @@ const amenitiesSchema = new mongoose.Schema({
   bombShelter: { type: Boolean, default: false }, // מקלט
   scootersAllowed: { type: Boolean, default: true },
   bikesAllowed: { type: Boolean, default: true },
-  noWax: { type: Boolean, default: false }
+  noWax: { type: Boolean, default: false },
+  nearbyRestaurants: { type: Boolean, default: false }
 }, { _id: false });
 
 // SkateparkImage Schema
@@ -133,7 +134,8 @@ const defaultAmenities = {
   bombShelter: true,
   scootersAllowed: true,
   bikesAllowed: true,
-  noWax: false
+  noWax: false,
+  nearbyRestaurants: false
 };
 
 const skateparks = [
@@ -225,7 +227,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: true,
       bikesAllowed: true,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },    
     isFeatured: false,
     images: [
@@ -284,7 +287,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: true,
       bikesAllowed: false,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -342,7 +346,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: true,
       bikesAllowed: true,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -403,7 +408,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: true,
       bikesAllowed: true,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -459,7 +465,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: false,
       bikesAllowed: false,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -515,7 +522,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: true,
       bikesAllowed: true,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -571,7 +579,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: false,
       bikesAllowed: false,
-      noWax: true
+      noWax: true,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -638,7 +647,8 @@ const skateparks = [
       bombShelter: true,
       scootersAllowed: true,
       bikesAllowed: false,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: false
     },
     isFeatured: false,
     images: [
@@ -705,7 +715,8 @@ const skateparks = [
       bombShelter: false,
       scootersAllowed: true,
       bikesAllowed: false,
-      noWax: false
+      noWax: false,
+      nearbyRestaurants: true
     },
     isFeatured: false,
     images: [

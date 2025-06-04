@@ -25,6 +25,7 @@ export default function Header({ lng }: { lng: string }) {
   const [shouldAnimate, setShouldAnimate] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const { isError } = useError()
+  const isShopEnabled = process.env.NEXT_PUBLIC_SHOP_ENABLED === 'true'
 
   // Set isClient to true after mount
   useEffect(() => {
@@ -130,12 +131,14 @@ export default function Header({ lng }: { lng: string }) {
                   </span>
                   <span className={activeLinkIndicatorClasses(`/${lng}/events`)} aria-hidden="true"></span>
                 </Link>
-                <Link href={`/${lng}/shop`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
-                  <span className="flex items-center gap-1 light:navShadow">
-                    {t('shop')}
-                  </span>
-                  <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
-                </Link>
+                {isShopEnabled && (
+                  <Link href={`/${lng}/shop`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
+                    <span className="flex items-center gap-1 light:navShadow">
+                      {t('shop')}
+                    </span>
+                    <span className={activeLinkIndicatorClasses(`/${lng}/shop`)} aria-hidden="true"></span>
+                  </Link>
+                )}
                 <Link href={`/${lng}/contact`} className={navLinkClasses(`/${lng}/shop`)} role="menuitem">
                   <span className="flex items-center gap-1 light:navShadow">
                     {t('contact')}
@@ -152,11 +155,13 @@ export default function Header({ lng }: { lng: string }) {
 
               {/* Desktop Action Icons */}
               <div className="hidden min-[880px]:flex ${lng === 'en' ? 'flex-row-reverse' : 'flex-row-reverse'} items-center gap-2 lg:gap-3">
-                <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
-                   <Icon name="user" category="ui" size={20} className="light:navShadow" />
-                   <span className="sr-only">{t('login')}</span>
-                   <span className={activeLinkIndicatorClasses(`/${lng}/login`)} aria-hidden="true"></span>
-                </Link>
+                {isShopEnabled && (
+                  <Link href={`/${lng}/login`} className={`${navLinkClasses(`/${lng}/login`)} !px-1`} aria-label={t('login')}>
+                    <Icon name="user" category="ui" size={20} className="light:navShadow" />
+                    <span className="sr-only">{t('login')}</span>
+                    <span className={activeLinkIndicatorClasses(`/${lng}/login`)} aria-hidden="true"></span>
+                  </Link>
+                )}
                 <ThemeToggle lng={lng} className="!px-1" />
                 <LanguageToggle lng={lng} className="!px-1" />
               </div>
@@ -210,22 +215,26 @@ export default function Header({ lng }: { lng: string }) {
                     <Link href={`/${lng}/events`} className={`${mobileNavLinkClasses(`/${lng}/events`)} animate-fadeIn`} style={{ animationDelay: '175ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
                       <span>{t('events')}</span>
                     </Link>
-                    <Link href={`/${lng}/shop`} className={`${mobileNavLinkClasses(`/${lng}/shop`)} animate-fadeIn`} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                      <span>{t('shop')}</span>
+                    {isShopEnabled && (
+                      <Link href={`/${lng}/shop`} className={`${mobileNavLinkClasses(`/${lng}/shop`)} animate-fadeIn`} style={{ animationDelay: '200ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                        <span>{t('shop')}</span>
+                      </Link>
+                    )}
+                    <Link href={`/${lng}/contact`} className={`${mobileNavLinkClasses(`/${lng}/contact`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <span>{t('contact')}</span>
                     </Link>
-                      <Link href={`/${lng}/contact`} className={`${mobileNavLinkClasses(`/${lng}/contact`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                        <span>{t('contact')}</span>
-                      </Link>
-                      <Link href={`/${lng}/about`} className={`${mobileNavLinkClasses(`/${lng}/about`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                        <span>{t('about')}</span>
-                      </Link>
+                    <Link href={`/${lng}/about`} className={`${mobileNavLinkClasses(`/${lng}/about`)} animate-fadeIn`} style={{ animationDelay: '250ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                      <span>{t('about')}</span>
+                    </Link>
                   </div>
 
                   {/* Right column - Action Icons */}
                   <div className="flex flex-col items-end gap-4 pt-2">
-                    <Link href={`/${lng}/login`} className={`${mobileNavLinkClasses(`/${lng}/login`)} animate-fadeIn`} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
-                      <Icon name="user" category="ui" size={24} className="light:navShadow" />
-                    </Link>
+                    {isShopEnabled && (
+                      <Link href={`/${lng}/login`} className={`${mobileNavLinkClasses(`/${lng}/login`)} animate-fadeIn`} style={{ animationDelay: '100ms' }} onClick={() => setIsMenuOpen(false)} role="menuitem">
+                        <Icon name="user" category="ui" size={24} className="light:navShadow" />
+                      </Link>
+                    )}
                     <div className="animate-fadeIn" style={{ animationDelay: '150ms' }}>
                       <ThemeToggle lng={lng} />
                     </div>

@@ -423,7 +423,7 @@ const HeartRating = ({
         <HoverCardTrigger asChild>
           <motion.div 
             whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-            className="flex items-center gap-1 cursor-pointer px-4 -m-1" 
+            className="flex items-center gap-1 cursor-pointer " 
             tabIndex={-1}
           >
             <span className="text-sm font-medium text-text dark:text-text-dark transition-all duration-200">

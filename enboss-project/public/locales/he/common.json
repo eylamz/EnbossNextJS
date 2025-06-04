@@ -91,5 +91,13 @@
       "alreadyVoted": "כבר דירגת את הסקייטפארק הזה",
       "totalVotes": "סך הכל הצבעות",
       "votes": "הצבעות"
+    },
+    "common": {
+      "pauseSlideshow": "השהה מצגת",
+      "startSlideshow": "הצג תמונות",
+      "success": "הצלחה",
+      "ratingSuccess": "הדירוג נשלח בהצלחה",
+      "error": "שגיאה",
+      "ratingError": "שליחת הדירוג נכשלה"
     }
-  }
+}

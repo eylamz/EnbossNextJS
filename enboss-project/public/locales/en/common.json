@@ -90,5 +90,13 @@
     "alreadyVoted": "You've already rated this skatepark",
     "totalVotes": "total votes",
     "votes": "votes"
+  },
+  "common": {
+    "pauseSlideshow": "Pause slideshow",
+    "startSlideshow": "Start slideshow",
+    "success": "Success",
+    "ratingSuccess": "Rating submitted successfully",
+    "error": "Error",
+    "ratingError": "Failed to submit rating"
   }
 }

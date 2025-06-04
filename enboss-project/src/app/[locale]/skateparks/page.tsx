@@ -56,6 +56,80 @@ async function getSkateparks() {
   return JSON.parse(JSON.stringify(skateparks))
 }
 
+// Add metadata generation function
+export async function generateMetadata({ params: { locale } }: Props) {
+  const { t } = await useTranslation(locale, 'skateparks')
+  
+  // Get skateparks for structured data
+  const skateparks = await getSkateparks()
+  
+  // Construct meta description
+  const metaDescription = t('metaDescription.list', {
+    count: skateparks.length,
+    default: `Discover ${skateparks.length} skateparks across Israel. Find detailed information about each park including amenities, opening hours, and ratings.`
+  })
+  
+  // Construct canonical URL
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://enboss.com'
+  const canonicalUrl = `${baseUrl}/${locale}/skateparks`
+  
+  // Prepare alternate language URLs
+  const alternateLanguages = languages.reduce((acc, lang) => ({
+    ...acc,
+    [lang]: `${baseUrl}/${lang}/skateparks`
+  }), {})
+  
+  // Prepare structured data
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": skateparks.map((park: SkateparkData, index: number) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "SportsActivityLocation",
+        "name": locale === 'he' ? park.nameHe : park.nameEn,
+        "area": park.area,
+        "image": park.images?.map((img: { url: string }) => img.url) || [],
+        "dateOpened": park.openingYear,
+        ...(park.closingYear && { "dateClosed": park.closingYear }),
+        ...(park.rating && {
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": park.rating,
+            "ratingCount": park.ratingCount,
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        })
+      }
+    }))
+  }
+  
+  return {
+    metadataBase: new URL(baseUrl),
+    title: `${t('metaTitle', { default: 'Skateparks' })} | ENBOSS`,
+    description: metaDescription,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: alternateLanguages
+    },
+    openGraph: {
+      type: 'website',
+      url: canonicalUrl,
+      title: `${t('metaTitle', { default: 'Skateparks' })} | ENBOSS`,
+      description: metaDescription,
+      siteName: 'ENBOSS'
+    },
+    twitter: {
+      card: 'summary',
+      title: `${t('metaTitle', { default: 'Skateparks' })} | ENBOSS`,
+      description: metaDescription,
+      site: '@enboss'
+    }
+  }
+}
+
 export default async function SkateparksPage({ params: { locale } }: Props) {
   // Check if the locale is supported
   if (!languages.includes(locale)) {

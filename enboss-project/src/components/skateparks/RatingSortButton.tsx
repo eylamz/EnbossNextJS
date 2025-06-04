@@ -24,7 +24,7 @@ const RatingSortButton = ({ isActive, onClick, className, style, locale }: Ratin
             variant={isActive ? "error" : "outline"}
             size="xl"
             onClick={onClick}
-            className={`${isActive ? 'rounded-full' : ''} active:scale-95 transition-transform duration-100 ${className || ''}`}
+            className={`${isActive ? 'rounded-full' : ''} active:scale-95 transition-all duration-200 ${className || ''}`}
           >
             <Icon 
               name="heart" 

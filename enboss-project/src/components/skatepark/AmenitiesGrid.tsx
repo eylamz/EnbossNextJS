@@ -65,7 +65,8 @@ export const AmenitiesGrid = ({
         'bombShelter',
         'scootersAllowed',
         'bikesAllowed',
-        'noWax'
+        'noWax',
+        'nearbyRestaurants'
       ];
 
       for (const key of validAmenityKeys) {
@@ -96,7 +97,8 @@ export const AmenitiesGrid = ({
     'bombShelter',
     'scootersAllowed',
     'bikesAllowed',
-    'noWax'
+    'nearbyRestaurants',
+    'noWax',
   ];
 
   // Filter and sort amenities based on validAmenityKeys

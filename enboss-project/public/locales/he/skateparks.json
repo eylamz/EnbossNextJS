@@ -5,10 +5,12 @@
     "all_areas": "כל האזורים",
     "relatedParks": "סקייטפארקים נוספים",
     "searchPlaceholder": "חיפוש סקייטפארק...",
+    "metaTitle": "סקייטפארקים בישראל",
     "metaDescription": {
       "type": "סקייטפארק",
       "closed": "נסגר בשנת {{year}}",
-      "features": "מאפיינים: {{features}}"
+      "features": "מאפיינים: {{features}}",
+      "list": "גלו {{count}} סקייטפארקים ברחבי ישראל. מצאו מידע מפורט על כל פארק כולל שירותים, שעות פתיחה ודירוגים."
     },
     "sort": {
       "byDistance": "מיון לפי מרחק",
@@ -103,6 +105,8 @@
       "bikesAllowed": "כניסה לאופניים",
       "bikesAllowed.description": "מותרת הכניסה לרוכבי אופניים",
       "noWax": "שעווה אסורה",
-      "noWax.description": "אסורה מריחת שעווה בפארק"
+      "noWax.description": "אסורה מריחת שעווה בפארק",
+      "nearbyRestaurants": "מסעדות בסביבה",
+      "nearbyRestaurants.description": "ישנן מסעדות באזור"
     }
   }

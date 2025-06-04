@@ -5,10 +5,12 @@
     "all_areas": "All Areas",
     "relatedParks": "Related Skateparks",
     "searchPlaceholder": "Search for a skatepark...",
+    "metaTitle": "Skateparks in Israel",
     "metaDescription": {
       "type": "Skatepark",
       "closed": "Closed in {{year}}",
-      "features": "Features: {{features}}"
+      "features": "Features: {{features}}",
+      "list": "Discover {{count}} skateparks across Israel. Find detailed information about each park including amenities, opening hours, and ratings."
     },
     "sort": {
       "byDistance": "Sort by distance",
@@ -105,6 +107,8 @@
       "bikesAllowed": "Bikes Allowed",
       "bikesAllowed.description": "Bicycle riders are allowed entry",
       "noWax": "Wax Prohibited",
-      "noWax.description": "Applying wax in the park is prohibited"
+      "noWax.description": "Applying wax in the park is prohibited",
+      "nearbyRestaurants": "Nearby Restaurants",
+      "nearbyRestaurants.description": "There are restaurants in the area"
   }
   }
